@@ -48,34 +48,15 @@ namespace MultiplayerARPG
                 {
                     new UmaColorList()
                     {
-                        name = "Hair", colors = new UmaColorValue[]
-                        {
-                            new UmaColorValue() { baseColor = Color.white },
-                            new UmaColorValue() { baseColor = Color.grey },
-                            new UmaColorValue() { baseColor = Color.black },
-                            new UmaColorValue() { baseColor = Color.red },
-                            new UmaColorValue() { baseColor = Color.green },
-                            new UmaColorValue() { baseColor = Color.blue },
-                        }
+                        name = "Hair",
                     },
                     new UmaColorList()
                     {
-                        name = "Eyes", colors = new UmaColorValue[]
-                        {
-                            new UmaColorValue() { baseColor = Color.white },
-                            new UmaColorValue() { baseColor = Color.grey },
-                            new UmaColorValue() { baseColor = Color.black },
-                            new UmaColorValue() { baseColor = Color.red },
-                            new UmaColorValue() { baseColor = Color.green },
-                            new UmaColorValue() { baseColor = Color.blue },
-                        }
+                        name = "Eyes",
                     },
                     new UmaColorList()
                     {
-                        name = "Skin", colors = new UmaColorValue[]
-                        {
-                            new UmaColorValue() { baseColor = Color.white },
-                        }
+                        name = "Skin",
                     },
                 },
             }
@@ -102,14 +83,7 @@ namespace MultiplayerARPG
     public struct UmaColorList
     {
         public string name;
-        public UmaColorValue[] colors;
-    }
-
-    [System.Serializable]
-    public struct UmaColorValue
-    {
-        public Color baseColor;
-        public Color metallicGloss;
+        public SharedColorTable colorTable;
     }
 
     [System.Serializable]
