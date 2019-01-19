@@ -12,16 +12,25 @@ namespace MultiplayerARPG
         public byte raceIndex;
         public byte genderIndex;
         public byte[] colors;
-
+        public byte[] slots;
+        public byte[] dnas;
 
         public void Deserialize(NetDataReader reader)
         {
-            throw new System.NotImplementedException();
+            raceIndex = reader.GetByte();
+            genderIndex = reader.GetByte();
+            colors = reader.GetBytesWithLength();
+            slots = reader.GetBytesWithLength();
+            dnas = reader.GetBytesWithLength();
         }
 
         public void Serialize(NetDataWriter writer)
         {
-            throw new System.NotImplementedException();
+            writer.Put(raceIndex);
+            writer.Put(genderIndex);
+            writer.PutBytesWithLength(colors);
+            writer.PutBytesWithLength(slots);
+            writer.PutBytesWithLength(dnas);
         }
     }
 
