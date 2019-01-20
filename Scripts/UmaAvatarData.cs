@@ -19,18 +19,44 @@ namespace MultiplayerARPG
         {
             raceIndex = reader.GetByte();
             genderIndex = reader.GetByte();
-            colors = reader.GetBytesWithLength();
-            slots = reader.GetBytesWithLength();
-            dnas = reader.GetBytesWithLength();
+            byte i;
+            colors = new byte[reader.GetByte()];
+            for (i = 0; i < colors.Length; ++i)
+            {
+                colors[i] = reader.GetByte();
+            }
+            slots = new byte[reader.GetByte()];
+            for (i = 0; i < colors.Length; ++i)
+            {
+                slots[i] = reader.GetByte();
+            }
+            dnas = new byte[reader.GetByte()];
+            for (i = 0; i < colors.Length; ++i)
+            {
+                dnas[i] = reader.GetByte();
+            }
         }
 
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(raceIndex);
             writer.Put(genderIndex);
-            writer.PutBytesWithLength(colors);
-            writer.PutBytesWithLength(slots);
-            writer.PutBytesWithLength(dnas);
+            byte i;
+            writer.Put((byte)colors.Length);
+            for (i = 0; i < colors.Length; ++i)
+            {
+                writer.Put(colors[i]);
+            }
+            writer.Put((byte)slots.Length);
+            for (i = 0; i < slots.Length; ++i)
+            {
+                writer.Put(slots[i]);
+            }
+            writer.Put((byte)dnas.Length);
+            for (i = 0; i < dnas.Length; ++i)
+            {
+                writer.Put(dnas[i]);
+            }
         }
     }
 
