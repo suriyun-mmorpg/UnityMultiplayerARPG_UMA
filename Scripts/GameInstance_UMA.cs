@@ -20,43 +20,26 @@ namespace MultiplayerARPG
                     new UmaRaceGender()
                     {
                         name = "Male",
-                        customizableSlots = new UmaCustomizableSlot[]
+                        customizableSlots = new string[]
                         {
-                            new UmaCustomizableSlot() { name = "Hair" },
-                            new UmaCustomizableSlot() { name = "Beard" },
-                            new UmaCustomizableSlot() { name = "Eyebrows" },
-                            new UmaCustomizableSlot() { name = "Eyes" },
-                            new UmaCustomizableSlot() { name = "Face" },
-                            new UmaCustomizableSlot() { name = "Ears" },
+                            "Hair",
+                            "Eyebrows",
+                            "Eyes",
+                            "Face",
+                            "Ears",
                         }
                     },
                     new UmaRaceGender()
                     {
                         name = "Female",
-                        customizableSlots = new UmaCustomizableSlot[]
+                        customizableSlots = new string[]
                         {
-                            new UmaCustomizableSlot() { name = "Hair" },
-                            new UmaCustomizableSlot() { name = "Eyebrows" },
-                            new UmaCustomizableSlot() { name = "Eyes" },
-                            new UmaCustomizableSlot() { name = "Face" },
-                            new UmaCustomizableSlot() { name = "Ears" },
+                            "Hair",
+                            "Eyebrows",
+                            "Eyes",
+                            "Face",
+                            "Ears",
                         }
-                    },
-                },
-                // Color settings
-                colors = new UmaColorList[]
-                {
-                    new UmaColorList()
-                    {
-                        name = "Hair",
-                    },
-                    new UmaColorList()
-                    {
-                        name = "Eyes",
-                    },
-                    new UmaColorList()
-                    {
-                        name = "Skin",
                     },
                 },
             }
@@ -68,28 +51,14 @@ namespace MultiplayerARPG
     {
         public string name;
         public UmaRaceGender[] genders;
-        public UmaColorList[] colors;
+        public SharedColorTable[] colorTables;
     }
 
     [System.Serializable]
     public struct UmaRaceGender
     {
         public string name;
-        public RaceData race;
-        public UmaCustomizableSlot[] customizableSlots;
-    }
-
-    [System.Serializable]
-    public struct UmaColorList
-    {
-        public string name;
-        public SharedColorTable colorTable;
-    }
-
-    [System.Serializable]
-    public struct UmaCustomizableSlot
-    {
-        public string name;
-        public UMATextRecipe[] recipe;
+        public RaceData raceData;
+        public string[] customizableSlots;
     }
 }
