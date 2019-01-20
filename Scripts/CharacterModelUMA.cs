@@ -43,7 +43,7 @@ namespace MultiplayerARPG
             string slotName;
             for (i = 0; i < avatarData.slots.Length; ++i)
             {
-                slotName = gender.customizableSlots[i];
+                slotName = gender.customizableSlots[i].name;
                 CacheUmaAvatar.SetSlot(recipes[slotName][avatarData.slots[i]]);
             }
             // Set character dna
