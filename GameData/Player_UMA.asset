@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b67f350c4283834f81cded3a656ff5e, type: 3}
+  m_Name: Player_UMA
+  m_EditorClassIdentifier: 
+  title: Player
+  description: This is demo character with UMA system
+  icon: {fileID: 21300000, guid: 971aaff4fd1b6064ea1291822fc533dd, type: 3}
+  stats:
+    baseStats:
+      hp: 0
+      mp: 0
+      armor: 0
+      accuracy: 0
+      evasion: 0
+      criRate: 0.25
+      criDmgRate: 1.5
+      blockRate: 0
+      blockDmgRate: 0
+      moveSpeed: 5
+      atkSpeed: 1
+      weightLimit: 100
+      stamina: 100
+      food: 100
+      water: 100
+      testStats: 0
+    statsIncreaseEachLevel:
+      hp: 0
+      mp: 0
+      armor: 0
+      accuracy: 0
+      evasion: 0
+      criRate: 0
+      criDmgRate: 0
+      blockRate: 0
+      blockDmgRate: 0
+      moveSpeed: 0
+      atkSpeed: 0
+      weightLimit: 0
+      stamina: 0
+      food: 0
+      water: 0
+      testStats: 0
+  attributes:
+  - attribute: {fileID: 11400000, guid: 0e223af20738b88419c22a1a0401a21b, type: 2}
+    amount:
+      baseAmount: 30
+      amountIncreaseEachLevel: 0
+  - attribute: {fileID: 11400000, guid: cf50e3647cfae0e44b683163d2171277, type: 2}
+    amount:
+      baseAmount: 25
+      amountIncreaseEachLevel: 0
+  - attribute: {fileID: 11400000, guid: c7e3824f99bb4bc43b9566210f8d02f5, type: 2}
+    amount:
+      baseAmount: 20
+      amountIncreaseEachLevel: 0
+  - attribute: {fileID: 11400000, guid: cd3d2fb4f3c67fd4dbba3bd0ccd0095e, type: 2}
+    amount:
+      baseAmount: 15
+      amountIncreaseEachLevel: 0
+  resistances: []
+  skillLevels: []
+  rightHandEquipItem: {fileID: 0}
+  leftHandEquipItem: {fileID: 0}
+  armorItems: []
+  startMap: {fileID: 0}

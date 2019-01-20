@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446bd54be72e9c14a9d92aae35e50af7, type: 3}
+  m_Name: GameDatabase_UMA
+  m_EditorClassIdentifier: 
+  attributes:
+  - {fileID: 11400000, guid: 0e223af20738b88419c22a1a0401a21b, type: 2}
+  - {fileID: 11400000, guid: cf50e3647cfae0e44b683163d2171277, type: 2}
+  - {fileID: 11400000, guid: c7e3824f99bb4bc43b9566210f8d02f5, type: 2}
+  - {fileID: 11400000, guid: cd3d2fb4f3c67fd4dbba3bd0ccd0095e, type: 2}
+  damageElements:
+  - {fileID: 11400000, guid: 3afa55aee773f47438e6f7f3a03cd0b9, type: 2}
+  - {fileID: 11400000, guid: 02b1c5248ea9f3242aa338970d626d27, type: 2}
+  - {fileID: 11400000, guid: 84a7ad1ad281a3a47918fcb1f180d365, type: 2}
+  - {fileID: 11400000, guid: 722cfdf3e0a6c8f47bd849a2d998e915, type: 2}
+  items: []
+  skills: []
+  npcDialogs: []
+  quests: []
+  guildSkills: []
+  playerCharacters:
+  - {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
+  monsterCharacters: []
+  playerCharacterEntities: []
+  monsterCharacterEntities: []
+  mapInfos:
+  - {fileID: 11400000, guid: de8b0e4099f8d444692e88f92309e90d, type: 2}
+  - {fileID: 11400000, guid: fbe2a93dfafee544cbeaf175d3491e33, type: 2}
