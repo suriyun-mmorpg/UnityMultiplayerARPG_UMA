@@ -20,25 +20,25 @@ namespace MultiplayerARPG
                     new UmaRaceGender()
                     {
                         name = "Male",
-                        customizableSlots = new string[]
+                        customizableSlots = new UmaCustomizableSlot[]
                         {
-                            "Hair",
-                            "Eyebrows",
-                            "Eyes",
-                            "Face",
-                            "Ears",
+                            new UmaCustomizableSlot() { name = "Hair", title = "Hair" },
+                            new UmaCustomizableSlot() { name = "Eyebrows", title = "Eyebrows" },
+                            new UmaCustomizableSlot() { name = "Eyes", title = "Eyes" },
+                            new UmaCustomizableSlot() { name = "Face", title = "Face" },
+                            new UmaCustomizableSlot() { name = "Ears", title = "Ears" },
                         }
                     },
                     new UmaRaceGender()
                     {
                         name = "Female",
-                        customizableSlots = new string[]
+                        customizableSlots = new UmaCustomizableSlot[]
                         {
-                            "Hair",
-                            "Eyebrows",
-                            "Eyes",
-                            "Face",
-                            "Ears",
+                            new UmaCustomizableSlot() { name = "Hair", title = "Hair" },
+                            new UmaCustomizableSlot() { name = "Eyebrows", title = "Eyebrows" },
+                            new UmaCustomizableSlot() { name = "Eyes", title = "Eyes" },
+                            new UmaCustomizableSlot() { name = "Face", title = "Face" },
+                            new UmaCustomizableSlot() { name = "Ears", title = "Ears" },
                         }
                     },
                 },
@@ -59,6 +59,13 @@ namespace MultiplayerARPG
     {
         public string name;
         public RaceData raceData;
-        public string[] customizableSlots;
+        public UmaCustomizableSlot[] customizableSlots;
+    }
+
+    [System.Serializable]
+    public struct UmaCustomizableSlot
+    {
+        public string name;
+        public string title;
     }
 }
