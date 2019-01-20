@@ -757,22 +757,23 @@ MonoBehaviour:
   - name: Human
     genders:
     - name: Male
-      race: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
+      raceData: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
+      customizableSlots:
+      - name: Hair
+        title: Hair
+      - name: Face
+        title: Face
     - name: Female
-      race: {fileID: 11400000, guid: f8fea6f0ee17b3f42a4ae6cfb627bab3, type: 2}
-  umaColorValues:
-  - name: Hair
-    colors:
-    - baseColor: {r: 1, g: 1, b: 1, a: 1}
-      metallicGloss: {r: 0, g: 0, b: 0, a: 0}
-  - name: Eyes
-    colors:
-    - baseColor: {r: 1, g: 1, b: 1, a: 1}
-      metallicGloss: {r: 0, g: 0, b: 0, a: 0}
-  - name: Skin
-    colors:
-    - baseColor: {r: 1, g: 1, b: 1, a: 1}
-      metallicGloss: {r: 0, g: 0, b: 0, a: 0}
+      raceData: {fileID: 11400000, guid: f8fea6f0ee17b3f42a4ae6cfb627bab3, type: 2}
+      customizableSlots:
+      - name: Hair
+        title: Hair
+      - name: Face
+        title: Face
+    colorTables:
+    - {fileID: 11400000, guid: acbc1db84c5027b4bafb18d920c6b420, type: 2}
+    - {fileID: 11400000, guid: 919f053338460244f8cad6f535b25680, type: 2}
+    - {fileID: 11400000, guid: 352924d338ca78841832986636fbf5d4, type: 2}
   dimensionType: 0
   gameplayRule: {fileID: 11400000, guid: 3bfe680a81b27ce4ba9642ddff7baa17, type: 2}
   networkSetting: {fileID: 11400000, guid: c0825e8ee894749459ab4c8dda26dfe6, type: 2}
@@ -901,8 +902,8 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 63ab6ffb9b0b1eb40958204ac1767f1b, type: 2}
     amount: 1
   homeScene:
-    sceneAsset: {fileID: 102900000, guid: ade6fa5747c04c54b99f067a5ed7f2f1, type: 3}
-    sceneName: 01Home
+    sceneAsset: {fileID: 102900000, guid: c3c5888ac576f7144a0af1cb9028533f, type: 3}
+    sceneName: 01Home_UMA
   minCharacterNameLength: 2
   maxCharacterNameLength: 16
   useMobileInEditor: 0
