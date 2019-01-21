@@ -20,9 +20,11 @@ namespace MultiplayerARPG
             }
         }
 
-        public bool IsUmaCharacterBegun { get; private set; }
+        public bool IsUmaCharacterCreated { get; private set; }
         public bool IsInitializedUMA { get; private set; }
+        public System.Action onUmaCharacterCreated;
         private UmaAvatarData applyingAvatarData;
+        private Coroutine applyCoroutine;
 
         private void Start()
         {
@@ -35,18 +37,16 @@ namespace MultiplayerARPG
                 return;
             IsInitializedUMA = true;
             CacheUmaAvatar.raceAnimationControllers.defaultAnimationController = CacheAnimatorController;
-            CacheUmaAvatar.CharacterBegun.RemoveListener(OnUmaCharacterBegun);
-            CacheUmaAvatar.CharacterBegun.AddListener(OnUmaCharacterBegun);
+            CacheUmaAvatar.CharacterCreated.RemoveListener(OnUmaCharacterCreated);
+            CacheUmaAvatar.CharacterCreated.AddListener(OnUmaCharacterCreated);
         }
 
-        private void OnUmaCharacterBegun(UMAData data)
+        private void OnUmaCharacterCreated(UMAData data)
         {
-            IsUmaCharacterBegun = true;
-            if (applyingAvatarData != null)
-            {
-                ApplyUmaAvatar(applyingAvatarData);
-                applyingAvatarData = null;
-            }
+            IsUmaCharacterCreated = true;
+            ApplyPendingAvatarData();
+            if (onUmaCharacterCreated != null)
+                onUmaCharacterCreated.Invoke();
         }
         
         public void ApplyUmaAvatar(UmaAvatarData avatarData)
@@ -58,11 +58,22 @@ namespace MultiplayerARPG
             }
             InitializeUMA();
             // If not initialized, do it then apply avatar later
-            if (!IsUmaCharacterBegun)
+            if (!IsUmaCharacterCreated)
             {
                 applyingAvatarData = avatarData;
                 return;
             }
+            if (applyCoroutine != null)
+            {
+                StopCoroutine(applyCoroutine);
+                applyCoroutine = null;
+            }
+            applyCoroutine = StartCoroutine(ApplyUmaAvatarRoutine(avatarData));
+        }
+
+        IEnumerator ApplyUmaAvatarRoutine(UmaAvatarData avatarData)
+        {
+            yield return null;
             UmaRace race = gameInstance.umaRaces[avatarData.raceIndex];
             UmaRaceGender gender = race.genders[avatarData.genderIndex];
             CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
@@ -76,6 +87,7 @@ namespace MultiplayerARPG
                 CacheUmaAvatar.SetSlot(recipes[slotName][avatarData.slots[i]]);
             }
             // Set character dna
+            yield return null;
             Dictionary<string, DnaSetter> dnas = CacheUmaAvatar.GetDNA();
             List<string> dnaNames = new List<string>(dnas.Keys);
             dnaNames.Sort();
@@ -94,6 +106,15 @@ namespace MultiplayerARPG
             }
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
+        }
+
+        public void ApplyPendingAvatarData()
+        {
+            if (applyingAvatarData != null)
+            {
+                ApplyUmaAvatar(applyingAvatarData);
+                applyingAvatarData = null;
+            }
         }
     }
 }

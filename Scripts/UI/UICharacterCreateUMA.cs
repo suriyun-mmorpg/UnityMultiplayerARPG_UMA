@@ -46,10 +46,10 @@ namespace MultiplayerARPG
         {
             if (UmaModel != null)
             {
-                if (!UmaModel.IsUmaCharacterBegun)
+                if (!UmaModel.IsUmaCharacterCreated)
                 {
-                    UmaModel.CacheUmaAvatar.CharacterBegun.RemoveListener(OnCharacterBegun);
-                    UmaModel.CacheUmaAvatar.CharacterBegun.AddListener(OnCharacterBegun);
+                    UmaModel.onUmaCharacterCreated -= OnUmaCharacterCreated;
+                    UmaModel.onUmaCharacterCreated += OnUmaCharacterCreated;
                     return;
                 }
 
@@ -76,7 +76,7 @@ namespace MultiplayerARPG
             }
         }
 
-        private void OnCharacterBegun(UMAData data)
+        private void OnUmaCharacterCreated()
         {
             StartCoroutine(OnCharacterCreatedRoutine());
         }
