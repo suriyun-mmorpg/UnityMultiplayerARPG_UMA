@@ -7,7 +7,7 @@ using LiteNetLibManager;
 namespace MultiplayerARPG
 {
     [System.Serializable]
-    public struct UmaAvatarData : INetSerializable
+    public class UmaAvatarData : INetSerializable
     {
         public byte raceIndex;
         public byte genderIndex;
@@ -26,12 +26,12 @@ namespace MultiplayerARPG
                 colors[i] = reader.GetByte();
             }
             slots = new byte[reader.GetByte()];
-            for (i = 0; i < colors.Length; ++i)
+            for (i = 0; i < slots.Length; ++i)
             {
                 slots[i] = reader.GetByte();
             }
             dnas = new byte[reader.GetByte()];
-            for (i = 0; i < colors.Length; ++i)
+            for (i = 0; i < dnas.Length; ++i)
             {
                 dnas[i] = reader.GetByte();
             }
@@ -71,12 +71,12 @@ namespace MultiplayerARPG
                 colors[i] = bytes[index++];
             }
             slots = new byte[bytes[index++]];
-            for (i = 0; i < colors.Length; ++i)
+            for (i = 0; i < slots.Length; ++i)
             {
                 slots[i] = bytes[index++];
             }
             dnas = new byte[bytes[index++]];
-            for (i = 0; i < colors.Length; ++i)
+            for (i = 0; i < dnas.Length; ++i)
             {
                 dnas[i] = bytes[index++];
             }
