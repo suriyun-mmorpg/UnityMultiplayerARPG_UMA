@@ -6,7 +6,7 @@ using UMA.CharacterSystem;
 
 namespace MultiplayerARPG
 {
-    public class UICharacterCreateUMA : UICharacterCreate
+    public sealed class UICharacterCreateUMA : UICharacterCreate
     {
         public GameObject umaPanelRoot;
         public DropdownWrapper raceDropdown;
@@ -26,12 +26,8 @@ namespace MultiplayerARPG
         public byte[] SelectedDnas { get; private set; }
         private readonly List<UIUmaCustomizeSlotDropdown> uiSlots = new List<UIUmaCustomizeSlotDropdown>();
         private readonly List<UIUmaColorDropdown> uiColors = new List<UIUmaColorDropdown>();
-
-        private void OnEnable()
-        {
-            StartCoroutine(ShowUmaCharacterRoutine());
-        }
-
+        private bool dontApplyAvatar;
+        
         protected override void ShowCharacter(int id)
         {
             BaseCharacterModel characterModel;
@@ -46,20 +42,21 @@ namespace MultiplayerARPG
             ShowUmaCharacter();
         }
 
-        private IEnumerator ShowUmaCharacterRoutine()
-        {
-            // Setup and show uma character on next frame to prevent data load unfinished
-            yield return null;
-            ShowUmaCharacter();
-        }
-
         private void ShowUmaCharacter()
         {
             if (UmaModel != null)
             {
-                UmaModel.InitializeUMA();
+                if (!UmaModel.IsUmaCharacterCreated)
+                {
+                    UmaModel.CacheUmaAvatar.CharacterCreated.RemoveListener(OnCharacterCreated);
+                    UmaModel.CacheUmaAvatar.CharacterCreated.AddListener(OnCharacterCreated);
+                    return;
+                }
+
+                dontApplyAvatar = true;
                 if (raceDropdown != null)
                 {
+                    raceDropdown.options = new List<DropdownWrapper.OptionData>();
                     List<DropdownWrapper.OptionData> dropdownOptions = new List<DropdownWrapper.OptionData>();
                     UmaRace[] races = GameInstance.Singleton.umaRaces;
                     foreach (UmaRace race in races)
@@ -74,7 +71,20 @@ namespace MultiplayerARPG
                     OnRaceDropdownValueChanged(0);
                     raceDropdown.onValueChanged.AddListener(OnRaceDropdownValueChanged);
                 }
+                dontApplyAvatar = false;
+                ApplyAvatar();
             }
+        }
+
+        private void OnCharacterCreated(UMAData data)
+        {
+            StartCoroutine(OnCharacterCreatedRoutine());
+        }
+
+        private IEnumerator OnCharacterCreatedRoutine()
+        {
+            yield return null;
+            ShowUmaCharacter();
         }
 
         private void OnRaceDropdownValueChanged(int selectedIndex)
@@ -82,6 +92,7 @@ namespace MultiplayerARPG
             SelectedRaceIndex = (byte)selectedIndex;
             if (genderDropdown != null)
             {
+                genderDropdown.options = new List<DropdownWrapper.OptionData>();
                 List<DropdownWrapper.OptionData> dropdownOptions = new List<DropdownWrapper.OptionData>();
                 UmaRace race = GameInstance.Singleton.umaRaces[selectedIndex];
                 UmaRaceGender[] genders = race.genders;
@@ -116,8 +127,6 @@ namespace MultiplayerARPG
             SelectedGenderIndex = (byte)selectedIndex;
             UmaRace race = GameInstance.Singleton.umaRaces[SelectedRaceIndex];
             UmaRaceGender gender = race.genders[SelectedGenderIndex];
-            // Change race
-            UmaModel.CacheUmaAvatar.ChangeRace(gender.raceData);
             // Setup customizable slots
             GenericUtils.RemoveChildren(customizeSlotContainer);
             uiSlots.Clear();
@@ -142,35 +151,32 @@ namespace MultiplayerARPG
                 uiDnaSlider.Setup(this, i, dnas[dnaNames[i]]);
                 uiDnaSlider.transform.SetParent(dnaSliderContainer);
             }
+            ApplyAvatar();
         }
 
         public void SetSlot(byte index, byte value)
         {
             SelectedSlots[index] = value;
-            UmaRace race = GameInstance.Singleton.umaRaces[SelectedRaceIndex];
-            UmaRaceGender gender = race.genders[SelectedGenderIndex];
-            Dictionary<string, List<UMATextRecipe>> recipes = UmaModel.CacheUmaAvatar.AvailableRecipes;
-            string slotName = gender.customizableSlots[index].name;
-            if (recipes.ContainsKey(slotName))
-            {
-                UmaModel.CacheUmaAvatar.SetSlot(recipes[slotName][value]);
-                UmaModel.CacheUmaAvatar.BuildCharacter(true);
-                UmaModel.CacheUmaAvatar.ForceUpdate(false, true, true);
-            }
+            ApplyAvatar();
         }
 
         public void SetColor(byte index, byte value)
         {
             SelectedColors[index] = value;
-            UmaRace race = GameInstance.Singleton.umaRaces[SelectedRaceIndex];
-            SharedColorTable colorTable = race.colorTables[index];
-            UmaModel.CacheUmaAvatar.SetColor(colorTable.sharedColorName, colorTable.colors[value]);
-            UmaModel.CacheUmaAvatar.ForceUpdate(false, true, false);
+            ApplyAvatar();
         }
 
         public void SetDna(byte index, float value)
         {
             SelectedDnas[index] = (byte)(value * 100);
+            ApplyAvatar();
+        }
+
+        public void ApplyAvatar()
+        {
+            if (dontApplyAvatar)
+                return;
+            UmaModel.ApplyUmaAvatar(GetAvatarData());
         }
 
         public UmaAvatarData GetAvatarData()
@@ -182,6 +188,43 @@ namespace MultiplayerARPG
             result.colors = SelectedColors;
             result.dnas = SelectedDnas;
             return result;
+        }
+
+        protected override void OnClickCreate()
+        {
+            GameInstance gameInstance = GameInstance.Singleton;
+            UICharacter selectedUI = SelectionManager.SelectedUI;
+            if (selectedUI == null)
+            {
+                UISceneGlobal.Singleton.ShowMessageDialog("Cannot create character", "Please select character class");
+                Debug.LogWarning("Cannot create character, did not selected character class");
+                return;
+            }
+            string characterName = inputCharacterName.text.Trim();
+            int minCharacterNameLength = gameInstance.minCharacterNameLength;
+            int maxCharacterNameLength = gameInstance.maxCharacterNameLength;
+            if (characterName.Length < minCharacterNameLength)
+            {
+                UISceneGlobal.Singleton.ShowMessageDialog("Cannot create character", "Character name is too short");
+                Debug.LogWarning("Cannot create character, character name is too short");
+                return;
+            }
+            if (characterName.Length > maxCharacterNameLength)
+            {
+                UISceneGlobal.Singleton.ShowMessageDialog("Cannot create character", "Character name is too long");
+                Debug.LogWarning("Cannot create character, character name is too long");
+                return;
+            }
+
+            string characterId = GenericUtils.GetUniqueId();
+            PlayerCharacterData characterData = new PlayerCharacterData();
+            characterData.Id = characterId;
+            characterData.SetNewPlayerCharacterData(characterName, selectedUI.Data.DataId, selectedUI.Data.EntityId);
+            characterData.UmaAvatarData = GetAvatarData();
+            characterData.SavePersistentCharacterData();
+
+            if (eventOnCreateCharacter != null)
+                eventOnCreateCharacter.Invoke();
         }
     }
 }

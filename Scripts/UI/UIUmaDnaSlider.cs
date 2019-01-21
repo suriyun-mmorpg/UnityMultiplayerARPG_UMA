@@ -53,8 +53,6 @@ namespace MultiplayerARPG
         private void OnSliderValueChanged(float value)
         {
             ui.SetDna(slotIndex, value);
-            ui.UmaModel.CacheUmaAvatar.GetDNA()[dnaName].Set(value);
-            ui.UmaModel.CacheUmaAvatar.ForceUpdate(true, false, false);
         }
     }
 }
