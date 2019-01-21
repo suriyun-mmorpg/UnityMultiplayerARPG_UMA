@@ -7,7 +7,7 @@ using LiteNetLibManager;
 namespace MultiplayerARPG
 {
     [System.Serializable]
-    public class UmaAvatarData : INetSerializable
+    public struct UmaAvatarData : INetSerializable
     {
         public byte raceIndex;
         public byte genderIndex;
@@ -42,20 +42,29 @@ namespace MultiplayerARPG
             writer.Put(raceIndex);
             writer.Put(genderIndex);
             byte i;
-            writer.Put((byte)colors.Length);
-            for (i = 0; i < colors.Length; ++i)
+            writer.Put((byte)(colors == null ? 0 : colors.Length));
+            if (colors != null)
             {
-                writer.Put(colors[i]);
+                for (i = 0; i < colors.Length; ++i)
+                {
+                    writer.Put(colors[i]);
+                }
             }
-            writer.Put((byte)slots.Length);
-            for (i = 0; i < slots.Length; ++i)
+            writer.Put((byte)(slots == null ? 0 : slots.Length));
+            if (slots != null)
             {
-                writer.Put(slots[i]);
+                for (i = 0; i < slots.Length; ++i)
+                {
+                    writer.Put(slots[i]);
+                }
             }
-            writer.Put((byte)dnas.Length);
-            for (i = 0; i < dnas.Length; ++i)
+            writer.Put((byte)(dnas == null ? 0 : dnas.Length));
+            if (dnas != null)
             {
-                writer.Put(dnas[i]);
+                for (i = 0; i < dnas.Length; ++i)
+                {
+                    writer.Put(dnas[i]);
+                }
             }
         }
 
@@ -88,20 +97,29 @@ namespace MultiplayerARPG
             result.Add(raceIndex);
             result.Add(genderIndex);
             byte i;
-            result.Add((byte)colors.Length);
-            for (i = 0; i < colors.Length; ++i)
+            result.Add((byte)(colors == null ? 0 : colors.Length));
+            if (colors != null)
             {
-                result.Add(colors[i]);
+                for (i = 0; i < colors.Length; ++i)
+                {
+                    result.Add(colors[i]);
+                }
             }
-            result.Add((byte)slots.Length);
-            for (i = 0; i < slots.Length; ++i)
+            result.Add((byte)(slots == null ? 0 : slots.Length));
+            if (slots != null)
             {
-                result.Add(slots[i]);
+                for (i = 0; i < slots.Length; ++i)
+                {
+                    result.Add(slots[i]);
+                }
             }
-            result.Add((byte)dnas.Length);
-            for (i = 0; i < dnas.Length; ++i)
+            result.Add((byte)(dnas == null ? 0 : dnas.Length));
+            if (dnas != null)
             {
-                result.Add(dnas[i]);
+                for (i = 0; i < dnas.Length; ++i)
+                {
+                    result.Add(dnas[i]);
+                }
             }
             return result.ToArray();
         }

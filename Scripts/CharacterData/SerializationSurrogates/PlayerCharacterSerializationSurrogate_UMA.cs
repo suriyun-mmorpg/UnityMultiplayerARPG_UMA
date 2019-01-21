@@ -21,7 +21,8 @@ public partial class PlayerCharacterSerializationSurrogate
         ISurrogateSelector selector)
     {
         PlayerCharacterData data = (PlayerCharacterData)obj;
-        data.UmaAvatarData = new UmaAvatarData();
-        data.UmaAvatarData.SetBytes(info.GetListValue<byte>("UmaAvatarData"));
+        UmaAvatarData umaAvatarData = new UmaAvatarData();
+        umaAvatarData.SetBytes(info.GetListValue<byte>("UmaAvatarData"));
+        data.UmaAvatarData = umaAvatarData;
     }
 }
