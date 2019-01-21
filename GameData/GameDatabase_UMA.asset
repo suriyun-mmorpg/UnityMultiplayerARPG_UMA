@@ -21,17 +21,84 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02b1c5248ea9f3242aa338970d626d27, type: 2}
   - {fileID: 11400000, guid: 84a7ad1ad281a3a47918fcb1f180d365, type: 2}
   - {fileID: 11400000, guid: 722cfdf3e0a6c8f47bd849a2d998e915, type: 2}
-  items: []
-  skills: []
-  npcDialogs: []
-  quests: []
-  guildSkills: []
+  items:
+  - {fileID: 11400000, guid: 0df782e70d43dc54d8a6bc2d6a212f89, type: 2}
+  - {fileID: 11400000, guid: 64774d4b5cf3f9846a2d2088fb52e44a, type: 2}
+  - {fileID: 11400000, guid: e43af8a3a8f9a7a478dc243c7b15ff5f, type: 2}
+  - {fileID: 11400000, guid: 66401780aa1f1a24782d11c6980883b2, type: 2}
+  - {fileID: 11400000, guid: f913fbdc47f19a4408bc793331f9583a, type: 2}
+  - {fileID: 11400000, guid: 8ead9c05113e5a5429ec0871d4079f29, type: 2}
+  - {fileID: 11400000, guid: ff345f6fce46c844582749ebc64fd586, type: 2}
+  - {fileID: 11400000, guid: 4ec23479e56964a4fb4f2cbd63adf628, type: 2}
+  - {fileID: 11400000, guid: 99ce6353c3a0b344bb452d0b2035feed, type: 2}
+  - {fileID: 11400000, guid: 4519d6286cf69b142ac9894ff8e06a31, type: 2}
+  - {fileID: 11400000, guid: 93c389fe9d40638469bffd9de26d31ba, type: 2}
+  - {fileID: 11400000, guid: b64f816f68b7d6a42b7d3857a4b5d931, type: 2}
+  - {fileID: 11400000, guid: 2d57e318a4843d64d8d3924124b94368, type: 2}
+  - {fileID: 11400000, guid: e4e881cff53fe054f830d67ad95dd3d0, type: 2}
+  - {fileID: 11400000, guid: 05fd047386612f342aa61c5ddcf274d1, type: 2}
+  - {fileID: 11400000, guid: f0ba2e9ab5115a74184f1805934e122d, type: 2}
+  - {fileID: 11400000, guid: 0a439d3c316c36f4cae03a253c8839d4, type: 2}
+  - {fileID: 11400000, guid: 5842068f5743c524c967a28b483477ed, type: 2}
+  - {fileID: 11400000, guid: 34342a09346349345a4313fd6e7657e1, type: 2}
+  - {fileID: 11400000, guid: 4896d19f8423d0a4d9d8a4c055531694, type: 2}
+  - {fileID: 11400000, guid: fac1760f3f3d22a47a8e14e34a1d7440, type: 2}
+  - {fileID: 11400000, guid: af55b8cdf6e01a14094ff9841ff8238b, type: 2}
+  - {fileID: 11400000, guid: 63ab6ffb9b0b1eb40958204ac1767f1b, type: 2}
+  skills:
+  - {fileID: 11400000, guid: e51e32bb6c31b564a9e211e7b65c82ec, type: 2}
+  - {fileID: 11400000, guid: 2da121bb20bbc844bafd830dcb439578, type: 2}
+  - {fileID: 11400000, guid: 62050ee15b839a04080e8d1764fc4737, type: 2}
+  - {fileID: 11400000, guid: b9f63b3b2f7be634e9493c7acfb8ef54, type: 2}
+  - {fileID: 11400000, guid: 417c6b4c5515bd84a9bee4c80ea404fa, type: 2}
+  - {fileID: 11400000, guid: 342c2acc88ca3f34ab00cf7f43775edf, type: 2}
+  - {fileID: 11400000, guid: aa4fffff388c1634397b4bdcdb18a4fa, type: 2}
+  - {fileID: 11400000, guid: d55d8bfb45f9c574d9120b6ffcd66e3c, type: 2}
+  - {fileID: 11400000, guid: c0bba1d7b0967e3428404a9fc3211a7b, type: 2}
+  - {fileID: 11400000, guid: 25f18d3131d816146b890611d9123df4, type: 2}
+  - {fileID: 11400000, guid: c036ac5144bfb36428bd9b2fa2a5ce2c, type: 2}
+  - {fileID: 11400000, guid: 00144a2dd7250bb4ab60d49c66cc48f0, type: 2}
+  - {fileID: 11400000, guid: 558b16358ddfa6346b5e5e6211155da6, type: 2}
+  - {fileID: 11400000, guid: ab5e0f2076634794394a8a28275204c2, type: 2}
+  - {fileID: 11400000, guid: aa319f1dfe3afb449b69aa255c39a69b, type: 2}
+  - {fileID: 11400000, guid: 401cce43094968c4bbca0024b52a4644, type: 2}
+  - {fileID: 11400000, guid: 494792636296b624fbf4ff17294217c5, type: 2}
+  npcDialogs:
+  - {fileID: 11400000, guid: f936eadaf84b7c64f9b0015e52dd609b, type: 2}
+  - {fileID: 11400000, guid: a4b24ff6113420e44997e1e258b2e03a, type: 2}
+  - {fileID: 11400000, guid: 101bdba2836a8704d8993bb439c96d9d, type: 2}
+  - {fileID: 11400000, guid: e3235e181e88b534fac66e7cd7764d16, type: 2}
+  - {fileID: 11400000, guid: 331f137ce2b944d4c8e29f0cfc067d39, type: 2}
+  - {fileID: 11400000, guid: 1d117e00b9fd1b541a186b0745a60165, type: 2}
+  - {fileID: 11400000, guid: 67ffed796ac984b4588fff9b6ae747da, type: 2}
+  - {fileID: 11400000, guid: a789f187bcc9903418934a6631022451, type: 2}
+  - {fileID: 11400000, guid: f691fd013be809e4e83e80258bec78f8, type: 2}
+  - {fileID: 11400000, guid: 5d1bca971e95f7849a8e74bcb551391e, type: 2}
+  - {fileID: 11400000, guid: ea8478f076a3c7645a77e9efd3c4b368, type: 2}
+  - {fileID: 11400000, guid: df8c86b0cb4b8e746ab065cf3cef86ff, type: 2}
+  - {fileID: 11400000, guid: 2e1622574915294469f568134ebe2c42, type: 2}
+  - {fileID: 11400000, guid: a6a3052e6c4f9a24e81299df42cc2ab6, type: 2}
+  - {fileID: 11400000, guid: 8b467587e6de8ef498fd5420052587aa, type: 2}
+  - {fileID: 11400000, guid: 95b04b39b981ab14083477106e4be308, type: 2}
+  quests:
+  - {fileID: 11400000, guid: 35af53733329bea43ba4a13eab140778, type: 2}
+  - {fileID: 11400000, guid: b07c2f59514e7aa45a8005d227e79954, type: 2}
+  - {fileID: 11400000, guid: 4000f50ad41cb17419c5de53509949d8, type: 2}
+  guildSkills:
+  - {fileID: 11400000, guid: d3875bef37ed4aa4dba86b08069b5a8f, type: 2}
+  - {fileID: 11400000, guid: 56999d63a8734bd4f8b19e254ecfbeae, type: 2}
+  - {fileID: 11400000, guid: d4a2fc417a247c74f9db5f31ab7d2b75, type: 2}
+  - {fileID: 11400000, guid: fe3307ecb7dbe3142a73616746b84e59, type: 2}
   playerCharacters:
   - {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
-  monsterCharacters: []
+  monsterCharacters:
+  - {fileID: 11400000, guid: 23e69da72a14d644eb8c0128af2ee872, type: 2}
+  - {fileID: 11400000, guid: 04cf3a67b05487e4a84f0da538307cb3, type: 2}
   playerCharacterEntities:
   - {fileID: 114217790240189764, guid: e10fc226d7c62c140ab7ed9fcdfaad34, type: 2}
-  monsterCharacterEntities: []
+  monsterCharacterEntities:
+  - {fileID: 114107677553822186, guid: 2124e2e5e8dd2794ea8c8aff808d0096, type: 2}
+  - {fileID: 114313543944479198, guid: c26675f5ea04ade429c509dd5998a3a3, type: 2}
   mapInfos:
   - {fileID: 11400000, guid: de8b0e4099f8d444692e88f92309e90d, type: 2}
   - {fileID: 11400000, guid: fbe2a93dfafee544cbeaf175d3491e33, type: 2}

@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 114958140904515804}
   - component: {fileID: 114217790240189764}
   - component: {fileID: 95941422500740546}
+  - component: {fileID: 114885565014387228}
   m_Layer: 0
   m_Name: UMAPlayerCharacterEntity
   m_TagString: Untagged
@@ -223,7 +224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   context: {fileID: 0}
   umaData: {fileID: 0}
-  umaRecipe: {fileID: 0}
+  umaRecipe: {fileID: 11400000, guid: aa8318164d3d68540a71451b136fd489, type: 2}
   umaAdditionalRecipes:
   - {fileID: 11400000, guid: 1f292487d7383514f97c491cadfb0442, type: 2}
   - {fileID: 11400000, guid: f36ba6c553c66f747bc69741fa115880, type: 2}
@@ -665,7 +666,7 @@ MonoBehaviour:
   behaviourIndex: 0
   syncFieldNames: []
   syncListNames: []
-  sendOptions: 0
+  sendOptions: 2
   sendInterval: 0.1
   syncingTransform: {fileID: 0}
   ownerClientCanSendTransform: 1
@@ -675,9 +676,9 @@ MonoBehaviour:
   syncPositionX: 0
   syncPositionY: 0
   syncPositionZ: 0
-  syncRotationX: 0
+  syncRotationX: 1
   syncRotationY: 0
-  syncRotationZ: 0
+  syncRotationZ: 1
 --- !u!114 &114514323018346188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -694,6 +695,28 @@ MonoBehaviour:
   connectId: 0
   manager: {fileID: 0}
   subscriberIds: 
+--- !u!114 &114885565014387228
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1531689890171608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01d64c7b615199243b727eaa75d79574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviourIndex: 0
+  syncFieldNames: []
+  syncListNames: []
+  sendOptions: 0
+  sendInterval: 0.1
+  range: 100
+  updateInterval: 1
+  checkMethod: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &114958140904515804
 MonoBehaviour:
   m_ObjectHideFlags: 1
