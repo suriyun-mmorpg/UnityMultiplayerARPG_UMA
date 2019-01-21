@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using MultiplayerARPG;
 
 public partial class PlayerCharacterSerializationSurrogate
 {
@@ -20,6 +21,7 @@ public partial class PlayerCharacterSerializationSurrogate
         ISurrogateSelector selector)
     {
         PlayerCharacterData data = (PlayerCharacterData)obj;
+        data.UmaAvatarData = new UmaAvatarData();
         data.UmaAvatarData.SetBytes(info.GetListValue<byte>("UmaAvatarData"));
     }
 }
