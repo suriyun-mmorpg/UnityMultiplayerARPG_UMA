@@ -2,6 +2,6 @@
 
 public partial class PlayerCharacterData
 {
-    public UmaAvatarData avatarData;
-    public UmaAvatarData UmaAvatarData { get { return avatarData; } set { avatarData = value; } }
+    private UmaAvatarData umaAvatarData;
+    public UmaAvatarData UmaAvatarData { get { return umaAvatarData; } set { umaAvatarData = value; } }
 }
