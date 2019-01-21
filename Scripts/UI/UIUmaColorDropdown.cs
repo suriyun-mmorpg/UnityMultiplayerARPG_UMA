@@ -19,6 +19,7 @@ namespace MultiplayerARPG
             }
         }
         public TextWrapper textTitle;
+        public Sprite dropdownSprite;
         public DropdownWithColor dropdown;
         private UICharacterCreateUMA ui;
         private byte slotIndex;
@@ -30,7 +31,7 @@ namespace MultiplayerARPG
             SharedColorTable colorTable = GameInstance.Singleton.umaRaces[ui.SelectedRaceIndex].colorTables[slotIndex];
 
             if (textTitle != null)
-                textTitle.text = colorTable.name;
+                textTitle.text = colorTable.sharedColorName;
 
             if (dropdown != null)
             {
@@ -40,6 +41,7 @@ namespace MultiplayerARPG
                 {
                     dropdownOptions.Add(new DropdownWithColor.OptionData()
                     {
+                        image = dropdownSprite,
                         color = colors[i].color,
                     });
                 }

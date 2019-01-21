@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UMA;
+using UMA.CharacterSystem;
 
 namespace MultiplayerARPG
 {
@@ -22,8 +23,14 @@ namespace MultiplayerARPG
         public byte SelectedGenderIndex { get; private set; }
         public byte[] SelectedSlots { get; private set; }
         public byte[] SelectedColors { get; private set; }
+        public byte[] SelectedDnas { get; private set; }
         private readonly List<UIUmaCustomizeSlotDropdown> uiSlots = new List<UIUmaCustomizeSlotDropdown>();
         private readonly List<UIUmaColorDropdown> uiColors = new List<UIUmaColorDropdown>();
+
+        private void OnEnable()
+        {
+            StartCoroutine(ShowUmaCharacterRoutine());
+        }
 
         protected override void ShowCharacter(int id)
         {
@@ -35,9 +42,21 @@ namespace MultiplayerARPG
             CharacterModelUMA characterModelUMA = characterModel as CharacterModelUMA;
             if (umaPanelRoot != null)
                 umaPanelRoot.SetActive(characterModelUMA != null);
-            if (characterModelUMA != null)
+            UmaModel = characterModelUMA;
+            ShowUmaCharacter();
+        }
+
+        private IEnumerator ShowUmaCharacterRoutine()
+        {
+            yield return null;
+            ShowUmaCharacter();
+        }
+
+        private void ShowUmaCharacter()
+        {
+            if (UmaModel != null)
             {
-                UmaModel = characterModelUMA;
+                UmaModel.CacheUmaAvatar.Initialize();
                 if (raceDropdown != null)
                 {
                     List<DropdownWrapper.OptionData> dropdownOptions = new List<DropdownWrapper.OptionData>();
@@ -72,31 +91,36 @@ namespace MultiplayerARPG
                         text = gender.name,
                     });
                 }
-                genderDropdown.onValueChanged.RemoveListener(OnGenderDropdownValueChanged);
-                genderDropdown.options = dropdownOptions;
-                OnGenderDropdownValueChanged(0);
-                genderDropdown.onValueChanged.AddListener(OnGenderDropdownValueChanged);
                 // Setup color options
-                GenericUtils.RemoveChildren(customizeSlotContainer);
+                GenericUtils.RemoveChildren(colorOptionContainer);
                 uiColors.Clear();
                 SelectedColors = new byte[race.colorTables.Length];
                 for (byte i = 0; i < race.colorTables.Length; ++i)
                 {
                     UIUmaColorDropdown uiColor = Instantiate(prefabColorDropdown);
                     uiColor.Setup(this, i);
-                    uiColor.transform.SetParent(customizeSlotContainer);
+                    uiColor.transform.SetParent(colorOptionContainer);
                     uiColors.Add(uiColor);
                 }
+                // Switch dropdown
+                genderDropdown.onValueChanged.RemoveListener(OnGenderDropdownValueChanged);
+                genderDropdown.options = dropdownOptions;
+                OnGenderDropdownValueChanged(0);
+                genderDropdown.onValueChanged.AddListener(OnGenderDropdownValueChanged);
             }
         }
 
         private void OnGenderDropdownValueChanged(int selectedIndex)
         {
             SelectedGenderIndex = (byte)selectedIndex;
+            UmaRace race = GameInstance.Singleton.umaRaces[SelectedRaceIndex];
+            UmaRaceGender gender = race.genders[SelectedGenderIndex];
+            // Change race
+            UmaModel.CacheUmaAvatar.ChangeRace(gender.raceData);
             // Setup customizable slots
             GenericUtils.RemoveChildren(customizeSlotContainer);
             uiSlots.Clear();
-            UmaCustomizableSlot[] slots = GameInstance.Singleton.umaRaces[SelectedRaceIndex].genders[SelectedGenderIndex].customizableSlots;
+            UmaCustomizableSlot[] slots = gender.customizableSlots;
             SelectedSlots = new byte[slots.Length];
             for (byte i = 0; i < slots.Length; ++i)
             {
@@ -107,12 +131,14 @@ namespace MultiplayerARPG
             }
             // Setup customizable dnas
             GenericUtils.RemoveChildren(dnaSliderContainer);
-            List<string> dnaNames = new List<string>(UmaModel.CacheUmaAvatar.GetDNA().Keys);
+            Dictionary<string, DnaSetter> dnas = UmaModel.CacheUmaAvatar.GetDNA();
+            List<string> dnaNames = new List<string>(dnas.Keys);
             dnaNames.Sort();
+            SelectedDnas = new byte[dnaNames.Count];
             for (byte i = 0; i < dnaNames.Count; ++i)
             {
                 UIUmaDnaSlider uiDnaSlider = Instantiate(prefabDnaSlider);
-                uiDnaSlider.Setup(this, UmaModel.CacheUmaAvatar.GetDNA()[dnaNames[i]]);
+                uiDnaSlider.Setup(this, i, dnas[dnaNames[i]]);
                 uiDnaSlider.transform.SetParent(dnaSliderContainer);
             }
         }
@@ -124,8 +150,12 @@ namespace MultiplayerARPG
             UmaRaceGender gender = race.genders[SelectedGenderIndex];
             Dictionary<string, List<UMATextRecipe>> recipes = UmaModel.CacheUmaAvatar.AvailableRecipes;
             string slotName = gender.customizableSlots[index].name;
-            UmaModel.CacheUmaAvatar.SetSlot(recipes[slotName][value]);
-            UmaModel.CacheUmaAvatar.ForceUpdate(false, true, true);
+            if (recipes.ContainsKey(slotName))
+            {
+                UmaModel.CacheUmaAvatar.SetSlot(recipes[slotName][value]);
+                UmaModel.CacheUmaAvatar.BuildCharacter(true);
+                UmaModel.CacheUmaAvatar.ForceUpdate(false, true, true);
+            }
         }
 
         public void SetColor(byte index, byte value)
@@ -133,8 +163,13 @@ namespace MultiplayerARPG
             SelectedColors[index] = value;
             UmaRace race = GameInstance.Singleton.umaRaces[SelectedRaceIndex];
             SharedColorTable colorTable = race.colorTables[index];
-            UmaModel.CacheUmaAvatar.SetColor(colorTable.name, colorTable.colors[value]);
+            UmaModel.CacheUmaAvatar.SetColor(colorTable.sharedColorName, colorTable.colors[value]);
             UmaModel.CacheUmaAvatar.ForceUpdate(false, true, false);
+        }
+
+        public void SetDna(byte index, float value)
+        {
+            SelectedDnas[index] = (byte)(value * 100);
         }
 
         public UmaAvatarData GetAvatarData()
@@ -144,7 +179,7 @@ namespace MultiplayerARPG
             result.genderIndex = SelectedGenderIndex;
             result.slots = SelectedSlots;
             result.colors = SelectedColors;
-            //result.dnas = SelectedDnas;
+            result.dnas = SelectedDnas;
             return result;
         }
     }

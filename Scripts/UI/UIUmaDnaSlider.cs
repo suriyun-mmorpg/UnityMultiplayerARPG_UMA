@@ -12,19 +12,22 @@ namespace MultiplayerARPG
         public TextWrapper textTitle;
         public Slider slider;
         private UICharacterCreateUMA ui;
+        private byte slotIndex;
         private DnaSetter dnaSetter;
-        public void Setup(UICharacterCreateUMA ui, DnaSetter dnaSetter)
+        private string dnaName;
+        public void Setup(UICharacterCreateUMA ui, byte slotIndex, DnaSetter dnaSetter)
         {
             this.ui = ui;
+            this.slotIndex = slotIndex;
             this.dnaSetter = dnaSetter;
-
+            dnaName = dnaSetter.Name;
             if (textTitle != null)
             {
-                string dnaName = dnaSetter.Name;
+                string displayDnaName = dnaName;
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < dnaName.Length; i++)
+                for (int i = 0; i < displayDnaName.Length; i++)
                 {
-                    char c = dnaName[i];
+                    char c = displayDnaName[i];
                     if (i > 0 && char.IsUpper(c))
                     {
                         sb.Append(' ');
@@ -49,7 +52,8 @@ namespace MultiplayerARPG
 
         private void OnSliderValueChanged(float value)
         {
-            dnaSetter.Set(value);
+            ui.SetDna(slotIndex, value);
+            ui.UmaModel.CacheUmaAvatar.GetDNA()[dnaName].Set(value);
             ui.UmaModel.CacheUmaAvatar.ForceUpdate(true, false, false);
         }
     }
