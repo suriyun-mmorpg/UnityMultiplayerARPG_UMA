@@ -29,7 +29,8 @@ MonoBehaviour:
   playerCharacters:
   - {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
   monsterCharacters: []
-  playerCharacterEntities: []
+  playerCharacterEntities:
+  - {fileID: 114217790240189764, guid: e10fc226d7c62c140ab7ed9fcdfaad34, type: 2}
   monsterCharacterEntities: []
   mapInfos:
   - {fileID: 11400000, guid: de8b0e4099f8d444692e88f92309e90d, type: 2}
