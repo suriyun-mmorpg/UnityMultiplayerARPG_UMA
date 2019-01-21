@@ -20,6 +20,22 @@ namespace MultiplayerARPG
             }
         }
 
+        private bool isInitializedUMA;
+
+        private void Start()
+        {
+            InitializeUMA();
+        }
+
+        public void InitializeUMA()
+        {
+            if (isInitializedUMA)
+                return;
+            isInitializedUMA = true;
+            CacheUmaAvatar.raceAnimationControllers.defaultAnimationController = CacheAnimatorController;
+            CacheUmaAvatar.Initialize();
+        }
+
         public void ApplyUmaAvatar(UmaAvatarData avatarData)
         {
             if (CacheUmaAvatar == null)
