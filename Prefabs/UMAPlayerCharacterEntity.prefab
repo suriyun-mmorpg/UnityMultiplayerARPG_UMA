@@ -263,7 +263,7 @@ MonoBehaviour:
   loadBlendShapes: 0
   activeRace:
     name: HumanMale
-  defaultChangeRaceOptions: 8
+  defaultChangeRaceOptions: 0
   cacheCurrentState: 1
   rebuildSkeleton: 0
   preloadWardrobeRecipes:
