@@ -46,16 +46,17 @@ namespace MultiplayerARPG
         {
             if (UmaModel != null)
             {
-                if (!UmaModel.IsUmaCharacterCreated)
+                if (!UmaModel.IsUmaCharacterBegun)
                 {
-                    UmaModel.CacheUmaAvatar.CharacterCreated.RemoveListener(OnCharacterCreated);
-                    UmaModel.CacheUmaAvatar.CharacterCreated.AddListener(OnCharacterCreated);
+                    UmaModel.CacheUmaAvatar.CharacterBegun.RemoveListener(OnCharacterBegun);
+                    UmaModel.CacheUmaAvatar.CharacterBegun.AddListener(OnCharacterBegun);
                     return;
                 }
 
                 dontApplyAvatar = true;
                 if (raceDropdown != null)
                 {
+                    raceDropdown.onValueChanged.RemoveListener(OnRaceDropdownValueChanged);
                     raceDropdown.options = new List<DropdownWrapper.OptionData>();
                     List<DropdownWrapper.OptionData> dropdownOptions = new List<DropdownWrapper.OptionData>();
                     UmaRace[] races = GameInstance.Singleton.umaRaces;
@@ -66,7 +67,6 @@ namespace MultiplayerARPG
                             text = race.name,
                         });
                     }
-                    raceDropdown.onValueChanged.RemoveListener(OnRaceDropdownValueChanged);
                     raceDropdown.options = dropdownOptions;
                     OnRaceDropdownValueChanged(0);
                     raceDropdown.onValueChanged.AddListener(OnRaceDropdownValueChanged);
@@ -76,7 +76,7 @@ namespace MultiplayerARPG
             }
         }
 
-        private void OnCharacterCreated(UMAData data)
+        private void OnCharacterBegun(UMAData data)
         {
             StartCoroutine(OnCharacterCreatedRoutine());
         }
@@ -92,6 +92,7 @@ namespace MultiplayerARPG
             SelectedRaceIndex = (byte)selectedIndex;
             if (genderDropdown != null)
             {
+                genderDropdown.onValueChanged.RemoveListener(OnGenderDropdownValueChanged);
                 genderDropdown.options = new List<DropdownWrapper.OptionData>();
                 List<DropdownWrapper.OptionData> dropdownOptions = new List<DropdownWrapper.OptionData>();
                 UmaRace race = GameInstance.Singleton.umaRaces[selectedIndex];
@@ -115,7 +116,6 @@ namespace MultiplayerARPG
                     uiColors.Add(uiColor);
                 }
                 // Switch dropdown
-                genderDropdown.onValueChanged.RemoveListener(OnGenderDropdownValueChanged);
                 genderDropdown.options = dropdownOptions;
                 OnGenderDropdownValueChanged(0);
                 genderDropdown.onValueChanged.AddListener(OnGenderDropdownValueChanged);
@@ -127,6 +127,8 @@ namespace MultiplayerARPG
             SelectedGenderIndex = (byte)selectedIndex;
             UmaRace race = GameInstance.Singleton.umaRaces[SelectedRaceIndex];
             UmaRaceGender gender = race.genders[SelectedGenderIndex];
+            UmaModel.CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
+            UmaModel.CacheUmaAvatar.BuildCharacter(true);
             // Setup customizable slots
             GenericUtils.RemoveChildren(customizeSlotContainer);
             uiSlots.Clear();

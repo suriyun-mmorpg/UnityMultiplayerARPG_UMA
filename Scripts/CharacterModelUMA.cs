@@ -20,7 +20,7 @@ namespace MultiplayerARPG
             }
         }
 
-        public bool IsUmaCharacterCreated { get; private set; }
+        public bool IsUmaCharacterBegun { get; private set; }
         public bool IsInitializedUMA { get; private set; }
         private UmaAvatarData applyingAvatarData;
 
@@ -35,13 +35,13 @@ namespace MultiplayerARPG
                 return;
             IsInitializedUMA = true;
             CacheUmaAvatar.raceAnimationControllers.defaultAnimationController = CacheAnimatorController;
-            CacheUmaAvatar.CharacterCreated.RemoveListener(OnUmaCharacterCreated);
-            CacheUmaAvatar.CharacterCreated.AddListener(OnUmaCharacterCreated);
+            CacheUmaAvatar.CharacterBegun.RemoveListener(OnUmaCharacterBegun);
+            CacheUmaAvatar.CharacterBegun.AddListener(OnUmaCharacterBegun);
         }
 
-        private void OnUmaCharacterCreated(UMAData data)
+        private void OnUmaCharacterBegun(UMAData data)
         {
-            IsUmaCharacterCreated = true;
+            IsUmaCharacterBegun = true;
             if (applyingAvatarData != null)
             {
                 ApplyUmaAvatar(applyingAvatarData);
@@ -58,7 +58,7 @@ namespace MultiplayerARPG
             }
             InitializeUMA();
             // If not initialized, do it then apply avatar later
-            if (!IsUmaCharacterCreated)
+            if (!IsUmaCharacterBegun)
             {
                 applyingAvatarData = avatarData;
                 return;
