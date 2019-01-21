@@ -58,6 +58,53 @@ namespace MultiplayerARPG
                 writer.Put(dnas[i]);
             }
         }
+
+        public void SetBytes(IList<byte> bytes)
+        {
+            int index = 0;
+            raceIndex = bytes[index++];
+            genderIndex = bytes[index++];
+            byte i;
+            colors = new byte[bytes[index++]];
+            for (i = 0; i < colors.Length; ++i)
+            {
+                colors[i] = bytes[index++];
+            }
+            slots = new byte[bytes[index++]];
+            for (i = 0; i < colors.Length; ++i)
+            {
+                slots[i] = bytes[index++];
+            }
+            dnas = new byte[bytes[index++]];
+            for (i = 0; i < colors.Length; ++i)
+            {
+                dnas[i] = bytes[index++];
+            }
+        }
+
+        public IList<byte> GetBytes()
+        {
+            List<byte> result = new List<byte>();
+            result.Add(raceIndex);
+            result.Add(genderIndex);
+            byte i;
+            result.Add((byte)colors.Length);
+            for (i = 0; i < colors.Length; ++i)
+            {
+                result.Add(colors[i]);
+            }
+            result.Add((byte)slots.Length);
+            for (i = 0; i < slots.Length; ++i)
+            {
+                result.Add(slots[i]);
+            }
+            result.Add((byte)dnas.Length);
+            for (i = 0; i < dnas.Length; ++i)
+            {
+                result.Add(dnas[i]);
+            }
+            return result.ToArray();
+        }
     }
 
     [System.Serializable]
