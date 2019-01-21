@@ -5,8 +5,14 @@ using LiteNetLib;
 
 namespace MultiplayerARPG
 {
-    public partial class BaseCharacterEntity
+    public partial class BasePlayerCharacterEntity
     {
+        public UmaAvatarData UmaAvatarData
+        {
+            get { return umaAvatarData.Value; }
+            set { umaAvatarData.Value = value; }
+        }
+
         [SerializeField]
         protected SyncFieldUmaAvatarData umaAvatarData = new SyncFieldUmaAvatarData();
 
