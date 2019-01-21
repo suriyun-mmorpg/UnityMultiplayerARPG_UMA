@@ -48,6 +48,7 @@ namespace MultiplayerARPG
 
         private IEnumerator ShowUmaCharacterRoutine()
         {
+            // Setup and show uma character on next frame to prevent data load unfinished
             yield return null;
             ShowUmaCharacter();
         }
@@ -56,7 +57,7 @@ namespace MultiplayerARPG
         {
             if (UmaModel != null)
             {
-                UmaModel.CacheUmaAvatar.Initialize();
+                UmaModel.InitializeUMA();
                 if (raceDropdown != null)
                 {
                     List<DropdownWrapper.OptionData> dropdownOptions = new List<DropdownWrapper.OptionData>();
