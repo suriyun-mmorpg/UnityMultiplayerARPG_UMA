@@ -19,7 +19,7 @@ namespace MultiplayerARPG
         [DevExtMethods("SetupNetElements")]
         public void SetupUmaNetElements()
         {
-            umaAvatarData.sendOptions = SendOptions.ReliableUnordered;
+            umaAvatarData.sendOptions = SendOptions.ReliableOrdered;
             umaAvatarData.forOwnerOnly = false;
             umaAvatarData.onChange += OnUmaAvatarDataChange;
         }
