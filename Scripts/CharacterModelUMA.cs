@@ -23,7 +23,7 @@ namespace MultiplayerARPG
         public bool IsUmaCharacterCreated { get; private set; }
         public bool IsInitializedUMA { get; private set; }
         public System.Action onUmaCharacterCreated;
-        private UmaAvatarData applyingAvatarData;
+        private UmaAvatarData? applyingAvatarData;
         private Coroutine applyCoroutine;
 
         private void Start()
@@ -79,30 +79,39 @@ namespace MultiplayerARPG
             CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
             int i;
             // Set character hair, beard, eyebrows (or other things up to your settings)
-            Dictionary<string, List<UMATextRecipe>> recipes = CacheUmaAvatar.AvailableRecipes;
-            string slotName;
-            for (i = 0; i < avatarData.slots.Length; ++i)
+            if (avatarData.slots != null)
             {
-                slotName = gender.customizableSlots[i].name;
-                CacheUmaAvatar.SetSlot(recipes[slotName][avatarData.slots[i]]);
+                Dictionary<string, List<UMATextRecipe>> recipes = CacheUmaAvatar.AvailableRecipes;
+                string slotName;
+                for (i = 0; i < avatarData.slots.Length; ++i)
+                {
+                    slotName = gender.customizableSlots[i].name;
+                    CacheUmaAvatar.SetSlot(recipes[slotName][avatarData.slots[i]]);
+                }
             }
             // Set character dna
             yield return null;
-            Dictionary<string, DnaSetter> dnas = CacheUmaAvatar.GetDNA();
-            List<string> dnaNames = new List<string>(dnas.Keys);
-            dnaNames.Sort();
-            string dnaName;
-            for (i = 0; i < avatarData.dnas.Length; ++i)
+            if (avatarData.dnas != null)
             {
-                dnaName = dnaNames[i];
-                dnas[dnaName].Set(avatarData.dnas[i] * 0.01f);
+                Dictionary<string, DnaSetter> dnas = CacheUmaAvatar.GetDNA();
+                List<string> dnaNames = new List<string>(dnas.Keys);
+                dnaNames.Sort();
+                string dnaName;
+                for (i = 0; i < avatarData.dnas.Length; ++i)
+                {
+                    dnaName = dnaNames[i];
+                    dnas[dnaName].Set(avatarData.dnas[i] * 0.01f);
+                }
             }
             // Set skin color, eyes color, hair color (or other things up to your settings)
-            SharedColorTable colorTable;
-            for (i = 0; i < avatarData.colors.Length; ++i)
+            if (avatarData.colors != null)
             {
-                colorTable = race.colorTables[i];
-                CacheUmaAvatar.SetColor(colorTable.sharedColorName, colorTable.colors[avatarData.colors[i]]);
+                SharedColorTable colorTable;
+                for (i = 0; i < avatarData.colors.Length; ++i)
+                {
+                    colorTable = race.colorTables[i];
+                    CacheUmaAvatar.SetColor(colorTable.sharedColorName, colorTable.colors[avatarData.colors[i]]);
+                }
             }
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
@@ -112,7 +121,7 @@ namespace MultiplayerARPG
         {
             if (applyingAvatarData != null)
             {
-                ApplyUmaAvatar(applyingAvatarData);
+                ApplyUmaAvatar(applyingAvatarData.Value);
                 applyingAvatarData = null;
             }
         }
