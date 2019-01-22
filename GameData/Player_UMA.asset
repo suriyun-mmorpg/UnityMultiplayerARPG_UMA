@@ -68,7 +68,7 @@ MonoBehaviour:
       amountIncreaseEachLevel: 0
   resistances: []
   skillLevels: []
-  rightHandEquipItem: {fileID: 0}
+  rightHandEquipItem: {fileID: 11400000, guid: 91eec32179dd9e84bad4b728ddde1e02, type: 2}
   leftHandEquipItem: {fileID: 0}
   armorItems:
   - {fileID: 11400000, guid: 87b4c98d2d09c4a44a53c633310c8b96, type: 2}

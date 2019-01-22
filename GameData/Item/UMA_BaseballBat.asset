@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d6d0cd4d7cf8c4786ee2be97f454fb, type: 3}
+  m_Name: UMA_BaseballBat
+  m_EditorClassIdentifier: 
+  title: Baseball Bat
+  description: 
+  icon: {fileID: 21300000, guid: af318240f56c60143a8b3dda92a5c3b2, type: 3}
+  umaRaceReceiptSlots: []
+  itemType: 2
+  dropModel: {fileID: 1091261546918072, guid: daf96be2163233f498fe1d7d8095124a, type: 2}
+  sellPrice: 0
+  weight: 0
+  maxStack: 1
+  itemRefineInfo: {fileID: 0}
+  lockDuration: 0
+  armorType: {fileID: 0}
+  weaponType: {fileID: 11400000, guid: a33855f9c9112894fbf4fb803ab001da, type: 2}
+  damageAmount:
+    damageElement: {fileID: 0}
+    amount:
+      baseAmount:
+        min: 5
+        max: 10
+      amountIncreaseEachLevel:
+        min: 0.5
+        max: 0.5
+  harvestDamageAmount:
+    baseAmount:
+      min: 0
+      max: 0
+    amountIncreaseEachLevel:
+      min: 0
+      max: 0
+  equipmentModels:
+  - equipSocket: RightHand
+    model: {fileID: 1856257694834870, guid: 7fdfc8c4006877f478ec60f4341aa7b9, type: 2}
+  subEquipmentModels: []
+  requirement:
+    character: {fileID: 0}
+    level: 0
+    attributeAmounts: []
+  increaseAttributes: []
+  increaseResistances: []
+  increaseDamages: []
+  increaseStats:
+    baseStats:
+      hp: 0
+      mp: 0
+      armor: 0
+      accuracy: 0
+      evasion: 0
+      criRate: 0
+      criDmgRate: 0
+      blockRate: 0
+      blockDmgRate: 0
+      moveSpeed: 0
+      atkSpeed: 0
+      weightLimit: 0
+      stamina: 0
+      food: 0
+      water: 0
+      testStats: 0
+    statsIncreaseEachLevel:
+      hp: 0
+      mp: 0
+      armor: 0
+      accuracy: 0
+      evasion: 0
+      criRate: 0
+      criDmgRate: 0
+      blockRate: 0
+      blockDmgRate: 0
+      moveSpeed: 0
+      atkSpeed: 0
+      weightLimit: 0
+      stamina: 0
+      food: 0
+      water: 0
+      testStats: 0
+  equipmentSet: {fileID: 0}
+  maxDurability: 0
+  destroyIfBroken: 0
+  buff:
+    duration:
+      baseAmount: 0
+      amountIncreaseEachLevel: 0
+    recoveryHp:
+      baseAmount: 0
+      amountIncreaseEachLevel: 0
+    recoveryMp:
+      baseAmount: 0
+      amountIncreaseEachLevel: 0
+    recoveryStamina:
+      baseAmount: 0
+      amountIncreaseEachLevel: 0
+    recoveryFood:
+      baseAmount: 0
+      amountIncreaseEachLevel: 0
+    recoveryWater:
+      baseAmount: 0
+      amountIncreaseEachLevel: 0
+    increaseStats:
+      baseStats:
+        hp: 0
+        mp: 0
+        armor: 0
+        accuracy: 0
+        evasion: 0
+        criRate: 0
+        criDmgRate: 0
+        blockRate: 0
+        blockDmgRate: 0
+        moveSpeed: 0
+        atkSpeed: 0
+        weightLimit: 0
+        stamina: 0
+        food: 0
+        water: 0
+        testStats: 0
+      statsIncreaseEachLevel:
+        hp: 0
+        mp: 0
+        armor: 0
+        accuracy: 0
+        evasion: 0
+        criRate: 0
+        criDmgRate: 0
+        blockRate: 0
+        blockDmgRate: 0
+        moveSpeed: 0
+        atkSpeed: 0
+        weightLimit: 0
+        stamina: 0
+        food: 0
+        water: 0
+        testStats: 0
+    increaseAttributes: []
+    increaseResistances: []
+    increaseDamages: []
+    effects: []
+  ammoType: {fileID: 0}
+  buildingEntity: {fileID: 0}
+  petEntity: {fileID: 0}
