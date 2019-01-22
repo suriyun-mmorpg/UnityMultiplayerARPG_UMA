@@ -20,6 +20,17 @@ namespace MultiplayerARPG
             }
         }
 
+        private UMAData cacheUmaData;
+        public UMAData CacheUmaData
+        {
+            get
+            {
+                if (cacheUmaData == null)
+                    cacheUmaData = GetComponent<UMAData>();
+                return cacheUmaData;
+            }
+        }
+
         public bool IsUmaCharacterCreated { get; private set; }
         public bool IsInitializedUMA { get; private set; }
         public System.Action onUmaCharacterCreated;
@@ -42,7 +53,7 @@ namespace MultiplayerARPG
         {
             tempEquipWeapons = equipWeapons;
 
-            if (!IsInitializedUMA)
+            if (!IsUmaCharacterCreated)
                 return;
 
             ClearObjectsAndSlots(equipWeaponUsedSlots, equipWeaponObjects);
@@ -82,7 +93,7 @@ namespace MultiplayerARPG
         {
             tempEquipItems = equipItems;
 
-            if (!IsInitializedUMA)
+            if (!IsUmaCharacterCreated)
                 return;
 
             ClearObjectsAndSlots(equipItemUsedSlots, equipItemObjects);
@@ -134,6 +145,32 @@ namespace MultiplayerARPG
             if (objectsList == null || equipmentModels == null || equipmentModels.Length == 0)
                 return;
 
+            GameObject boneObj;
+            GameObject newObj;
+            foreach (EquipmentModel equipmentModel in equipmentModels)
+            {
+                if (string.IsNullOrEmpty(equipmentModel.equipSocket) ||
+                    equipmentModel.model == null)
+                {
+                    // If data is empty, skip it
+                    continue;
+                }
+
+                boneObj = CacheUmaData.GetBoneGameObject(equipmentModel.equipSocket);
+                if (boneObj == null)
+                    continue;
+                
+                newObj = Instantiate(equipmentModel.model);
+                newObj.transform.SetParent(boneObj.transform, false);
+                newObj.transform.localPosition = Vector3.zero;
+                newObj.transform.localEulerAngles = Vector3.zero;
+                newObj.transform.localScale = Vector3.one;
+                newObj.gameObject.SetActive(true);
+                newObj.gameObject.SetLayerRecursively(gameInstance.characterLayer.LayerIndex, true);
+                newObj.RemoveComponentsInChildren<Collider>(false);
+
+                objectsList.Add(newObj);
+            }
         }
 
         private void SetSlot(HashSet<string> usedSlotsSet, UmaReceiptSlot[] receiptSlots)
@@ -147,7 +184,7 @@ namespace MultiplayerARPG
                     string.IsNullOrEmpty(receiptSlot.recipe.wardrobeSlot) ||
                     usedSlotsSet.Contains(receiptSlot.recipe.wardrobeSlot))
                 {
-                    // If slot already used, skip it
+                    // If data is empty or slot already used, skip it
                     continue;
                 }
                 usedSlotsSet.Add(receiptSlot.recipe.wardrobeSlot);
