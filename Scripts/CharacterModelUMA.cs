@@ -25,9 +25,13 @@ namespace MultiplayerARPG
         public System.Action onUmaCharacterCreated;
         private UmaAvatarData? applyingAvatarData;
         private Coroutine applyCoroutine;
+        private EquipWeapons tempEquipWeapons;
         private IList<CharacterItem> tempEquipItems;
 
-        private readonly HashSet<string> oldUsageSlots = new HashSet<string>();
+        private readonly HashSet<string> equipWeaponUsedSlots = new HashSet<string>();
+        private readonly HashSet<string> equipItemUsedSlots = new HashSet<string>();
+        private readonly List<GameObject> equipWeaponObjects = new List<GameObject>();
+        private readonly List<GameObject> equipItemObjects = new List<GameObject>();
 
         private void Start()
         {
@@ -36,48 +40,119 @@ namespace MultiplayerARPG
 
         public override void SetEquipWeapons(EquipWeapons equipWeapons)
         {
+            tempEquipWeapons = equipWeapons;
 
+            if (!IsInitializedUMA)
+                return;
+
+            ClearObjectsAndSlots(equipWeaponUsedSlots, equipWeaponObjects);
+
+            if (CacheUmaAvatar.activeRace == null ||
+                CacheUmaAvatar.activeRace.racedata == null ||
+                equipWeapons == null)
+                return;
+
+            string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
+            Item tempEquipmentItem;
+            UmaReceiptSlot[] receiptSlots;
+
+            if (equipWeapons.rightHand != null)
+            {
+                tempEquipmentItem = equipWeapons.rightHand.GetEquipmentItem();
+                if (tempEquipmentItem != null)
+                {
+                    SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels);
+                    if (tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receiptSlots))
+                        SetSlot(equipItemUsedSlots, receiptSlots);
+                }
+            }
+            if (equipWeapons.leftHand != null)
+            {
+                tempEquipmentItem = equipWeapons.leftHand.GetEquipmentItem();
+                if (tempEquipmentItem != null)
+                {
+                    SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels);
+                    if (tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receiptSlots))
+                        SetSlot(equipItemUsedSlots, receiptSlots);
+                }
+            }
         }
 
         public override void SetEquipItems(IList<CharacterItem> equipItems)
         {
             tempEquipItems = equipItems;
-            foreach (string oldUsageSlot in oldUsageSlots)
-            {
-                CacheUmaAvatar.ClearSlot(oldUsageSlot);
-            }
-            oldUsageSlots.Clear();
+
+            if (!IsInitializedUMA)
+                return;
+
+            ClearObjectsAndSlots(equipItemUsedSlots, equipItemObjects);
+
             if (CacheUmaAvatar.activeRace == null ||
                 CacheUmaAvatar.activeRace.racedata == null ||
-                equipItems == null ||
-                !IsInitializedUMA)
+                equipItems == null)
                 return;
+
             string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
             Item tempEquipmentItem;
             UmaReceiptSlot[] receiptSlots;
+
             foreach (CharacterItem equipItem in equipItems)
             {
                 tempEquipmentItem = equipItem.GetEquipmentItem();
-                if (tempEquipmentItem == null ||
-                    !tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receiptSlots))
+                if (tempEquipmentItem == null)
                     continue;
 
-                foreach (UmaReceiptSlot receiptSlot in receiptSlots)
-                {
-                    if (oldUsageSlots.Contains(receiptSlot.slot) ||
-                        string.IsNullOrEmpty(receiptSlot.slot) ||
-                        receiptSlot.recipe == null)
-                    {
-                        // If slot already used, skip it
-                        continue;
-                    }
-                    oldUsageSlots.Add(receiptSlot.slot);
-                    CacheUmaAvatar.SetSlot(receiptSlot.recipe);
-                }
+                SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels);
+
+                if (!tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receiptSlots))
+                    continue;
+
+                SetSlot(equipItemUsedSlots, receiptSlots);
             }
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
+        }
+
+        private void ClearObjectsAndSlots(HashSet<string> usedSlotsSet, List<GameObject> objectsList)
+        {
+            foreach (string usedSlotSet in usedSlotsSet)
+            {
+                CacheUmaAvatar.ClearSlot(usedSlotSet);
+            }
+            usedSlotsSet.Clear();
+
+            foreach (GameObject objectList in objectsList)
+            {
+                Destroy(objectList);
+            }
+            objectsList.Clear();
+        }
+
+        private void SetEquipmentObject(List<GameObject> objectsList, EquipmentModel[] equipmentModels)
+        {
+            if (objectsList == null || equipmentModels == null || equipmentModels.Length == 0)
+                return;
+
+        }
+
+        private void SetSlot(HashSet<string> usedSlotsSet, UmaReceiptSlot[] receiptSlots)
+        {
+            if (usedSlotsSet == null || receiptSlots == null || receiptSlots.Length == 0)
+                return;
+
+            foreach (UmaReceiptSlot receiptSlot in receiptSlots)
+            {
+                if (receiptSlot.recipe == null ||
+                    string.IsNullOrEmpty(receiptSlot.recipe.wardrobeSlot) ||
+                    usedSlotsSet.Contains(receiptSlot.recipe.wardrobeSlot))
+                {
+                    // If slot already used, skip it
+                    continue;
+                }
+                usedSlotsSet.Add(receiptSlot.recipe.wardrobeSlot);
+                CacheUmaAvatar.SetSlot(receiptSlot.recipe);
+            }
         }
 
         public void InitializeUMA()
