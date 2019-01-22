@@ -11,7 +11,7 @@ namespace MultiplayerARPG
         public UmaRaceReceiptSlots[] umaRaceReceiptSlots;
 
         private Dictionary<string, UmaReceiptSlot[]> cacheUmaReceiptSlot;
-        private Dictionary<string, UmaReceiptSlot[]> CacheUmaReceiptSlot
+        public Dictionary<string, UmaReceiptSlot[]> CacheUmaReceiptSlot
         {
             get
             {
