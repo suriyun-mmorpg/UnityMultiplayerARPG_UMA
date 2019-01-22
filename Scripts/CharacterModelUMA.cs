@@ -25,10 +25,59 @@ namespace MultiplayerARPG
         public System.Action onUmaCharacterCreated;
         private UmaAvatarData? applyingAvatarData;
         private Coroutine applyCoroutine;
+        private IList<CharacterItem> tempEquipItems;
+
+        private readonly HashSet<string> oldUsageSlots = new HashSet<string>();
 
         private void Start()
         {
             InitializeUMA();
+        }
+
+        public override void SetEquipWeapons(EquipWeapons equipWeapons)
+        {
+
+        }
+
+        public override void SetEquipItems(IList<CharacterItem> equipItems)
+        {
+            tempEquipItems = equipItems;
+            foreach (string oldUsageSlot in oldUsageSlots)
+            {
+                CacheUmaAvatar.ClearSlot(oldUsageSlot);
+            }
+            oldUsageSlots.Clear();
+            if (CacheUmaAvatar.activeRace == null ||
+                CacheUmaAvatar.activeRace.racedata == null ||
+                equipItems == null ||
+                !IsInitializedUMA)
+                return;
+            string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
+            Item tempEquipmentItem;
+            UmaReceiptSlot[] receiptSlots;
+            foreach (CharacterItem equipItem in equipItems)
+            {
+                tempEquipmentItem = equipItem.GetEquipmentItem();
+                if (tempEquipmentItem == null ||
+                    !tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receiptSlots))
+                    continue;
+
+                foreach (UmaReceiptSlot receiptSlot in receiptSlots)
+                {
+                    if (oldUsageSlots.Contains(receiptSlot.slot) ||
+                        string.IsNullOrEmpty(receiptSlot.slot) ||
+                        receiptSlot.recipe == null)
+                    {
+                        // If slot already used, skip it
+                        continue;
+                    }
+                    oldUsageSlots.Add(receiptSlot.slot);
+                    CacheUmaAvatar.SetSlot(receiptSlot.recipe);
+                }
+            }
+            // Update avatar
+            CacheUmaAvatar.BuildCharacter(true);
+            CacheUmaAvatar.ForceUpdate(true, true, true);
         }
 
         public void InitializeUMA()
@@ -110,6 +159,10 @@ namespace MultiplayerARPG
                 }
             }
             yield return null;
+            // Set equip items if it is already set
+            if (tempEquipItems != null)
+                SetEquipItems(tempEquipItems);
+            // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
         }
