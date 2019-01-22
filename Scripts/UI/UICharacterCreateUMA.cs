@@ -46,6 +46,7 @@ namespace MultiplayerARPG
         {
             if (UmaModel != null)
             {
+                UmaModel.InitializeUMA();
                 if (!UmaModel.IsUmaCharacterCreated)
                 {
                     UmaModel.onUmaCharacterCreated -= OnUmaCharacterCreated;

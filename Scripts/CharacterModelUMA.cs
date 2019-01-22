@@ -57,27 +57,24 @@ namespace MultiplayerARPG
                 return;
             }
             InitializeUMA();
-            // If not initialized, do it then apply avatar later
+            UmaRace race = gameInstance.umaRaces[avatarData.raceIndex];
+            UmaRaceGender gender = race.genders[avatarData.genderIndex];
+            CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
             if (!IsUmaCharacterCreated)
             {
                 applyingAvatarData = avatarData;
                 return;
             }
             if (applyCoroutine != null)
-            {
                 StopCoroutine(applyCoroutine);
-                applyCoroutine = null;
-            }
             applyCoroutine = StartCoroutine(ApplyUmaAvatarRoutine(avatarData));
         }
 
         IEnumerator ApplyUmaAvatarRoutine(UmaAvatarData avatarData)
         {
-            yield return null;
+            int i;
             UmaRace race = gameInstance.umaRaces[avatarData.raceIndex];
             UmaRaceGender gender = race.genders[avatarData.genderIndex];
-            CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
-            int i;
             // Set character hair, beard, eyebrows (or other things up to your settings)
             if (avatarData.slots != null)
             {
@@ -90,7 +87,6 @@ namespace MultiplayerARPG
                 }
             }
             // Set character dna
-            yield return null;
             if (avatarData.dnas != null)
             {
                 Dictionary<string, DnaSetter> dnas = CacheUmaAvatar.GetDNA();
@@ -113,6 +109,7 @@ namespace MultiplayerARPG
                     CacheUmaAvatar.SetColor(colorTable.sharedColorName, colorTable.colors[avatarData.colors[i]]);
                 }
             }
+            yield return null;
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
         }
