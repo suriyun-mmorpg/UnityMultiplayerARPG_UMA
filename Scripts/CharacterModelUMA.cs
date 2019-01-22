@@ -72,9 +72,9 @@ namespace MultiplayerARPG
                 tempEquipmentItem = equipWeapons.rightHand.GetEquipmentItem();
                 if (tempEquipmentItem != null)
                 {
-                    SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels);
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.equipmentModels);
                     if (tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receiptSlots))
-                        SetSlot(equipItemUsedSlots, receiptSlots);
+                        SetSlot(equipWeaponUsedSlots, receiptSlots);
                 }
             }
             if (equipWeapons.leftHand != null)
@@ -82,11 +82,14 @@ namespace MultiplayerARPG
                 tempEquipmentItem = equipWeapons.leftHand.GetEquipmentItem();
                 if (tempEquipmentItem != null)
                 {
-                    SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels);
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.subEquipmentModels);
                     if (tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receiptSlots))
-                        SetSlot(equipItemUsedSlots, receiptSlots);
+                        SetSlot(equipWeaponUsedSlots, receiptSlots);
                 }
             }
+            // Update avatar
+            CacheUmaAvatar.BuildCharacter(true);
+            CacheUmaAvatar.ForceUpdate(true, true, true);
         }
 
         public override void SetEquipItems(IList<CharacterItem> equipItems)
@@ -218,9 +221,6 @@ namespace MultiplayerARPG
                 return;
             }
             InitializeUMA();
-            UmaRace race = gameInstance.umaRaces[avatarData.raceIndex];
-            UmaRaceGender gender = race.genders[avatarData.genderIndex];
-            CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
             if (!IsUmaCharacterCreated)
             {
                 applyingAvatarData = avatarData;
@@ -236,6 +236,8 @@ namespace MultiplayerARPG
             int i;
             UmaRace race = gameInstance.umaRaces[avatarData.raceIndex];
             UmaRaceGender gender = race.genders[avatarData.genderIndex];
+            CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
+            yield return null;
             // Set character hair, beard, eyebrows (or other things up to your settings)
             if (avatarData.slots != null)
             {
@@ -272,6 +274,8 @@ namespace MultiplayerARPG
             }
             yield return null;
             // Set equip items if it is already set
+            if (tempEquipWeapons != null)
+                SetEquipWeapons(tempEquipWeapons);
             if (tempEquipItems != null)
                 SetEquipItems(tempEquipItems);
             // Update avatar
