@@ -76,7 +76,8 @@ GameObject:
   - component: {fileID: 114217790240189764}
   - component: {fileID: 95941422500740546}
   - component: {fileID: 114885565014387228}
-  m_Layer: 0
+  - component: {fileID: 114618852812373252}
+  m_Layer: 8
   m_Name: UMAPlayerCharacterEntity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   context: {fileID: 0}
   umaData: {fileID: 0}
-  umaRecipe: {fileID: 11400000, guid: aa8318164d3d68540a71451b136fd489, type: 2}
+  umaRecipe: {fileID: 0}
   umaAdditionalRecipes:
   - {fileID: 11400000, guid: 1f292487d7383514f97c491cadfb0442, type: 2}
   - {fileID: 11400000, guid: f36ba6c553c66f747bc69741fa115880, type: 2}
@@ -264,7 +265,7 @@ MonoBehaviour:
   loadBlendShapes: 0
   activeRace:
     name: HumanMale
-  defaultChangeRaceOptions: 0
+  defaultChangeRaceOptions: 8
   cacheCurrentState: 1
   rebuildSkeleton: 0
   preloadWardrobeRecipes:
@@ -280,7 +281,16 @@ MonoBehaviour:
       - HumanMaleDCS
   raceAnimationControllers:
     defaultAnimationController: {fileID: 0}
-    animators: []
+    animators:
+    - raceName: ToonFemale
+      animatorControllerName: IdleTest-w-head
+      animatorController: {fileID: 0}
+    - raceName: HumanMaleDCS
+      animatorControllerName: Locomotion with Head
+      animatorController: {fileID: 0}
+    - raceName: HumanFemaleResources
+      animatorControllerName: Locomotion with Head
+      animatorController: {fileID: 0}
     dynamicallyAddFromResources: 0
     resourcesFolderPath: 
     dynamicallyAddFromAssetBundles: 1
@@ -337,6 +347,19 @@ MonoBehaviour:
       - {r: 0, g: 0, b: 0, a: 0}
       _name: 
       _color: {r: 0.3529412, g: 0.4156863, b: 0.6392157, a: 1}
+      _metallicGloss: {r: 0, g: 0, b: 0, a: 0}
+      valuesConverted: 0
+    - name: Undies
+      channelMask:
+      - {r: 1, g: 1, b: 1, a: 1}
+      - {r: 1, g: 1, b: 1, a: 1}
+      - {r: 1, g: 1, b: 1, a: 1}
+      channelAdditiveMask:
+      - {r: 0, g: 0, b: 0, a: 0}
+      - {r: 0, g: 0, b: 0, a: 0}
+      - {r: 0, g: 0, b: 0, a: 0}
+      _name: 
+      _color: {r: 1, g: 1, b: 1, a: 1}
       _metallicGloss: {r: 0, g: 0, b: 0, a: 0}
       valuesConverted: 0
   loadPathType: 2
@@ -695,6 +718,34 @@ MonoBehaviour:
   connectId: 0
   manager: {fileID: 0}
   subscriberIds: 
+--- !u!114 &114618852812373252
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1531689890171608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f8a093c691abd240af4df2e78d67f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simplePlayerCollider: 1
+  enableColliderTriggers: 0
+  ragdollBlendAmount: 0
+  UpdateTransformAfterRagdoll: 1
+  ragdollLayer: 16
+  playerLayer: 8
+  elements: []
+  onRagdollStarted:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onRagdollEnded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114885565014387228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -711,7 +762,7 @@ MonoBehaviour:
   syncListNames: []
   sendOptions: 0
   sendInterval: 0.1
-  range: 100
+  range: 80
   updateInterval: 1
   checkMethod: 0
   layerMask:
