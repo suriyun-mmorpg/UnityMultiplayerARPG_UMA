@@ -70,5 +70,7 @@ MonoBehaviour:
   skillLevels: []
   rightHandEquipItem: {fileID: 0}
   leftHandEquipItem: {fileID: 0}
-  armorItems: []
+  armorItems:
+  - {fileID: 11400000, guid: 87b4c98d2d09c4a44a53c633310c8b96, type: 2}
+  - {fileID: 11400000, guid: 691223c0d0d1c9342aa0df9855949779, type: 2}
   startMap: {fileID: 0}
