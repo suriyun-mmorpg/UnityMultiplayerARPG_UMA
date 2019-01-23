@@ -17,7 +17,7 @@ MonoBehaviour:
   umaRaceReceiptSlots:
   - raceData: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
     recipeSlots:
-    - recipe: {fileID: 11400000, guid: 5abbc2ec892f7cf478a31da209981941, type: 2}
+    - recipe: {fileID: 11400000, guid: 08ee8add251c0604787435e6e676f3db, type: 2}
       slot: Chest
     - recipe: {fileID: 11400000, guid: ed308ddf64a50d74aae73e4097381fc1, type: 2}
       slot: Legs
