@@ -28,7 +28,7 @@ namespace MultiplayerARPG
         private readonly List<UIUmaColorDropdown> uiColors = new List<UIUmaColorDropdown>();
         private bool dontApplyAvatar;
         
-        protected override void OnSelectCharacter(PlayerCharacterData playerCharacterData)
+        protected override void OnSelectCharacter(IPlayerCharacterData playerCharacterData)
         {
             base.OnSelectCharacter(playerCharacterData);
             CharacterModelUMA characterModelUMA = SelectedModel as CharacterModelUMA;

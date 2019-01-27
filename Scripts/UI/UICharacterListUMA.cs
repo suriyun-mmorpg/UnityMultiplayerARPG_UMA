@@ -7,17 +7,17 @@ namespace MultiplayerARPG
     public sealed class UICharacterListUMA : UICharacterList
     {
         public CharacterModelUMA UmaModel { get; private set; }
-
-        protected override void ShowCharacter(string id)
+        
+        protected override void OnSelectCharacter(IPlayerCharacterData playerCharacterData)
         {
-            BaseCharacterModel characterModel;
-            if (!CharacterModels.TryGetValue(id, out characterModel))
-                return;
-            characterModel.gameObject.SetActive(true);
-            // Setup Uma model and customize options
-            CharacterModelUMA characterModelUMA = characterModel as CharacterModelUMA;
-            UmaModel = characterModelUMA;
-            ShowUmaCharacter();
+            base.OnSelectCharacter(playerCharacterData);
+            if (SelectedModel != null)
+            {
+                // Setup Uma model and customize options
+                CharacterModelUMA characterModelUMA = SelectedModel as CharacterModelUMA;
+                UmaModel = characterModelUMA;
+                ShowUmaCharacter();
+            }
         }
 
         private void ShowUmaCharacter()
