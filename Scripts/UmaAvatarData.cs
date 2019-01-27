@@ -71,6 +71,8 @@ namespace MultiplayerARPG
         public void SetBytes(IList<byte> bytes)
         {
             int index = 0;
+            if (bytes == null || bytes.Count == 0)
+                return;
             raceIndex = bytes[index++];
             genderIndex = bytes[index++];
             byte i;
