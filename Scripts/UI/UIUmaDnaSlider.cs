@@ -13,13 +13,11 @@ namespace MultiplayerARPG
         public Slider slider;
         private UICharacterCreateUMA ui;
         private byte slotIndex;
-        private DnaSetter dnaSetter;
         private string dnaName;
         public void Setup(UICharacterCreateUMA ui, byte slotIndex, DnaSetter dnaSetter)
         {
             this.ui = ui;
             this.slotIndex = slotIndex;
-            this.dnaSetter = dnaSetter;
             dnaName = dnaSetter.Name;
             if (textTitle != null)
             {
