@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Name: UMA_Shoes
   m_EditorClassIdentifier: 
   title: 
+  titles: []
   description: 
+  descriptions: []
   icon: {fileID: 21300000, guid: 0f0bcf7c70b4ed140aef538979a7b5e7, type: 3}
   umaRaceReceiptSlots:
   - raceData: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
-    recipeSlots:
-    - recipe: {fileID: 11400000, guid: ef2ae1fcf6ddfb64ab18b01bc95ae558, type: 2}
-      slot: Feet
+    recipes:
+    - {fileID: 11400000, guid: c6a22e687d55ee144965d37c94a9b11d, type: 2}
   - raceData: {fileID: 11400000, guid: f8fea6f0ee17b3f42a4ae6cfb627bab3, type: 2}
-    recipeSlots:
-    - recipe: {fileID: 11400000, guid: f7ff3729dba08b044a2535b32a1251ba, type: 2}
-      slot: Feet
+    recipes:
+    - {fileID: 11400000, guid: 47ba7be232f89084485a40d74ef0d13c, type: 2}
   itemType: 1
   dropModel: {fileID: 0}
   sellPrice: 0
