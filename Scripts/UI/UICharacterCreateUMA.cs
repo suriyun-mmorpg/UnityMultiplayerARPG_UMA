@@ -28,14 +28,10 @@ namespace MultiplayerARPG
         private readonly List<UIUmaColorDropdown> uiColors = new List<UIUmaColorDropdown>();
         private bool dontApplyAvatar;
         
-        protected override void ShowCharacter(int id)
+        protected override void OnSelectCharacter(PlayerCharacterData playerCharacterData)
         {
-            BaseCharacterModel characterModel;
-            if (!CharacterModels.TryGetValue(id, out characterModel))
-                return;
-            characterModel.gameObject.SetActive(true);
-            // Setup Uma model and customize options
-            CharacterModelUMA characterModelUMA = characterModel as CharacterModelUMA;
+            base.OnSelectCharacter(playerCharacterData);
+            CharacterModelUMA characterModelUMA = SelectedModel as CharacterModelUMA;
             if (umaPanelRoot != null)
                 umaPanelRoot.SetActive(characterModelUMA != null);
             UmaModel = characterModelUMA;
@@ -196,7 +192,7 @@ namespace MultiplayerARPG
         protected override void OnClickCreate()
         {
             GameInstance gameInstance = GameInstance.Singleton;
-            UICharacter selectedUI = SelectionManager.SelectedUI;
+            UICharacter selectedUI = CacheCharacterSelectionManager.SelectedUI;
             if (selectedUI == null)
             {
                 UISceneGlobal.Singleton.ShowMessageDialog("Cannot create character", "Please select character class");
