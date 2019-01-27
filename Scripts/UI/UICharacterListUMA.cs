@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MultiplayerARPG
 {
-    public sealed class UICharacterListUMA : UICharacterList
+    public class UICharacterListUMA : UICharacterList
     {
         public CharacterModelUMA UmaModel { get; private set; }
         
