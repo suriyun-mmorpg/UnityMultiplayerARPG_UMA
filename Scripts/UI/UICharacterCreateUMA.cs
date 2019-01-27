@@ -6,7 +6,7 @@ using UMA.CharacterSystem;
 
 namespace MultiplayerARPG
 {
-    public sealed class UICharacterCreateUMA : UICharacterCreate
+    public class UICharacterCreateUMA : UICharacterCreate
     {
         public GameObject umaPanelRoot;
         public DropdownWrapper raceDropdown;
