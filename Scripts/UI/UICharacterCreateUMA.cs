@@ -189,41 +189,13 @@ namespace MultiplayerARPG
             return result;
         }
 
-        protected override void OnClickCreate()
+        protected override void SaveCreatingPlayerCharacter(string characterName)
         {
-            GameInstance gameInstance = GameInstance.Singleton;
-            UICharacter selectedUI = CacheCharacterSelectionManager.SelectedUI;
-            if (selectedUI == null)
-            {
-                UISceneGlobal.Singleton.ShowMessageDialog("Cannot create character", "Please select character class");
-                Debug.LogWarning("Cannot create character, did not selected character class");
-                return;
-            }
-            string characterName = inputCharacterName.text.Trim();
-            int minCharacterNameLength = gameInstance.minCharacterNameLength;
-            int maxCharacterNameLength = gameInstance.maxCharacterNameLength;
-            if (characterName.Length < minCharacterNameLength)
-            {
-                UISceneGlobal.Singleton.ShowMessageDialog("Cannot create character", "Character name is too short");
-                Debug.LogWarning("Cannot create character, character name is too short");
-                return;
-            }
-            if (characterName.Length > maxCharacterNameLength)
-            {
-                UISceneGlobal.Singleton.ShowMessageDialog("Cannot create character", "Character name is too long");
-                Debug.LogWarning("Cannot create character, character name is too long");
-                return;
-            }
-
-            string characterId = GenericUtils.GetUniqueId();
             PlayerCharacterData characterData = new PlayerCharacterData();
-            characterData.Id = characterId;
-            characterData.SetNewPlayerCharacterData(characterName, selectedUI.Data.DataId, selectedUI.Data.EntityId);
+            characterData.Id = GenericUtils.GetUniqueId();
+            characterData.SetNewPlayerCharacterData(characterName, CreatingPlayerCharacterData.DataId, CreatingPlayerCharacterData.EntityId);
             characterData.UmaAvatarData = GetAvatarData();
             characterData.SavePersistentCharacterData();
-
-            if (eventOnCreateCharacter != null)
-                eventOnCreateCharacter.Invoke();
         }
     }
 }
