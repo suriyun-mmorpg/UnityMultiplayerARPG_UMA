@@ -16,7 +16,7 @@ namespace MultiplayerARPG
             this.ui = ui;
             this.slotIndex = slotIndex;
 
-            UmaCustomizableSlot slot = GameInstance.Singleton.umaRaces[ui.SelectedRaceIndex].genders[ui.SelectedGenderIndex].customizableSlots[slotIndex];
+            UmaCustomizableSlot slot = GameInstance.Singleton.UmaRaces[ui.SelectedRaceIndex].genders[ui.SelectedGenderIndex].customizableSlots[slotIndex];
 
             // Set Title
             if (textTitle != null)

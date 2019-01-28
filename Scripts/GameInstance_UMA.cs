@@ -1,71 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UMA;
 
 namespace MultiplayerARPG
 {
     public partial class GameInstance
     {
         [Header("UMA Setting")]
-        // Race choice
-        public UmaRace[] umaRaces = new UmaRace[]
+        public UmaAvatarDatabase umaAvatarDatabase;
+
+        public UmaRace[] UmaRaces
         {
-            new UmaRace()
+            get
             {
-                name = "Human",
-                // Available gender
-                genders = new UmaRaceGender[]
-                {
-                    new UmaRaceGender()
-                    {
-                        name = "Male",
-                        customizableSlots = new UmaCustomizableSlot[]
-                        {
-                            new UmaCustomizableSlot() { name = "Hair", title = "Hair" },
-                            new UmaCustomizableSlot() { name = "Eyebrows", title = "Eyebrows" },
-                            new UmaCustomizableSlot() { name = "Eyes", title = "Eyes" },
-                            new UmaCustomizableSlot() { name = "Face", title = "Face" },
-                            new UmaCustomizableSlot() { name = "Ears", title = "Ears" },
-                        }
-                    },
-                    new UmaRaceGender()
-                    {
-                        name = "Female",
-                        customizableSlots = new UmaCustomizableSlot[]
-                        {
-                            new UmaCustomizableSlot() { name = "Hair", title = "Hair" },
-                            new UmaCustomizableSlot() { name = "Eyebrows", title = "Eyebrows" },
-                            new UmaCustomizableSlot() { name = "Eyes", title = "Eyes" },
-                            new UmaCustomizableSlot() { name = "Face", title = "Face" },
-                            new UmaCustomizableSlot() { name = "Ears", title = "Ears" },
-                        }
-                    },
-                },
+                if (umaAvatarDatabase != null)
+                    return umaAvatarDatabase.umaRaces;
+                return null;
             }
-        };
+        }
     }
 
-    [System.Serializable]
-    public struct UmaRace
-    {
-        public string name;
-        public UmaRaceGender[] genders;
-        public SharedColorTable[] colorTables;
-    }
-
-    [System.Serializable]
-    public struct UmaRaceGender
-    {
-        public string name;
-        public RaceData raceData;
-        public UmaCustomizableSlot[] customizableSlots;
-    }
-
-    [System.Serializable]
-    public struct UmaCustomizableSlot
-    {
-        public string name;
-        public string title;
-    }
 }

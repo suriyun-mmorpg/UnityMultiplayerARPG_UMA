@@ -56,7 +56,7 @@ namespace MultiplayerARPG
                     raceDropdown.onValueChanged.RemoveListener(OnRaceDropdownValueChanged);
                     raceDropdown.options = new List<DropdownWrapper.OptionData>();
                     List<DropdownWrapper.OptionData> dropdownOptions = new List<DropdownWrapper.OptionData>();
-                    UmaRace[] races = GameInstance.Singleton.umaRaces;
+                    UmaRace[] races = GameInstance.Singleton.UmaRaces;
                     foreach (UmaRace race in races)
                     {
                         dropdownOptions.Add(new DropdownWrapper.OptionData()
@@ -92,7 +92,7 @@ namespace MultiplayerARPG
                 genderDropdown.onValueChanged.RemoveListener(OnGenderDropdownValueChanged);
                 genderDropdown.options = new List<DropdownWrapper.OptionData>();
                 List<DropdownWrapper.OptionData> dropdownOptions = new List<DropdownWrapper.OptionData>();
-                UmaRace race = GameInstance.Singleton.umaRaces[selectedIndex];
+                UmaRace race = GameInstance.Singleton.UmaRaces[selectedIndex];
                 UmaRaceGender[] genders = race.genders;
                 foreach (UmaRaceGender gender in genders)
                 {
@@ -122,7 +122,7 @@ namespace MultiplayerARPG
         private void OnGenderDropdownValueChanged(int selectedIndex)
         {
             SelectedGenderIndex = (byte)selectedIndex;
-            UmaRace race = GameInstance.Singleton.umaRaces[SelectedRaceIndex];
+            UmaRace race = GameInstance.Singleton.UmaRaces[SelectedRaceIndex];
             UmaRaceGender gender = race.genders[SelectedGenderIndex];
             UmaModel.CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
             UmaModel.CacheUmaAvatar.BuildCharacter(true);

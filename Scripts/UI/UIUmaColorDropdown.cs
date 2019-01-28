@@ -28,7 +28,7 @@ namespace MultiplayerARPG
             this.ui = ui;
             this.slotIndex = slotIndex;
 
-            SharedColorTable colorTable = GameInstance.Singleton.umaRaces[ui.SelectedRaceIndex].colorTables[slotIndex];
+            SharedColorTable colorTable = GameInstance.Singleton.UmaRaces[ui.SelectedRaceIndex].colorTables[slotIndex];
 
             if (textTitle != null)
                 textTitle.text = colorTable.sharedColorName;

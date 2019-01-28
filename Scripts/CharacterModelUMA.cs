@@ -234,7 +234,7 @@ namespace MultiplayerARPG
         IEnumerator ApplyUmaAvatarRoutine(UmaAvatarData avatarData)
         {
             int i;
-            UmaRace race = gameInstance.umaRaces[avatarData.raceIndex];
+            UmaRace race = gameInstance.UmaRaces[avatarData.raceIndex];
             UmaRaceGender gender = race.genders[avatarData.genderIndex];
             CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
             yield return null;
