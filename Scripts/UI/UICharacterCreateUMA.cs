@@ -134,9 +134,20 @@ namespace MultiplayerARPG
                 uiSlot.transform.SetParent(customizeSlotContainer);
                 uiSlot.transform.localScale = Vector3.one;
             }
+            StartCoroutine(SetupDnas());
+        }
+
+        IEnumerator SetupDnas()
+        {
+            yield return null;
             // Setup customizable dnas
             GenericUtils.RemoveChildren(dnaSliderContainer);
-            Dictionary<string, DnaSetter> dnas = UmaModel.CacheUmaAvatar.GetDNA();
+            Dictionary<string, DnaSetter> dnas = null;
+            while (dnas == null || dnas.Count == 0)
+            {
+                dnas = UmaModel.CacheUmaAvatar.GetDNA();
+                yield return null;
+            }
             List<string> dnaNames = new List<string>(dnas.Keys);
             dnaNames.Sort();
             SelectedDnas = new byte[dnaNames.Count];
