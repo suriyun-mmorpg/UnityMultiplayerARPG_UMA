@@ -16,15 +16,6 @@ MonoBehaviour:
   description: 
   descriptions: []
   icon: {fileID: 21300000, guid: fa88bd6a9e09afa44964a6da1e616aed, type: 3}
-  umaRaceReceiptSlots:
-  - raceData: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
-    recipes:
-    - {fileID: 11400000, guid: 08ee8add251c0604787435e6e676f3db, type: 2}
-    - {fileID: 11400000, guid: ed308ddf64a50d74aae73e4097381fc1, type: 2}
-  - raceData: {fileID: 11400000, guid: f8fea6f0ee17b3f42a4ae6cfb627bab3, type: 2}
-    recipes:
-    - {fileID: 11400000, guid: 2f138c428389dac489ae6bd6303bf89f, type: 2}
-    - {fileID: 11400000, guid: 20c9259364a58404eb9049b15587fbcd, type: 2}
   itemType: 1
   dropModel: {fileID: 1788792654363946, guid: 8da4f5a11c78d934382a50e10216b394, type: 2}
   sellPrice: 0
@@ -158,3 +149,12 @@ MonoBehaviour:
   ammoType: {fileID: 0}
   buildingEntity: {fileID: 0}
   petEntity: {fileID: 0}
+  umaRaceReceipeSlots:
+  - raceData: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
+    recipes:
+    - {fileID: 11400000, guid: 08ee8add251c0604787435e6e676f3db, type: 2}
+    - {fileID: 11400000, guid: ed308ddf64a50d74aae73e4097381fc1, type: 2}
+  - raceData: {fileID: 11400000, guid: f8fea6f0ee17b3f42a4ae6cfb627bab3, type: 2}
+    recipes:
+    - {fileID: 11400000, guid: 2f138c428389dac489ae6bd6303bf89f, type: 2}
+    - {fileID: 11400000, guid: 20c9259364a58404eb9049b15587fbcd, type: 2}
