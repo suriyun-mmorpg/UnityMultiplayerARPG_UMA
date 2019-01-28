@@ -35,6 +35,7 @@ namespace MultiplayerARPG
         public bool IsInitializedUMA { get; private set; }
         public System.Action onUmaCharacterCreated;
         private UmaAvatarData? applyingAvatarData;
+        private Coroutine applyCoroutine;
         private EquipWeapons tempEquipWeapons;
         private IList<CharacterItem> tempEquipItems;
 
@@ -225,17 +226,27 @@ namespace MultiplayerARPG
                 applyingAvatarData = avatarData;
                 return;
             }
+            if (applyCoroutine != null)
+                StopCoroutine(applyCoroutine);
+            applyCoroutine = StartCoroutine(ApplyUmaAvatarRoutine(avatarData));
+        }
+
+        IEnumerator ApplyUmaAvatarRoutine(UmaAvatarData avatarData)
+        {
             int i;
             UmaRace race = gameInstance.UmaRaces[avatarData.raceIndex];
             UmaRaceGender gender = race.genders[avatarData.genderIndex];
             CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
+            yield return null;
             // Set character hair, beard, eyebrows (or other things up to your settings)
             if (avatarData.slots != null)
             {
                 Dictionary<string, List<UMATextRecipe>> recipes = CacheUmaAvatar.AvailableRecipes;
                 string slotName;
-                for (i = 0; i < avatarData.slots.Length; ++i)
+                for (i = 0; i < gender.customizableSlots.Length; ++i)
                 {
+                    if (i >= avatarData.slots.Length)
+                        break;
                     slotName = gender.customizableSlots[i].name;
                     CacheUmaAvatar.SetSlot(recipes[slotName][avatarData.slots[i]]);
                 }
@@ -247,22 +258,22 @@ namespace MultiplayerARPG
                 List<string> dnaNames = new List<string>(dnas.Keys);
                 dnaNames.Sort();
                 string dnaName;
-                for (i = 0; i < avatarData.dnas.Length; ++i)
+                for (i = 0; i < dnaNames.Count; ++i)
                 {
-                    try
-                    {
-                        dnaName = dnaNames[i];
-                        dnas[dnaName].Set(avatarData.dnas[i] * 0.01f);
-                    }
-                    catch { }
+                    if (i >= avatarData.dnas.Length)
+                        break;
+                    dnaName = dnaNames[i];
+                    dnas[dnaName].Set(avatarData.dnas[i] * 0.01f);
                 }
             }
             // Set skin color, eyes color, hair color (or other things up to your settings)
             if (avatarData.colors != null)
             {
                 SharedColorTable colorTable;
-                for (i = 0; i < avatarData.colors.Length; ++i)
+                for (i = 0; i < race.colorTables.Length; ++i)
                 {
+                    if (i >= avatarData.colors.Length)
+                        break;
                     colorTable = race.colorTables[i];
                     CacheUmaAvatar.SetColor(colorTable.sharedColorName, colorTable.colors[avatarData.colors[i]]);
                 }
