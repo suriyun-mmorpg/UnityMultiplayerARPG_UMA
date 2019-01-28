@@ -1,0 +1,1 @@
+CREATE TABLE `characterumasaves` ( `id` VARCHAR(50) NOT NULL , `data` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_unicode_ci;
