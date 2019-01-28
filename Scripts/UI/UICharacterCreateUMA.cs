@@ -24,8 +24,6 @@ namespace MultiplayerARPG
         public byte[] SelectedSlots { get; private set; }
         public byte[] SelectedColors { get; private set; }
         public byte[] SelectedDnas { get; private set; }
-        private readonly List<UIUmaCustomizeSlotDropdown> uiSlots = new List<UIUmaCustomizeSlotDropdown>();
-        private readonly List<UIUmaColorDropdown> uiColors = new List<UIUmaColorDropdown>();
         private bool dontApplyAvatar;
         
         protected override void OnSelectCharacter(IPlayerCharacterData playerCharacterData)
@@ -103,14 +101,13 @@ namespace MultiplayerARPG
                 }
                 // Setup color options
                 GenericUtils.RemoveChildren(colorOptionContainer);
-                uiColors.Clear();
                 SelectedColors = new byte[race.colorTables.Length];
                 for (byte i = 0; i < race.colorTables.Length; ++i)
                 {
                     UIUmaColorDropdown uiColor = Instantiate(prefabColorDropdown);
                     uiColor.Setup(this, i);
                     uiColor.transform.SetParent(colorOptionContainer);
-                    uiColors.Add(uiColor);
+                    uiColor.transform.localScale = Vector3.one;
                 }
                 // Switch dropdown
                 genderDropdown.options = dropdownOptions;
@@ -128,7 +125,6 @@ namespace MultiplayerARPG
             UmaModel.CacheUmaAvatar.BuildCharacter(true);
             // Setup customizable slots
             GenericUtils.RemoveChildren(customizeSlotContainer);
-            uiSlots.Clear();
             UmaCustomizableSlot[] slots = gender.customizableSlots;
             SelectedSlots = new byte[slots.Length];
             for (byte i = 0; i < slots.Length; ++i)
@@ -136,7 +132,7 @@ namespace MultiplayerARPG
                 UIUmaCustomizeSlotDropdown uiSlot = Instantiate(prefabCustomizeSlotDropdown);
                 uiSlot.Setup(this, i);
                 uiSlot.transform.SetParent(customizeSlotContainer);
-                uiSlots.Add(uiSlot);
+                uiSlot.transform.localScale = Vector3.one;
             }
             // Setup customizable dnas
             GenericUtils.RemoveChildren(dnaSliderContainer);
@@ -149,6 +145,7 @@ namespace MultiplayerARPG
                 UIUmaDnaSlider uiDnaSlider = Instantiate(prefabDnaSlider);
                 uiDnaSlider.Setup(this, i, dnas[dnaNames[i]]);
                 uiDnaSlider.transform.SetParent(dnaSliderContainer);
+                uiDnaSlider.transform.localScale = Vector3.one;
             }
             ApplyAvatar();
         }
