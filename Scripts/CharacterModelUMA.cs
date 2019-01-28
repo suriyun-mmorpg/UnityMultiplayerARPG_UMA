@@ -35,7 +35,6 @@ namespace MultiplayerARPG
         public bool IsInitializedUMA { get; private set; }
         public System.Action onUmaCharacterCreated;
         private UmaAvatarData? applyingAvatarData;
-        private Coroutine applyCoroutine;
         private EquipWeapons tempEquipWeapons;
         private IList<CharacterItem> tempEquipItems;
 
@@ -65,7 +64,7 @@ namespace MultiplayerARPG
 
             string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
             Item tempEquipmentItem;
-            UMATextRecipe[] receipts;
+            UMATextRecipe[] receipes;
 
             if (equipWeapons.rightHand != null)
             {
@@ -73,8 +72,8 @@ namespace MultiplayerARPG
                 if (tempEquipmentItem != null)
                 {
                     SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.equipmentModels);
-                    if (tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receipts))
-                        SetSlot(equipWeaponUsedSlots, receipts);
+                    if (tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(equipWeaponUsedSlots, receipes);
                 }
             }
             if (equipWeapons.leftHand != null)
@@ -83,8 +82,8 @@ namespace MultiplayerARPG
                 if (tempEquipmentItem != null)
                 {
                     SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.subEquipmentModels);
-                    if (tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receipts))
-                        SetSlot(equipWeaponUsedSlots, receipts);
+                    if (tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(equipWeaponUsedSlots, receipes);
                 }
             }
             // Update avatar
@@ -108,7 +107,7 @@ namespace MultiplayerARPG
 
             string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
             Item tempEquipmentItem;
-            UMATextRecipe[] receipts;
+            UMATextRecipe[] receipes;
 
             foreach (CharacterItem equipItem in equipItems)
             {
@@ -118,10 +117,10 @@ namespace MultiplayerARPG
 
                 SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels);
 
-                if (!tempEquipmentItem.CacheUmaReceiptSlot.TryGetValue(raceName, out receipts))
+                if (!tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
                     continue;
 
-                SetSlot(equipItemUsedSlots, receipts);
+                SetSlot(equipItemUsedSlots, receipes);
             }
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
@@ -176,22 +175,22 @@ namespace MultiplayerARPG
             }
         }
 
-        private void SetSlot(HashSet<string> usedSlotsSet, UMATextRecipe[] receipts)
+        private void SetSlot(HashSet<string> usedSlotsSet, UMATextRecipe[] receipes)
         {
-            if (usedSlotsSet == null || receipts == null || receipts.Length == 0)
+            if (usedSlotsSet == null || receipes == null || receipes.Length == 0)
                 return;
 
-            foreach (UMATextRecipe receiptSlot in receipts)
+            foreach (UMATextRecipe receipeSlot in receipes)
             {
-                if (receiptSlot == null ||
-                    string.IsNullOrEmpty(receiptSlot.wardrobeSlot) ||
-                    usedSlotsSet.Contains(receiptSlot.wardrobeSlot))
+                if (receipeSlot == null ||
+                    string.IsNullOrEmpty(receipeSlot.wardrobeSlot) ||
+                    usedSlotsSet.Contains(receipeSlot.wardrobeSlot))
                 {
                     // If data is empty or slot already used, skip it
                     continue;
                 }
-                usedSlotsSet.Add(receiptSlot.wardrobeSlot);
-                CacheUmaAvatar.SetSlot(receiptSlot);
+                usedSlotsSet.Add(receipeSlot.wardrobeSlot);
+                CacheUmaAvatar.SetSlot(receipeSlot);
             }
         }
 
@@ -226,18 +225,10 @@ namespace MultiplayerARPG
                 applyingAvatarData = avatarData;
                 return;
             }
-            if (applyCoroutine != null)
-                StopCoroutine(applyCoroutine);
-            applyCoroutine = StartCoroutine(ApplyUmaAvatarRoutine(avatarData));
-        }
-
-        IEnumerator ApplyUmaAvatarRoutine(UmaAvatarData avatarData)
-        {
             int i;
             UmaRace race = gameInstance.UmaRaces[avatarData.raceIndex];
             UmaRaceGender gender = race.genders[avatarData.genderIndex];
             CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
-            yield return null;
             // Set character hair, beard, eyebrows (or other things up to your settings)
             if (avatarData.slots != null)
             {
@@ -258,8 +249,12 @@ namespace MultiplayerARPG
                 string dnaName;
                 for (i = 0; i < avatarData.dnas.Length; ++i)
                 {
-                    dnaName = dnaNames[i];
-                    dnas[dnaName].Set(avatarData.dnas[i] * 0.01f);
+                    try
+                    {
+                        dnaName = dnaNames[i];
+                        dnas[dnaName].Set(avatarData.dnas[i] * 0.01f);
+                    }
+                    catch { }
                 }
             }
             // Set skin color, eyes color, hair color (or other things up to your settings)
@@ -272,7 +267,6 @@ namespace MultiplayerARPG
                     CacheUmaAvatar.SetColor(colorTable.sharedColorName, colorTable.colors[avatarData.colors[i]]);
                 }
             }
-            yield return null;
             // Set equip items if it is already set
             if (tempEquipWeapons != null)
                 SetEquipWeapons(tempEquipWeapons);
