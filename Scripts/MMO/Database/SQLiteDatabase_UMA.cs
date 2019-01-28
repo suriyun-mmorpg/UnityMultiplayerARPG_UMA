@@ -13,7 +13,7 @@ namespace MultiplayerARPG.MMO
             // Prepare uma data
             ExecuteNonQuery(@"CREATE TABLE IF NOT EXISTS characterumasaves (
               id TEXT NOT NULL PRIMARY KEY,
-              data TEXT NOT NULL,
+              data TEXT NOT NULL
             )");
         }
 
