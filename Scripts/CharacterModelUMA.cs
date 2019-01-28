@@ -251,21 +251,6 @@ namespace MultiplayerARPG
                     CacheUmaAvatar.SetSlot(recipes[slotName][avatarData.slots[i]]);
                 }
             }
-            // Set character dna
-            if (avatarData.dnas != null)
-            {
-                Dictionary<string, DnaSetter> dnas = CacheUmaAvatar.GetDNA();
-                List<string> dnaNames = new List<string>(dnas.Keys);
-                dnaNames.Sort();
-                string dnaName;
-                for (i = 0; i < dnaNames.Count; ++i)
-                {
-                    if (i >= avatarData.dnas.Length)
-                        break;
-                    dnaName = dnaNames[i];
-                    dnas[dnaName].Set(avatarData.dnas[i] * 0.01f);
-                }
-            }
             // Set skin color, eyes color, hair color (or other things up to your settings)
             if (avatarData.colors != null)
             {
@@ -283,9 +268,33 @@ namespace MultiplayerARPG
                 SetEquipWeapons(tempEquipWeapons);
             if (tempEquipItems != null)
                 SetEquipItems(tempEquipItems);
+
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
+            yield return null;
+            // Set character dna
+            if (avatarData.dnas != null)
+            {
+                Dictionary<string, DnaSetter> dnas = null;
+                while (dnas == null || dnas.Count == 0)
+                {
+                    dnas = CacheUmaAvatar.GetDNA();
+                    yield return null;
+                }
+                List<string> dnaNames = new List<string>(dnas.Keys);
+                dnaNames.Sort();
+                string dnaName;
+                for (i = 0; i < dnaNames.Count; ++i)
+                {
+                    if (i >= avatarData.dnas.Length)
+                        break;
+                    dnaName = dnaNames[i];
+                    dnas[dnaName].Set(avatarData.dnas[i] * 0.01f);
+                }
+            }
+            // Update avatar after set dna 
+            CacheUmaAvatar.ForceUpdate(true, false, false);
         }
 
         public void ApplyPendingAvatarData()

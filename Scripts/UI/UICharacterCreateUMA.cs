@@ -99,16 +99,6 @@ namespace MultiplayerARPG
                         text = gender.name,
                     });
                 }
-                // Setup color options
-                GenericUtils.RemoveChildren(colorOptionContainer);
-                SelectedColors = new byte[race.colorTables.Length];
-                for (byte i = 0; i < race.colorTables.Length; ++i)
-                {
-                    UIUmaColorDropdown uiColor = Instantiate(prefabColorDropdown);
-                    uiColor.Setup(this, i);
-                    uiColor.transform.SetParent(colorOptionContainer);
-                    uiColor.transform.localScale = Vector3.one;
-                }
                 // Switch dropdown
                 genderDropdown.options = dropdownOptions;
                 OnGenderDropdownValueChanged(0);
@@ -134,6 +124,17 @@ namespace MultiplayerARPG
                 uiSlot.transform.SetParent(customizeSlotContainer);
                 uiSlot.transform.localScale = Vector3.one;
             }
+            // Setup color options
+            GenericUtils.RemoveChildren(colorOptionContainer);
+            SelectedColors = new byte[race.colorTables.Length];
+            for (byte i = 0; i < race.colorTables.Length; ++i)
+            {
+                UIUmaColorDropdown uiColor = Instantiate(prefabColorDropdown);
+                uiColor.Setup(this, i);
+                uiColor.transform.SetParent(colorOptionContainer);
+                uiColor.transform.localScale = Vector3.one;
+            }
+            ApplyAvatar();
             StartCoroutine(SetupDnas());
         }
 
