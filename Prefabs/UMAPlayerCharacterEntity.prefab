@@ -397,15 +397,17 @@ MonoBehaviour:
   effectContainers: []
   equipmentContainers: []
   animatorType: 0
-  animatorController: {fileID: 9100000, guid: eb280940c811fab4a9e3ddf09381c343, type: 2}
+  animator: {fileID: 95941422500740546}
+  animatorController: {fileID: 9100000, guid: 451372edaecf90c4bafbd4b10e0a0b10, type: 2}
   defaultAnimatorData:
-    idleClip: {fileID: 0}
-    moveClip: {fileID: 0}
-    jumpClip: {fileID: 0}
+    idleClip: {fileID: 7400020, guid: ce448a8080b4e934b8473badd27be402, type: 3}
+    moveClip: {fileID: 7400024, guid: b35bea543177b624b8e504a16956614d, type: 3}
+    jumpClip: {fileID: 7400000, guid: 3ae4c82aad367834e9c260a609700ee5, type: 3}
     fallClip: {fileID: 0}
-    hurtClip: {fileID: 0}
-    deadClip: {fileID: 0}
-    actionClip: {fileID: 0}
+    hurtClip: {fileID: 7400000, guid: ac29e9bcf21909e41b7c204690bdd8a5, type: 3}
+    deadClip: {fileID: 7400000, guid: 7ec33b338c1e07f40a6757106561f7d8, type: 3}
+    actionClip: {fileID: 7400000, guid: c5e70869262598d49809c2cf63f2f3c3, type: 2}
+  legacyAnimation: {fileID: 0}
   legacyAnimationData:
     idleClip: {fileID: 0}
     moveClip: {fileID: 0}
@@ -424,7 +426,15 @@ MonoBehaviour:
     ySpeedToPlayJumpClip: 0.25
     ySpeedToPlayFallClip: -0.25
   skinnedMeshRenderer: {fileID: 0}
-  defaultAttackAnimations: []
+  defaultAttackAnimations:
+  - clip: {fileID: 7400000, guid: b879d93f6ad2e3d4681e180c8716daf1, type: 3}
+    triggerDurationRate: 0.5
+    extraDuration: 0
+    audioClips: []
+  - clip: {fileID: 7400000, guid: e9c5add18fadf164a9f5e656dea581d5, type: 3}
+    triggerDurationRate: 0.5
+    extraDuration: 0
+    audioClips: []
   defaultSkillCastAnimations: []
   weaponAnimations: []
   skillCastAnimations: []
@@ -440,39 +450,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   behaviourIndex: 0
-  syncFieldNames:
-  - characterName
-  - currentFood
-  - currentHp
-  - currentMp
-  - currentStamina
-  - currentWater
-  - equipWeapons
-  - exp
-  - gold
-  - guildId
-  - id
-  - isHidding
-  - level
-  - partyId
-  - skillPoint
-  - statPoint
-  - syncTitle
-  - umaAvatarData
-  syncListNames:
-  - attributes
-  - buffs
-  - equipItems
-  - hotkeys
-  - nonEquipItems
-  - quests
-  - skills
-  - skillUsages
-  - summons
   sendOptions: 0
   sendInterval: 0.1
   title: 
   textTitle: {fileID: 0}
+  syncTitle:
+    behaviour: {fileID: 0}
+    elementId: 0
+    sendOptions: 3
+    sendInterval: 0.1
+    forOwnerOnly: 0
+    value: 
   currentHp:
     behaviour: {fileID: 0}
     elementId: 0
@@ -482,7 +470,7 @@ MonoBehaviour:
     value: 0
   combatTextTransform: {fileID: 4362391171358638}
   race: {fileID: 0}
-  database: {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
+  database: {fileID: 0}
   ownerObjects: []
   nonOwnerObjects: []
   meleeDamageTransform: {fileID: 4362391171358638}
@@ -490,13 +478,6 @@ MonoBehaviour:
   uiElementTransform: {fileID: 4537684538449000}
   miniMapElementContainer: {fileID: 4679251409398730}
   id:
-    behaviour: {fileID: 0}
-    elementId: 0
-    sendOptions: 3
-    sendInterval: 0.1
-    forOwnerOnly: 0
-    value: 
-  characterName:
     behaviour: {fileID: 0}
     elementId: 0
     sendOptions: 3
@@ -613,7 +594,17 @@ MonoBehaviour:
       colors: 
       slots: 
       dnas: 
+  characterTitle: 
+  playerCharacters:
+  - {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
   controllerPrefab: {fileID: 0}
+  dataId:
+    behaviour: {fileID: 0}
+    elementId: 0
+    sendOptions: 3
+    sendInterval: 0.1
+    forOwnerOnly: 0
+    value: 0
   statPoint:
     behaviour: {fileID: 0}
     elementId: 0
@@ -640,14 +631,14 @@ MonoBehaviour:
     elementId: 0
     sendOptions: 3
     sendInterval: 0.1
-    forOwnerOnly: 1
+    forOwnerOnly: 0
     value: 0
   guildId:
     behaviour: {fileID: 0}
     elementId: 0
     sendOptions: 3
     sendInterval: 0.1
-    forOwnerOnly: 1
+    forOwnerOnly: 0
     value: 0
   hotkeys:
     behaviour: {fileID: 0}
@@ -687,8 +678,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   behaviourIndex: 0
-  syncFieldNames: []
-  syncListNames: []
   sendOptions: 2
   sendInterval: 0.1
   syncingTransform: {fileID: 0}
@@ -758,8 +747,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   behaviourIndex: 0
-  syncFieldNames: []
-  syncListNames: []
   sendOptions: 0
   sendInterval: 0.1
   range: 80
