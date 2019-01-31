@@ -7,7 +7,7 @@ using UMA.CharacterSystem;
 namespace MultiplayerARPG
 {
     [RequireComponent(typeof(DynamicCharacterAvatar))]
-    public class CharacterModelUMA : CharacterModel
+    public sealed class CharacterModelUMA : CharacterModel
     {
         private DynamicCharacterAvatar cacheUmaAvatar;
         public DynamicCharacterAvatar CacheUmaAvatar
@@ -49,10 +49,8 @@ namespace MultiplayerARPG
             InitializeUMA();
         }
 
-        public override void SetEquipWeapons(EquipWeapons equipWeapons, out Transform rightHandMissileDamageTransform, out Transform leftHandMissileDamageTransform)
+        public override void SetEquipWeapons(EquipWeapons equipWeapons)
         {
-            rightHandMissileDamageTransform = null;
-            leftHandMissileDamageTransform = null;
             tempEquipWeapons = equipWeapons;
 
             if (!IsUmaCharacterCreated)
@@ -68,23 +66,33 @@ namespace MultiplayerARPG
             string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
             Item tempEquipmentItem;
             UMATextRecipe[] receipes;
-
+            // Setup right hand weapon
             if (equipWeapons.rightHand != null)
             {
-                tempEquipmentItem = equipWeapons.rightHand.GetEquipmentItem();
+                tempEquipmentItem = equipWeapons.rightHand.GetWeaponItem();
                 if (tempEquipmentItem != null)
                 {
-                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.equipmentModels);
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.equipmentModels, equipWeapons.rightHand.level, rightHandMissileDamageTransforms);
                     if (tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
                         SetSlot(equipWeaponUsedSlots, receipes);
                 }
             }
+            // Setup left hand weapon
             if (equipWeapons.leftHand != null)
             {
-                tempEquipmentItem = equipWeapons.leftHand.GetEquipmentItem();
+                // Weapon
+                tempEquipmentItem = equipWeapons.leftHand.GetWeaponItem();
                 if (tempEquipmentItem != null)
                 {
-                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.subEquipmentModels);
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.subEquipmentModels, equipWeapons.leftHand.level, leftHandMissileDamageTransforms);
+                    if (tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(equipWeaponUsedSlots, receipes);
+                }
+                // Shield
+                tempEquipmentItem = equipWeapons.leftHand.GetShieldItem();
+                if (tempEquipmentItem != null)
+                {
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.equipmentModels, equipWeapons.leftHand.level);
                     if (tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
                         SetSlot(equipWeaponUsedSlots, receipes);
                 }
@@ -118,7 +126,7 @@ namespace MultiplayerARPG
                 if (tempEquipmentItem == null)
                     continue;
 
-                SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels);
+                SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels, equipItem.level);
 
                 if (!tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
                     continue;
@@ -145,7 +153,7 @@ namespace MultiplayerARPG
             objectsList.Clear();
         }
 
-        private void SetEquipmentObject(List<GameObject> objectsList, EquipmentModel[] equipmentModels)
+        private void SetEquipmentObject(List<GameObject> objectsList, EquipmentModel[] equipmentModels, int level, List<Transform> missileDamageTransforms = null)
         {
             if (objectsList == null || equipmentModels == null || equipmentModels.Length == 0)
                 return;
@@ -173,6 +181,13 @@ namespace MultiplayerARPG
                 newObj.gameObject.SetActive(true);
                 newObj.gameObject.SetLayerRecursively(gameInstance.characterLayer.LayerIndex, true);
                 newObj.RemoveComponentsInChildren<Collider>(false);
+                tempEquipmentEntity = tempEquipmentObject.GetComponent<BaseEquipmentEntity>();
+                if (tempEquipmentEntity != null)
+                {
+                    tempEquipmentEntity.Level = level;
+                    if (missileDamageTransforms != null && tempEquipmentEntity.missileDamageTransform != null)
+                        missileDamageTransforms.Add(tempEquipmentEntity.missileDamageTransform);
+                }
 
                 objectsList.Add(newObj);
             }
