@@ -49,8 +49,10 @@ namespace MultiplayerARPG
             InitializeUMA();
         }
 
-        public override void SetEquipWeapons(EquipWeapons equipWeapons)
+        public override void SetEquipWeapons(EquipWeapons equipWeapons, out Transform rightHandMissileDamageTransform, out Transform leftHandMissileDamageTransform)
         {
+            rightHandMissileDamageTransform = null;
+            leftHandMissileDamageTransform = null;
             tempEquipWeapons = equipWeapons;
 
             if (!IsUmaCharacterCreated)
