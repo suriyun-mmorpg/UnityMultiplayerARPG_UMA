@@ -172,15 +172,15 @@ namespace MultiplayerARPG
                 boneObj = CacheUmaData.GetBoneGameObject(equipmentModel.equipSocket);
                 if (boneObj == null)
                     continue;
-                
-                newObj = Instantiate(equipmentModel.model);
-                newObj.transform.SetParent(boneObj.transform, false);
-                newObj.transform.localPosition = Vector3.zero;
-                newObj.transform.localEulerAngles = Vector3.zero;
-                newObj.transform.localScale = Vector3.one;
-                newObj.gameObject.SetActive(true);
-                newObj.gameObject.SetLayerRecursively(gameInstance.characterLayer.LayerIndex, true);
-                newObj.RemoveComponentsInChildren<Collider>(false);
+
+                tempEquipmentObject = Instantiate(equipmentModel.model);
+                tempEquipmentObject.transform.SetParent(boneObj.transform, false);
+                tempEquipmentObject.transform.localPosition = Vector3.zero;
+                tempEquipmentObject.transform.localEulerAngles = Vector3.zero;
+                tempEquipmentObject.transform.localScale = Vector3.one;
+                tempEquipmentObject.gameObject.SetActive(true);
+                tempEquipmentObject.gameObject.SetLayerRecursively(gameInstance.characterLayer.LayerIndex, true);
+                tempEquipmentObject.RemoveComponentsInChildren<Collider>(false);
                 tempEquipmentEntity = tempEquipmentObject.GetComponent<BaseEquipmentEntity>();
                 if (tempEquipmentEntity != null)
                 {
@@ -189,7 +189,7 @@ namespace MultiplayerARPG
                         missileDamageTransforms.Add(tempEquipmentEntity.missileDamageTransform);
                 }
 
-                objectsList.Add(newObj);
+                objectsList.Add(tempEquipmentObject);
             }
         }
 
