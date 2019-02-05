@@ -159,7 +159,6 @@ namespace MultiplayerARPG
                 return;
 
             GameObject boneObj;
-            GameObject newObj;
             foreach (EquipmentModel equipmentModel in equipmentModels)
             {
                 if (string.IsNullOrEmpty(equipmentModel.equipSocket) ||
