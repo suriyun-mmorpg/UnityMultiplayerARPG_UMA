@@ -629,7 +629,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca66ed5b09dc41447ad7cf901faa5e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  umaAvatarDatabase: {fileID: 11400000, guid: fde58e3f1ea834b48bc69830e7037912, type: 2}
   dimensionType: 0
   gameplayRule: {fileID: 11400000, guid: 3bfe680a81b27ce4ba9642ddff7baa17, type: 2}
   networkSetting: {fileID: 11400000, guid: c0825e8ee894749459ab4c8dda26dfe6, type: 2}
@@ -764,6 +763,7 @@ MonoBehaviour:
   maxCharacterNameLength: 16
   useMobileInEditor: 0
   cashShopDatabase: {fileID: 11400000, guid: 677c37c598e6c1045b66de68f1f546f6, type: 2}
+  umaAvatarDatabase: {fileID: 11400000, guid: fde58e3f1ea834b48bc69830e7037912, type: 2}
 --- !u!4 &1379718503
 Transform:
   m_ObjectHideFlags: 0
