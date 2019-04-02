@@ -16,10 +16,15 @@ namespace MultiplayerARPG
         [SerializeField]
         protected SyncFieldUmaAvatarData umaAvatarData = new SyncFieldUmaAvatarData();
 
-        [DevExtMethods("SetupNetElements")]
-        public void SetupUmaNetElements()
+        [DevExtMethods("Awake")]
+        public void Awake_UMA()
         {
-            umaAvatarData.sendOptions = SendOptions.ReliableOrdered;
+            onSetupNetElements += OnSetupNetElements_UMA;
+        }
+
+        public void OnSetupNetElements_UMA()
+        {
+            umaAvatarData.deliveryMethod = DeliveryMethod.ReliableOrdered;
             umaAvatarData.forOwnerOnly = false;
             umaAvatarData.onChange += OnUmaAvatarDataChange;
         }
@@ -28,9 +33,10 @@ namespace MultiplayerARPG
         public void OnUmaDestroy()
         {
             umaAvatarData.onChange -= OnUmaAvatarDataChange;
+            onSetupNetElements -= OnSetupNetElements_UMA;
         }
 
-        protected void OnUmaAvatarDataChange(UmaAvatarData avatarData)
+        protected void OnUmaAvatarDataChange(bool isInit, UmaAvatarData avatarData)
         {
             CharacterModelUMA characterModelUma = CharacterModel as CharacterModelUMA;
             if (characterModelUma == null)
