@@ -16,6 +16,13 @@ MonoBehaviour:
   description: 
   descriptions: []
   icon: {fileID: 21300000, guid: 0f0bcf7c70b4ed140aef538979a7b5e7, type: 3}
+  umaRaceReceipeSlots:
+  - raceData: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
+    recipes:
+    - {fileID: 11400000, guid: c6a22e687d55ee144965d37c94a9b11d, type: 2}
+  - raceData: {fileID: 11400000, guid: f8fea6f0ee17b3f42a4ae6cfb627bab3, type: 2}
+    recipes:
+    - {fileID: 11400000, guid: 47ba7be232f89084485a40d74ef0d13c, type: 2}
   itemType: 1
   dropModel: {fileID: 0}
   sellPrice: 0
@@ -25,6 +32,7 @@ MonoBehaviour:
   lockDuration: 0
   armorType: {fileID: 11400000, guid: 745bc973ccf3f5640af5285026a87d5d, type: 2}
   weaponType: {fileID: 0}
+  moveSpeedRateWhileAttacking: 0
   damageAmount:
     damageElement: {fileID: 0}
     amount:
@@ -64,6 +72,7 @@ MonoBehaviour:
       moveSpeed: 0
       atkSpeed: 0
       weightLimit: 0
+      slotLimit: 0
       stamina: 0
       food: 0
       water: 0
@@ -81,6 +90,7 @@ MonoBehaviour:
       moveSpeed: 0
       atkSpeed: 0
       weightLimit: 0
+      slotLimit: 0
       stamina: 0
       food: 0
       water: 0
@@ -121,6 +131,7 @@ MonoBehaviour:
         moveSpeed: 0
         atkSpeed: 0
         weightLimit: 0
+        slotLimit: 0
         stamina: 0
         food: 0
         water: 0
@@ -138,6 +149,7 @@ MonoBehaviour:
         moveSpeed: 0
         atkSpeed: 0
         weightLimit: 0
+        slotLimit: 0
         stamina: 0
         food: 0
         water: 0
@@ -145,14 +157,12 @@ MonoBehaviour:
     increaseAttributes: []
     increaseResistances: []
     increaseDamages: []
+    damageOverTimes: []
+    disallowMove: 0
+    disallowAttack: 0
+    disallowUseSkill: 0
+    disallowUseItem: 0
     effects: []
   ammoType: {fileID: 0}
   buildingEntity: {fileID: 0}
   petEntity: {fileID: 0}
-  umaRaceReceipeSlots:
-  - raceData: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
-    recipes:
-    - {fileID: 11400000, guid: c6a22e687d55ee144965d37c94a9b11d, type: 2}
-  - raceData: {fileID: 11400000, guid: f8fea6f0ee17b3f42a4ae6cfb627bab3, type: 2}
-    recipes:
-    - {fileID: 11400000, guid: 47ba7be232f89084485a40d74ef0d13c, type: 2}

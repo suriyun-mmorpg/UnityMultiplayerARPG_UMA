@@ -153,6 +153,7 @@ MonoBehaviour:
   doNotDestroyOnSceneChanges: 0
   autoSaveDuration: 2
   startType: 0
+  enableGmCommands: 0
   writeAddonLog: 0
 --- !u!114 &8174915
 MonoBehaviour:
@@ -188,7 +189,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, LiteNetLibManager, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onLoadSceneProgress:
     m_PersistentCalls:
@@ -204,7 +205,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, LiteNetLibManager, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onLoadSceneFinish:
     m_PersistentCalls:
@@ -220,7 +221,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, LiteNetLibManager, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!4 &8174917
 Transform:
@@ -629,6 +630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca66ed5b09dc41447ad7cf901faa5e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  umaAvatarDatabase: {fileID: 11400000, guid: fde58e3f1ea834b48bc69830e7037912, type: 2}
   dimensionType: 0
   gameplayRule: {fileID: 11400000, guid: 3bfe680a81b27ce4ba9642ddff7baa17, type: 2}
   networkSetting: {fileID: 11400000, guid: c0825e8ee894749459ab4c8dda26dfe6, type: 2}
@@ -703,6 +705,13 @@ MonoBehaviour:
   conversationDistance: 3
   buildDistance: 10
   localChatDistance: 10
+  inventorySystem: 0
+  playerStorage:
+    weightLimit: 0
+    slotLimit: 0
+  guildStorage:
+    weightLimit: 0
+    slotLimit: 0
   minSummonDistance: 2
   maxSummonDistance: 3
   enemySpottedNotifyDistance: 5
@@ -710,6 +719,7 @@ MonoBehaviour:
   maxFollowSummonerDistance: 10
   petDeadLockDuration: 60
   petUnSummonLockDuration: 30
+  joinInstanceMapDistance: 20
   levelUpEffect: {fileID: 114843870614705530, guid: 6f6e255b4877f874c985ed9fb46293a1,
     type: 2}
   startGold: 2000
@@ -763,7 +773,6 @@ MonoBehaviour:
   maxCharacterNameLength: 16
   useMobileInEditor: 0
   cashShopDatabase: {fileID: 11400000, guid: 677c37c598e6c1045b66de68f1f546f6, type: 2}
-  umaAvatarDatabase: {fileID: 11400000, guid: fde58e3f1ea834b48bc69830e7037912, type: 2}
 --- !u!4 &1379718503
 Transform:
   m_ObjectHideFlags: 0
@@ -802,6 +811,8 @@ MonoBehaviour:
     keyCode: 118
   - keyName: Jump
     keyCode: 32
+  - keyName: FindEnemy
+    keyCode: 9
 --- !u!114 &1379718505
 MonoBehaviour:
   m_ObjectHideFlags: 0
