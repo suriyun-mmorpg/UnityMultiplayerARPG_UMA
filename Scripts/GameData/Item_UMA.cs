@@ -8,6 +8,8 @@ namespace MultiplayerARPG
     public partial class Item
     {
         [Header("UMA Configs")]
+        // TODO: I know `Receipe` should be `Recipe` but I don't want to break other developer projects
+        // May fix this later
         public UmaRaceRecipeSlots[] umaRaceReceipeSlots;
 
         private Dictionary<string, UMATextRecipe[]> cacheUmaRecipeSlot;
@@ -18,11 +20,11 @@ namespace MultiplayerARPG
                 if (cacheUmaRecipeSlot == null)
                 {
                     cacheUmaRecipeSlot = new Dictionary<string, UMATextRecipe[]>();
-                    foreach (UmaRaceRecipeSlots umaRaceReceipeSlot in umaRaceReceipeSlots)
+                    foreach (UmaRaceRecipeSlots umaRaceRecipeSlot in umaRaceReceipeSlots)
                     {
-                        if (umaRaceReceipeSlot.raceData == null || string.IsNullOrEmpty(umaRaceReceipeSlot.raceData.raceName))
+                        if (umaRaceRecipeSlot.raceData == null || string.IsNullOrEmpty(umaRaceRecipeSlot.raceData.raceName))
                             continue;
-                        cacheUmaRecipeSlot[umaRaceReceipeSlot.raceData.raceName] = umaRaceReceipeSlot.recipes;
+                        cacheUmaRecipeSlot[umaRaceRecipeSlot.raceData.raceName] = umaRaceRecipeSlot.recipes;
                     }
                 }
                 return cacheUmaRecipeSlot;
