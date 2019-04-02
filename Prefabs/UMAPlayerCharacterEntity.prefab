@@ -160,33 +160,27 @@ MonoBehaviour:
   CharacterCreated:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UMA.UMADataEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UMA.UMADataEvent, UMA_Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   CharacterBegun:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UMA.UMADataEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UMA.UMADataEvent, UMA_Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   CharacterDestroyed:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UMA.UMADataEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UMA.UMADataEvent, UMA_Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   CharacterUpdated:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UMA.UMADataEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UMA.UMADataEvent, UMA_Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   CharacterDnaUpdated:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UMA.UMADataEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UMA.UMADataEvent, UMA_Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   RecipeUpdated:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UMA.UMADataEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UMA.UMADataEvent, UMA_Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   hide: 0
   loadBlendShapes: 0
   activeRace:
@@ -288,6 +282,8 @@ MonoBehaviour:
       _color: {r: 1, g: 1, b: 1, a: 1}
       _metallicGloss: {r: 0, g: 0, b: 0, a: 0}
       valuesConverted: 0
+  predefinedDNA:
+    PreloadValues: []
   loadPathType: 2
   loadPath: CharacterRecipes
   loadFilename: 
@@ -341,6 +337,7 @@ MonoBehaviour:
     hurtClip: {fileID: 0}
     deadClip: {fileID: 0}
     actionClip: {fileID: 7400000, guid: c5e70869262598d49809c2cf63f2f3c3, type: 2}
+    castSkillClip: {fileID: 0}
   legacyAnimation: {fileID: 0}
   legacyAnimationData:
     idleClip: {fileID: 0}
@@ -373,7 +370,12 @@ MonoBehaviour:
     triggerDurationRate: 0.5
     extraDuration: 0
     audioClips: []
-  defaultSkillCastAnimations: []
+  defaultSkillCastClip: {fileID: 0}
+  defaultSkillActivateAnimation:
+    clip: {fileID: 0}
+    triggerDurationRate: 0
+    extraDuration: 0
+    audioClips: []
   weaponAnimations:
   - weaponType: {fileID: 11400000, guid: e1f9f1925e8c9b14aa98b51238e5a26e, type: 2}
     idleClip: {fileID: 0}
@@ -399,6 +401,8 @@ MonoBehaviour:
       extraDuration: 0
       audioClips: []
     leftHandAttackAnimations: []
+  skillAnimations: []
+  defaultSkillCastAnimations: []
   skillCastAnimations: []
 --- !u!136 &136893843921810890
 CapsuleCollider:
@@ -444,7 +448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetId: 
   objectId: 0
-  connectId: 0
+  connectionId: 0
   manager: {fileID: 0}
   subscriberIds: 
 --- !u!114 &114508443159601964
@@ -525,22 +529,35 @@ MonoBehaviour:
   behaviourIndex: 0
   sendOptions: 0
   sendInterval: 0.1
-  title: 
   textTitle: {fileID: 0}
+  textTitleB: {fileID: 0}
   ownerObjects: []
   nonOwnerObjects: []
   syncTitle:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
+    forOwnerOnly: 0
+    value: 
+  syncTitleB:
+    behaviour: {fileID: 0}
+    elementId: 0
+    deliveryMethod: 4
+    sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 
   currentHp:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   combatTextTransform: {fileID: 4362391171358638}
@@ -556,57 +573,73 @@ MonoBehaviour:
   id:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 
   level:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   exp:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   currentMp:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   currentStamina:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 0
+    deliveryMethod: 0
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   currentFood:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   currentWater:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   equipWeapons:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value:
       rightHand:
@@ -616,6 +649,7 @@ MonoBehaviour:
         durability: 0
         exp: 0
         lockRemainsDuration: 0
+        ammo: 0
       leftHand:
         dataId: 0
         level: 0
@@ -623,18 +657,23 @@ MonoBehaviour:
         durability: 0
         exp: 0
         lockRemainsDuration: 0
+        ammo: 0
   isHidding:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   movementState:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 2
+    deliveryMethod: 2
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   attributes:
@@ -665,6 +704,20 @@ MonoBehaviour:
     behaviour: {fileID: 0}
     elementId: 0
     forOwnerOnly: 1
+  umaAvatarData:
+    behaviour: {fileID: 0}
+    elementId: 0
+    deliveryMethod: 0
+    sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
+    forOwnerOnly: 0
+    value:
+      raceIndex: 0
+      genderIndex: 0
+      colors: 
+      slots: 
+      dnas: 
   characterTitle: 
   playerCharacters:
   - {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
@@ -672,44 +725,83 @@ MonoBehaviour:
   dataId:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   statPoint:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 1
     value: 0
   skillPoint:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 1
     value: 0
   gold:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
+    forOwnerOnly: 1
+    value: 0
+  userGold:
+    behaviour: {fileID: 0}
+    elementId: 0
+    deliveryMethod: 4
+    sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
+    forOwnerOnly: 1
+    value: 0
+  userCash:
+    behaviour: {fileID: 0}
+    elementId: 0
+    deliveryMethod: 4
+    sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 1
     value: 0
   partyId:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
     value: 0
   guildId:
     behaviour: {fileID: 0}
     elementId: 0
-    sendOptions: 3
+    deliveryMethod: 4
     sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
     forOwnerOnly: 0
+    value: 0
+  isWarping:
+    behaviour: {fileID: 0}
+    elementId: 0
+    deliveryMethod: 4
+    sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
+    forOwnerOnly: 1
     value: 0
   hotkeys:
     behaviour: {fileID: 0}
@@ -719,23 +811,14 @@ MonoBehaviour:
     behaviour: {fileID: 0}
     elementId: 0
     forOwnerOnly: 1
-  umaAvatarData:
-    behaviour: {fileID: 0}
-    elementId: 0
-    sendOptions: 3
-    sendInterval: 0.1
-    forOwnerOnly: 0
-    value:
-      raceIndex: 0
-      genderIndex: 0
-      colors: 
-      slots: 
-      dnas: 
   stoppingDistance: 0.1
-  groundingDistance: 0.1
   jumpHeight: 2
   gravityRate: 1
   backwardMoveSpeedRate: 0.75
+  groundCheckDistance: 0.1
+  groundCheckDistanceWhileJump: 0.01
+  stickToGroundHelperDistance: 0.5
+  shellOffset: 0
   movementSecure: 0
   writeAddonLog: 0
 --- !u!95 &95941422500740546
