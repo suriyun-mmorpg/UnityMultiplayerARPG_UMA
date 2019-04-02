@@ -8,30 +8,30 @@ namespace MultiplayerARPG
     public partial class Item
     {
         [Header("UMA Configs")]
-        public UmaRaceReceipeSlots[] umaRaceReceipeSlots;
+        public UmaRaceRecipeSlots[] umaRaceReceipeSlots;
 
-        private Dictionary<string, UMATextRecipe[]> cacheUmaReceipeSlot;
-        public Dictionary<string, UMATextRecipe[]> CacheUmaReceipeSlot
+        private Dictionary<string, UMATextRecipe[]> cacheUmaRecipeSlot;
+        public Dictionary<string, UMATextRecipe[]> CacheUmaRecipeSlot
         {
             get
             {
-                if (cacheUmaReceipeSlot == null)
+                if (cacheUmaRecipeSlot == null)
                 {
-                    cacheUmaReceipeSlot = new Dictionary<string, UMATextRecipe[]>();
-                    foreach (UmaRaceReceipeSlots umaRaceReceipeSlot in umaRaceReceipeSlots)
+                    cacheUmaRecipeSlot = new Dictionary<string, UMATextRecipe[]>();
+                    foreach (UmaRaceRecipeSlots umaRaceReceipeSlot in umaRaceReceipeSlots)
                     {
                         if (umaRaceReceipeSlot.raceData == null || string.IsNullOrEmpty(umaRaceReceipeSlot.raceData.raceName))
                             continue;
-                        cacheUmaReceipeSlot[umaRaceReceipeSlot.raceData.raceName] = umaRaceReceipeSlot.recipes;
+                        cacheUmaRecipeSlot[umaRaceReceipeSlot.raceData.raceName] = umaRaceReceipeSlot.recipes;
                     }
                 }
-                return cacheUmaReceipeSlot;
+                return cacheUmaRecipeSlot;
             }
         }
     }
 
     [System.Serializable]
-    public struct UmaRaceReceipeSlots
+    public struct UmaRaceRecipeSlots
     {
         public RaceData raceData;
         public UMATextRecipe[] recipes;
