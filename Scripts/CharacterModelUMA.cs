@@ -73,7 +73,7 @@ namespace MultiplayerARPG
                 if (tempEquipmentItem != null)
                 {
                     SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.equipmentModels, equipWeapons.rightHand.level, rightHandMissileDamageTransforms);
-                    if (tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
+                    if (tempEquipmentItem.CacheUmaRecipeSlot.TryGetValue(raceName, out receipes))
                         SetSlot(equipWeaponUsedSlots, receipes);
                 }
             }
@@ -85,7 +85,7 @@ namespace MultiplayerARPG
                 if (tempEquipmentItem != null)
                 {
                     SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.subEquipmentModels, equipWeapons.leftHand.level, leftHandMissileDamageTransforms);
-                    if (tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
+                    if (tempEquipmentItem.CacheUmaRecipeSlot.TryGetValue(raceName, out receipes))
                         SetSlot(equipWeaponUsedSlots, receipes);
                 }
                 // Shield
@@ -93,7 +93,7 @@ namespace MultiplayerARPG
                 if (tempEquipmentItem != null)
                 {
                     SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.equipmentModels, equipWeapons.leftHand.level);
-                    if (tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
+                    if (tempEquipmentItem.CacheUmaRecipeSlot.TryGetValue(raceName, out receipes))
                         SetSlot(equipWeaponUsedSlots, receipes);
                 }
             }
@@ -128,7 +128,7 @@ namespace MultiplayerARPG
 
                 SetEquipmentObject(equipItemObjects, tempEquipmentItem.equipmentModels, equipItem.level);
 
-                if (!tempEquipmentItem.CacheUmaReceipeSlot.TryGetValue(raceName, out receipes))
+                if (!tempEquipmentItem.CacheUmaRecipeSlot.TryGetValue(raceName, out receipes))
                     continue;
 
                 SetSlot(equipItemUsedSlots, receipes);
