@@ -7,7 +7,7 @@ using UMA.CharacterSystem;
 namespace MultiplayerARPG
 {
     [RequireComponent(typeof(DynamicCharacterAvatar))]
-    public sealed class CharacterModelUMA : CharacterModel
+    public class AnimatorCharacterModelUMA : AnimatorCharacterModel
     {
         private DynamicCharacterAvatar cacheUmaAvatar;
         public DynamicCharacterAvatar CacheUmaAvatar
@@ -229,7 +229,7 @@ namespace MultiplayerARPG
             if (onUmaCharacterCreated != null)
                 onUmaCharacterCreated.Invoke();
         }
-        
+
         public void ApplyUmaAvatar(UmaAvatarData avatarData)
         {
             if (CacheUmaAvatar == null)
