@@ -449,6 +449,11 @@ MonoBehaviour:
     triggerDurationRate: 0
     extraDuration: 0
     audioClips: []
+  defaultReloadAnimation:
+    clip: {fileID: 0}
+    triggerDurationRate: 0
+    extraDuration: 0
+    audioClips: []
   weaponAnimations:
   - weaponType: {fileID: 11400000, guid: e1f9f1925e8c9b14aa98b51238e5a26e, type: 2}
     idleClip: {fileID: 0}
@@ -474,6 +479,11 @@ MonoBehaviour:
       extraDuration: 0
       audioClips: []
     leftHandAttackAnimations: []
+    reloadAnimation:
+      clip: {fileID: 0}
+      triggerDurationRate: 0
+      extraDuration: 0
+      audioClips: []
   skillAnimations: []
   defaultSkillCastAnimations: []
   skillCastAnimations: []
@@ -523,6 +533,7 @@ MonoBehaviour:
     forOwnerOnly: 0
     value: 0
   combatTextTransform: {fileID: 4362391171358638}
+  opponentAimTransform: {fileID: 0}
   race: {fileID: 0}
   database: {fileID: 0}
   uiElementTransform: {fileID: 0}
@@ -612,6 +623,7 @@ MonoBehaviour:
         exp: 0
         lockRemainsDuration: 0
         ammo: 0
+        sockets: 
       leftHand:
         dataId: 0
         level: 0
@@ -620,6 +632,7 @@ MonoBehaviour:
         exp: 0
         lockRemainsDuration: 0
         ammo: 0
+        sockets: 
   isHidding:
     behaviour: {fileID: 0}
     elementId: 0
@@ -781,6 +794,7 @@ MonoBehaviour:
   groundCheckDistanceWhileJump: 0.01
   stickToGroundHelperDistance: 0.5
   shellOffset: 0
+  useNavMeshForKeyMovement: 0
   movementSecure: 0
   writeAddonLog: 0
 --- !u!114 &114441634023571468

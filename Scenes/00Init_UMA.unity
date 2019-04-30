@@ -697,6 +697,7 @@ MonoBehaviour:
     layerIndex: 14
   nonTargetingLayers:
   - layerIndex: 11
+  groundOrWallLayers: []
   itemAppearDuration: 60
   itemLootLockDuration: 5
   coCharacterActionDuration: 5
@@ -813,6 +814,8 @@ MonoBehaviour:
     keyCode: 32
   - keyName: FindEnemy
     keyCode: 9
+  - keyName: Reload
+    keyCode: 114
 --- !u!114 &1379718505
 MonoBehaviour:
   m_ObjectHideFlags: 0

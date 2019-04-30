@@ -521,6 +521,8 @@ MonoBehaviour:
   doNotEnterGameOnConnect: 0
   doNotDestroyOnSceneChanges: 0
   writeAddonLog: 0
+  mapInstanceId: 
+  centralTransportFactory: {fileID: 0}
   centralConnectKey: SampleConnectKey
   centralNetworkAddress: 127.0.0.1
   centralNetworkPort: 6000
@@ -573,7 +575,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, LiteNetLibManager, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onLoadSceneProgress:
     m_PersistentCalls:
@@ -589,7 +591,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, LiteNetLibManager, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onLoadSceneFinish:
     m_PersistentCalls:
@@ -605,7 +607,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: LiteNetLibManager.LiteNetLibLoadSceneEvent, LiteNetLibManager, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1232480984
 GameObject:
@@ -765,7 +767,7 @@ MonoBehaviour:
     - {fileID: 114984786077298016, guid: fa67f0b7f994d9548821d15fbf67531d, type: 2}
   expTree: 140000001e00000031000000490000006500000086000000aa000000d1000000fa000000270100005601000087010000bb010000f10100002902000064020000a0020000de0200001e0300005f030000a3030000e80300002f04000077040000c10400000d0500005a050000a9050000f90500004a0600009d060000f1060000470700009e070000f707000050080000ab0800000809000065090000c4090000240a0000850a0000e80a00004b0b0000b00b0000160c00007d0c0000e50c00004e0d0000b90d0000240e0000910e0000fe0e00006d0f0000dd0f00004d100000bf10000032110000a61100001b12000090120000071300007f130000f813000071140000ec14000068150000e415000062160000e01600005f170000e017000061180000e318000066190000ea1900006e1a0000f41a00007a1b0000021c00008a1c0000131d00009d1d0000281e0000b31e0000401f0000cd1f00005b200000ea200000792100000a2200009b2200002d230000c023000054240000e82400007e25000014260000aa26000042270000
   gameDatabase: {fileID: 11400000, guid: 22476b96f3649b647959b0de0502114d, type: 2}
-  warpPortalDatabase: {fileID: 11400000, guid: f172355d1b582ff4b95a482eaf2c7b61, type: 2}
+  warpPortalDatabase: {fileID: 11400000, guid: 6a5e8bb8645bbb349a05709f9b37b5df, type: 2}
   npcDatabase: {fileID: 11400000, guid: dae14f7f7d125fc4096ba7ac1f68d581, type: 2}
   socialSystemSetting: {fileID: 11400000, guid: afad462dae207414f91b207f6882dad2,
     type: 2}
@@ -791,6 +793,7 @@ MonoBehaviour:
     layerIndex: 14
   nonTargetingLayers:
   - layerIndex: 11
+  groundOrWallLayers: []
   itemAppearDuration: 60
   itemLootLockDuration: 5
   coCharacterActionDuration: 5
@@ -799,6 +802,13 @@ MonoBehaviour:
   conversationDistance: 3
   buildDistance: 10
   localChatDistance: 10
+  inventorySystem: 0
+  playerStorage:
+    weightLimit: 0
+    slotLimit: 0
+  guildStorage:
+    weightLimit: 0
+    slotLimit: 0
   minSummonDistance: 2
   maxSummonDistance: 3
   enemySpottedNotifyDistance: 5
@@ -806,6 +816,7 @@ MonoBehaviour:
   maxFollowSummonerDistance: 10
   petDeadLockDuration: 60
   petUnSummonLockDuration: 30
+  joinInstanceMapDistance: 20
   levelUpEffect: {fileID: 114843870614705530, guid: 6f6e255b4877f874c985ed9fb46293a1,
     type: 2}
   startGold: 2000
@@ -895,6 +906,10 @@ MonoBehaviour:
     keyCode: 118
   - keyName: Jump
     keyCode: 32
+  - keyName: FindEnemy
+    keyCode: 9
+  - keyName: Reload
+    keyCode: 114
 --- !u!114 &1379718505
 MonoBehaviour:
   m_ObjectHideFlags: 0
