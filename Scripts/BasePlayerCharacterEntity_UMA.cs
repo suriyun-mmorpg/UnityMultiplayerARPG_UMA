@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using LiteNetLib;
+using LiteNetLibManager;
 
 namespace MultiplayerARPG
 {
@@ -25,7 +26,7 @@ namespace MultiplayerARPG
         public void OnSetupNetElements_UMA()
         {
             umaAvatarData.deliveryMethod = DeliveryMethod.ReliableOrdered;
-            umaAvatarData.forOwnerOnly = false;
+            umaAvatarData.syncMode = LiteNetLibSyncField.SyncMode.ServerToClients;
             umaAvatarData.onChange += OnUmaAvatarDataChange;
         }
 
