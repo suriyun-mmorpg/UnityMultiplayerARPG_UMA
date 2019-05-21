@@ -390,8 +390,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataId: -642937678
+  hiddingObjects: []
   effectContainers: []
+  setEffectContainersBySetters: 0
   equipmentContainers: []
+  setEquipmentContainersBySetters: 0
   animatorType: 0
   animator: {fileID: 95941422500740546}
   animatorController: {fileID: 9100000, guid: c7a97ef1d9e6a654992209d9ceb68a4e, type: 2}
@@ -411,6 +414,8 @@ MonoBehaviour:
     deadClip: {fileID: 0}
     actionClip: {fileID: 7400000, guid: c5e70869262598d49809c2cf63f2f3c3, type: 2}
     castSkillClip: {fileID: 7400000, guid: 92c60ef1f074c1d4ba3a11ad510881ba, type: 2}
+  actionStateLayer: 0
+  castSkillStateLayer: 0
   legacyAnimation: {fileID: 0}
   legacyAnimationData:
     idleClip: {fileID: 0}
@@ -437,21 +442,29 @@ MonoBehaviour:
   defaultAttackAnimations:
   - clip: {fileID: 7400000, guid: dce280ced5e006c4cb0eb0fab2f51b75, type: 3}
     triggerDurationRate: 0.5
+    durationType: 0
+    fixDurationValue: 0
     extraDuration: 0
     audioClips: []
   - clip: {fileID: 7400000, guid: 7b5b17e2d42e0424f9c36012595dc9b6, type: 3}
     triggerDurationRate: 0.5
+    durationType: 0
+    fixDurationValue: 0
     extraDuration: 0
     audioClips: []
   defaultSkillCastClip: {fileID: 0}
   defaultSkillActivateAnimation:
     clip: {fileID: 0}
     triggerDurationRate: 0
+    durationType: 0
+    fixDurationValue: 0
     extraDuration: 0
     audioClips: []
   defaultReloadAnimation:
     clip: {fileID: 0}
     triggerDurationRate: 0
+    durationType: 0
+    fixDurationValue: 0
     extraDuration: 0
     audioClips: []
   weaponAnimations:
@@ -472,16 +485,29 @@ MonoBehaviour:
     rightHandAttackAnimations:
     - clip: {fileID: 7400000, guid: 95dc4fbaa01379f4f908847fb44054d4, type: 3}
       triggerDurationRate: 0.5
+      durationType: 0
+      fixDurationValue: 0
       extraDuration: 0
       audioClips: []
     - clip: {fileID: 7400000, guid: ce17781955d25c647922801319f24e9e, type: 3}
       triggerDurationRate: 0.5
+      durationType: 0
+      fixDurationValue: 0
       extraDuration: 0
       audioClips: []
     leftHandAttackAnimations: []
-    reloadAnimation:
+    rightHandReloadAnimation:
       clip: {fileID: 0}
       triggerDurationRate: 0
+      durationType: 0
+      fixDurationValue: 0
+      extraDuration: 0
+      audioClips: []
+    leftHandReloadAnimation:
+      clip: {fileID: 0}
+      triggerDurationRate: 0
+      durationType: 0
+      fixDurationValue: 0
       extraDuration: 0
       audioClips: []
   skillAnimations: []
@@ -512,7 +538,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 
   syncTitleB:
     behaviour: {fileID: 0}
@@ -521,7 +547,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 
   currentHp:
     behaviour: {fileID: 0}
@@ -530,7 +556,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   combatTextTransform: {fileID: 4362391171358638}
   opponentAimTransform: {fileID: 0}
@@ -550,7 +576,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 
   level:
     behaviour: {fileID: 0}
@@ -559,7 +585,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   exp:
     behaviour: {fileID: 0}
@@ -568,7 +594,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   currentMp:
     behaviour: {fileID: 0}
@@ -577,7 +603,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   currentStamina:
     behaviour: {fileID: 0}
@@ -586,7 +612,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   currentFood:
     behaviour: {fileID: 0}
@@ -595,7 +621,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   currentWater:
     behaviour: {fileID: 0}
@@ -604,7 +630,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   equipWeapons:
     behaviour: {fileID: 0}
@@ -613,7 +639,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value:
       rightHand:
         dataId: 0
@@ -640,7 +666,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   movementState:
     behaviour: {fileID: 0}
@@ -649,7 +675,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   attributes:
     behaviour: {fileID: 0}
@@ -686,7 +712,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value:
       raceIndex: 0
       genderIndex: 0
@@ -704,7 +730,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   statPoint:
     behaviour: {fileID: 0}
@@ -713,7 +739,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 1
+    syncMode: 1
     value: 0
   skillPoint:
     behaviour: {fileID: 0}
@@ -722,7 +748,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 1
+    syncMode: 1
     value: 0
   gold:
     behaviour: {fileID: 0}
@@ -731,7 +757,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 1
+    syncMode: 1
     value: 0
   userGold:
     behaviour: {fileID: 0}
@@ -740,7 +766,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 1
+    syncMode: 1
     value: 0
   userCash:
     behaviour: {fileID: 0}
@@ -749,7 +775,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 1
+    syncMode: 1
     value: 0
   partyId:
     behaviour: {fileID: 0}
@@ -758,7 +784,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   guildId:
     behaviour: {fileID: 0}
@@ -767,7 +793,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 0
+    syncMode: 0
     value: 0
   isWarping:
     behaviour: {fileID: 0}
@@ -776,7 +802,7 @@ MonoBehaviour:
     sendInterval: 0.1
     alwaysSync: 0
     doNotSyncInitialDataImmediately: 0
-    forOwnerOnly: 1
+    syncMode: 1
     value: 0
   hotkeys:
     behaviour: {fileID: 0}
