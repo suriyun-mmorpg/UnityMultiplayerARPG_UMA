@@ -5,7 +5,7 @@ using UMA;
 
 namespace MultiplayerARPG
 {
-    [CreateAssetMenu(fileName = "UmaAvatarDatabase", menuName = "Create UMA Integration/UmaAvatarDatabase")]
+    [CreateAssetMenu(fileName = "UmaAvatarDatabase", menuName = "Create UMA Integration/UmaAvatarDatabase", order = -4999)]
     public class UmaAvatarDatabase : ScriptableObject
     {
         // Race choice
