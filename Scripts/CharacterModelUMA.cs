@@ -37,8 +37,6 @@ namespace MultiplayerARPG
         private UmaAvatarData? applyingAvatarData;
         private Coroutine applyCoroutine;
         private EquipWeapons tempEquipWeapons;
-        private EquipWeapons tempEquipWeapons2;
-        private byte tempEquipWeaponSet;
         private IList<CharacterItem> tempEquipItems;
 
         private readonly HashSet<string> equipWeaponUsedSlots = new HashSet<string>();
@@ -51,20 +49,10 @@ namespace MultiplayerARPG
             InitializeUMA();
         }
 
-        public override void SetEquipWeapons(EquipWeapons equipWeapons, EquipWeapons equipWeapons2, byte equipWeaponSet)
+        public override void SetEquipWeapons(EquipWeapons equipWeapons)
         {
             tempEquipWeapons = equipWeapons;
-            tempEquipWeapons2 = equipWeapons2;
-            tempEquipWeaponSet = equipWeaponSet;
-            switch (equipWeaponSet)
-            {
-                case 1:
-                    SetClipBasedOnWeapon(equipWeapons2);
-                    break;
-                default:
-                    SetClipBasedOnWeapon(equipWeapons);
-                    break;
-            }
+            SetClipBasedOnWeapon(equipWeapons);
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -294,8 +282,8 @@ namespace MultiplayerARPG
                 }
             }
             // Set equip items if it is already set
-            if (tempEquipWeapons != null || tempEquipWeapons2 != null)
-                SetEquipWeapons(tempEquipWeapons, tempEquipWeapons2, tempEquipWeaponSet);
+            if (tempEquipWeapons != null)
+                SetEquipWeapons(tempEquipWeapons);
             if (tempEquipItems != null)
                 SetEquipItems(tempEquipItems);
 
