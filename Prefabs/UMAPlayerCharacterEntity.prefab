@@ -676,6 +676,15 @@ MonoBehaviour:
     doNotSyncInitialDataImmediately: 0
     syncMode: 0
     value: 0
+  pitch:
+    behaviour: {fileID: 0}
+    elementId: 0
+    deliveryMethod: 2
+    sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 0
+    syncMode: 2
+    value: 0
   selectableWeaponSets:
     behaviour: {fileID: 0}
     elementId: 0
