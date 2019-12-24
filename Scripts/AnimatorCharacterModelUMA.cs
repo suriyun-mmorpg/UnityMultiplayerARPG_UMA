@@ -180,7 +180,7 @@ namespace MultiplayerARPG
                 tempEquipmentObject.transform.localEulerAngles = Vector3.zero;
                 tempEquipmentObject.transform.localScale = Vector3.one;
                 tempEquipmentObject.gameObject.SetActive(true);
-                tempEquipmentObject.gameObject.SetLayerRecursively(gameInstance.characterLayer.LayerIndex, true);
+                tempEquipmentObject.gameObject.SetLayerRecursively(CurrentGameInstance.characterLayer.LayerIndex, true);
                 tempEquipmentObject.RemoveComponentsInChildren<Collider>(false);
                 tempEquipmentEntity = tempEquipmentObject.GetComponent<BaseEquipmentEntity>();
                 if (tempEquipmentEntity != null)
@@ -252,7 +252,7 @@ namespace MultiplayerARPG
         IEnumerator ApplyUmaAvatarRoutine(UmaAvatarData avatarData)
         {
             int i;
-            UmaRace race = gameInstance.UmaRaces[avatarData.raceIndex];
+            UmaRace race = CurrentGameInstance.UmaRaces[avatarData.raceIndex];
             UmaRaceGender gender = race.genders[avatarData.genderIndex];
             CacheUmaAvatar.ChangeRace(gender.raceData.raceName);
             yield return null;
