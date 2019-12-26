@@ -391,9 +391,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hiddingObjects: []
+  hiddingRenderers: []
   effectContainers: []
   setEffectContainersBySetters: 0
-  modelManager: {fileID: 114632547291139262}
   equipmentContainers: []
   setEquipmentContainersBySetters: 0
   animatorType: 0
@@ -483,6 +483,46 @@ MonoBehaviour:
     moveForwardRightClip: {fileID: 0}
     moveBackwardLeftClip: {fileID: 0}
     moveBackwardRightClip: {fileID: 0}
+    moveAnimSpeedRate: 0
+    sprintClip: {fileID: 0}
+    sprintBackwardClip: {fileID: 0}
+    sprintLeftClip: {fileID: 0}
+    sprintRightClip: {fileID: 0}
+    sprintForwardLeftClip: {fileID: 0}
+    sprintForwardRightClip: {fileID: 0}
+    sprintBackwardLeftClip: {fileID: 0}
+    sprintBackwardRightClip: {fileID: 0}
+    sprintAnimSpeedRate: 0
+    crouchIdleClip: {fileID: 0}
+    crouchMoveClip: {fileID: 0}
+    crouchMoveBackwardClip: {fileID: 0}
+    crouchMoveLeftClip: {fileID: 0}
+    crouchMoveRightClip: {fileID: 0}
+    crouchMoveForwardLeftClip: {fileID: 0}
+    crouchMoveForwardRightClip: {fileID: 0}
+    crouchMoveBackwardLeftClip: {fileID: 0}
+    crouchMoveBackwardRightClip: {fileID: 0}
+    crouchMoveAnimSpeedRate: 0
+    crawlIdleClip: {fileID: 0}
+    crawlMoveClip: {fileID: 0}
+    crawlMoveBackwardClip: {fileID: 0}
+    crawlMoveLeftClip: {fileID: 0}
+    crawlMoveRightClip: {fileID: 0}
+    crawlMoveForwardLeftClip: {fileID: 0}
+    crawlMoveForwardRightClip: {fileID: 0}
+    crawlMoveBackwardLeftClip: {fileID: 0}
+    crawlMoveBackwardRightClip: {fileID: 0}
+    crawlMoveAnimSpeedRate: 0
+    swimIdleClip: {fileID: 0}
+    swimMoveClip: {fileID: 0}
+    swimMoveBackwardClip: {fileID: 0}
+    swimMoveLeftClip: {fileID: 0}
+    swimMoveRightClip: {fileID: 0}
+    swimMoveForwardLeftClip: {fileID: 0}
+    swimMoveForwardRightClip: {fileID: 0}
+    swimMoveBackwardLeftClip: {fileID: 0}
+    swimMoveBackwardRightClip: {fileID: 0}
+    swimMoveAnimSpeedRate: 0
     jumpClip: {fileID: 0}
     fallClip: {fileID: 0}
     hurtClip: {fileID: 0}
@@ -556,6 +596,9 @@ MonoBehaviour:
     doNotSyncInitialDataImmediately: 0
     syncMode: 0
     value: 
+  model: {fileID: 114193115353173860}
+  cameraTargetTransform: {fileID: 0}
+  movementSecure: 0
   movementState:
     behaviour: {fileID: 0}
     elementId: 0
@@ -565,7 +608,16 @@ MonoBehaviour:
     doNotSyncInitialDataImmediately: 1
     syncMode: 0
     value: 0
-  currentDirection:
+  extraMovementState:
+    behaviour: {fileID: 0}
+    elementId: 0
+    deliveryMethod: 2
+    sendInterval: 0.1
+    alwaysSync: 0
+    doNotSyncInitialDataImmediately: 1
+    syncMode: 0
+    value: 0
+  direction2D:
     behaviour: {fileID: 0}
     elementId: 0
     deliveryMethod: 2
@@ -584,8 +636,8 @@ MonoBehaviour:
     value:
       objectId: 0
       seatIndex: 0
-  cameraTargetTransform: {fileID: 0}
-  model: {fileID: 114193115353173860}
+  combatTextTransform: {fileID: 4362391171358638}
+  opponentAimTransform: {fileID: 0}
   currentHp:
     behaviour: {fileID: 0}
     elementId: 0
@@ -595,8 +647,6 @@ MonoBehaviour:
     doNotSyncInitialDataImmediately: 0
     syncMode: 0
     value: 0
-  combatTextTransform: {fileID: 4362391171358638}
-  opponentAimTransform: {fileID: 0}
   race: {fileID: 0}
   meleeDamageTransform: {fileID: 4362391171358638}
   missileDamageTransform: {fileID: 4362391171358638}
@@ -928,6 +978,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainModel: {fileID: 114193115353173860}
+  fpsModelPrefab: {fileID: 0}
   vehicleModels: []
 --- !u!114 &114885565014387228
 MonoBehaviour:
