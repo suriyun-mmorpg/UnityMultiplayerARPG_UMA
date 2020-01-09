@@ -70,7 +70,6 @@ GameObject:
   - component: {fileID: 54235273985195022}
   - component: {fileID: 114514323018346188}
   - component: {fileID: 114508443159601964}
-  - component: {fileID: 114441634023571468}
   - component: {fileID: 114061120153841000}
   - component: {fileID: 114958140904515804}
   - component: {fileID: 114217790240189764}
@@ -78,6 +77,7 @@ GameObject:
   - component: {fileID: 114885565014387228}
   - component: {fileID: 114618852812373252}
   - component: {fileID: 114632547291139262}
+  - component: {fileID: 114720005576856802}
   m_Layer: 8
   m_Name: UMAPlayerCharacterEntity
   m_TagString: Untagged
@@ -120,7 +120,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1609299527230936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: -0.3}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4994579587623528}
@@ -392,6 +392,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hiddingObjects: []
   hiddingRenderers: []
+  fpsHiddingObjects: []
+  fpsHiddingRenderers: []
   effectContainers: []
   setEffectContainersBySetters: 0
   equipmentContainers: []
@@ -637,7 +639,7 @@ MonoBehaviour:
       objectId: 0
       seatIndex: 0
   combatTextTransform: {fileID: 4362391171358638}
-  opponentAimTransform: {fileID: 0}
+  opponentAimTransform: {fileID: 4362391171358638}
   currentHp:
     behaviour: {fileID: 0}
     elementId: 0
@@ -781,6 +783,7 @@ MonoBehaviour:
       slots: 
       dnas: 
   characterTitle: 
+  characterTitles: []
   playerCharacters:
   - {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
   controllerPrefab: {fileID: 0}
@@ -883,18 +886,6 @@ MonoBehaviour:
     elementId: 0
     forOwnerOnly: 1
   writeAddonLog: 0
---- !u!114 &114441634023571468
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1531689890171608}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7618f49529f4de146a9eacd23be176f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectGroundedSpeed: 0.1
 --- !u!114 &114508443159601964
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -980,6 +971,30 @@ MonoBehaviour:
   mainModel: {fileID: 114193115353173860}
   fpsModelPrefab: {fileID: 0}
   vehicleModels: []
+--- !u!114 &114720005576856802
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1531689890171608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f3dab0c8bfc784a83ca4c17d39cb9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stoppingDistance: 0.1
+  jumpHeight: 2
+  backwardMoveSpeedRate: 0.75
+  groundCheckDistance: 0.1
+  groundCheckDistanceWhileJump: 0.01
+  stickToGroundHelperDistance: 0.5
+  underWaterThreshold: 0.75
+  autoSwimToSurface: 0
+  useNavMeshForKeyMovement: 0
+  useRootMotionForMovement: 0
+  useRootMotionForAirMovement: 0
+  useRootMotionForJump: 0
+  useRootMotionForFall: 0
 --- !u!114 &114885565014387228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1020,7 +1035,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 0.25
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
