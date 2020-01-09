@@ -75,7 +75,6 @@ GameObject:
   - component: {fileID: 114217790240189764}
   - component: {fileID: 95941422500740546}
   - component: {fileID: 114885565014387228}
-  - component: {fileID: 114618852812373252}
   - component: {fileID: 114632547291139262}
   - component: {fileID: 114720005576856802}
   m_Layer: 8
@@ -227,9 +226,7 @@ MonoBehaviour:
   context: {fileID: 0}
   umaData: {fileID: 0}
   umaRecipe: {fileID: 0}
-  umaAdditionalRecipes:
-  - {fileID: 11400000, guid: 1f292487d7383514f97c491cadfb0442, type: 2}
-  - {fileID: 11400000, guid: f36ba6c553c66f747bc69741fa115880, type: 2}
+  umaAdditionalRecipes: []
   umaGenerator: {fileID: 0}
   animationController: {fileID: 0}
   CharacterCreated:
@@ -929,34 +926,6 @@ MonoBehaviour:
   connectionId: 0
   manager: {fileID: 0}
   subscriberIds: 
---- !u!114 &114618852812373252
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1531689890171608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f8a093c691abd240af4df2e78d67f0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simplePlayerCollider: 1
-  enableColliderTriggers: 0
-  ragdollBlendAmount: 0
-  UpdateTransformAfterRagdoll: 1
-  ragdollLayer: 16
-  playerLayer: 8
-  elements: []
-  onRagdollStarted:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  onRagdollEnded:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114632547291139262
 MonoBehaviour:
   m_ObjectHideFlags: 1
