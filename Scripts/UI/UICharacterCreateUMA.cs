@@ -205,7 +205,7 @@ namespace MultiplayerARPG
             characterData.SetNewPlayerCharacterData(characterName, SelectedDataId, SelectedEntityId);
             characterData.FactionId = SelectedFactionId;
             characterData.UmaAvatarData = GetAvatarData();
-            GameInstance.Singleton.SaveSystem.SaveCreatingCharacter(characterData);
+            GameInstance.Singleton.SaveSystem.SaveCharacter(characterData);
         }
     }
 }
