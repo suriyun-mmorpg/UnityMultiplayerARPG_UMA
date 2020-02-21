@@ -5,7 +5,7 @@ using UMA;
 
 namespace MultiplayerARPG
 {
-    public partial class BaseItem
+    public partial class Item
     {
         [Header("UMA Configs")]
         // TODO: I know `Receipe` should be `Recipe` but I don't want to break other developer projects
