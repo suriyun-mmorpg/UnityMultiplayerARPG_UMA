@@ -5,7 +5,7 @@ using UMA;
 
 namespace MultiplayerARPG
 {
-    public partial class Item
+    public partial class BaseItem
     {
         [Header("UMA Configs")]
         // TODO: I know `Receipe` should be `Recipe` but I don't want to break other developer projects
@@ -30,6 +30,7 @@ namespace MultiplayerARPG
                 return cacheUmaRecipeSlot;
             }
         }
+        public Dictionary<string, UMATextRecipe[]> UmaRecipeSlot { get { return CacheUmaRecipeSlot; } }
     }
 
     [System.Serializable]
