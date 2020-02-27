@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UMA;
+using UnityEngine;
 
 namespace MultiplayerARPG
 {
-    public partial class Item
+    public partial class BaseEquipmentItem
     {
         [Header("UMA Configs")]
         // TODO: I know `Receipe` should be `Recipe` but I don't want to break other developer projects
@@ -30,12 +30,5 @@ namespace MultiplayerARPG
                 return cacheUmaRecipeSlot;
             }
         }
-    }
-
-    [System.Serializable]
-    public struct UmaRaceRecipeSlots
-    {
-        public RaceData raceData;
-        public UMATextRecipe[] recipes;
     }
 }
