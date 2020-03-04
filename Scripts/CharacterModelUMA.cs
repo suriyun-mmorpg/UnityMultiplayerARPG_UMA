@@ -7,6 +7,7 @@ using UMA.CharacterSystem;
 namespace MultiplayerARPG
 {
     [RequireComponent(typeof(DynamicCharacterAvatar))]
+    [System.Obsolete("`Character Model` is deprecate and stopped development, use context menu to convert to newer character model")]
     public sealed class CharacterModelUMA : CharacterModel
     {
         private DynamicCharacterAvatar cacheUmaAvatar;
