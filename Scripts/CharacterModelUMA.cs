@@ -8,7 +8,7 @@ namespace MultiplayerARPG
 {
     [RequireComponent(typeof(DynamicCharacterAvatar))]
     [System.Obsolete("`Character Model` is deprecate and stopped development, use context menu to convert to newer character model")]
-    public sealed class CharacterModelUMA : CharacterModel
+    public sealed class CharacterModelUMA : CharacterModel, ICharacterModelUma
     {
         private DynamicCharacterAvatar cacheUmaAvatar;
         public DynamicCharacterAvatar CacheUmaAvatar
@@ -34,7 +34,7 @@ namespace MultiplayerARPG
 
         public bool IsUmaCharacterCreated { get; private set; }
         public bool IsInitializedUMA { get; private set; }
-        public System.Action onUmaCharacterCreated;
+        public System.Action OnUmaCharacterCreated { get; set; }
         private UmaAvatarData? applyingAvatarData;
         private Coroutine applyCoroutine;
         private EquipWeapons tempEquipWeapons;
@@ -220,16 +220,16 @@ namespace MultiplayerARPG
                 return;
             IsInitializedUMA = true;
             CacheUmaAvatar.raceAnimationControllers.defaultAnimationController = CacheAnimatorController;
-            CacheUmaAvatar.CharacterCreated.RemoveListener(OnUmaCharacterCreated);
-            CacheUmaAvatar.CharacterCreated.AddListener(OnUmaCharacterCreated);
+            CacheUmaAvatar.CharacterCreated.RemoveListener(OnUmaCharacterCreatedCallback);
+            CacheUmaAvatar.CharacterCreated.AddListener(OnUmaCharacterCreatedCallback);
         }
 
-        private void OnUmaCharacterCreated(UMAData data)
+        private void OnUmaCharacterCreatedCallback(UMAData data)
         {
             IsUmaCharacterCreated = true;
             ApplyPendingAvatarData();
-            if (onUmaCharacterCreated != null)
-                onUmaCharacterCreated.Invoke();
+            if (OnUmaCharacterCreated != null)
+                OnUmaCharacterCreated.Invoke();
         }
         
         public void ApplyUmaAvatar(UmaAvatarData avatarData)

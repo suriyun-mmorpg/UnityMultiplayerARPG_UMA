@@ -18,7 +18,7 @@ namespace MultiplayerARPG
         public UIUmaColorDropdown prefabColorDropdown;
         public Transform colorOptionContainer;
 
-        public CharacterModelUMA UmaModel { get; private set; }
+        public ICharacterModelUma UmaModel { get; private set; }
         public byte SelectedRaceIndex { get; private set; }
         public byte SelectedGenderIndex { get; private set; }
         public byte[] SelectedSlots { get; private set; }
@@ -29,7 +29,7 @@ namespace MultiplayerARPG
         protected override void OnSelectCharacter(IPlayerCharacterData playerCharacterData)
         {
             base.OnSelectCharacter(playerCharacterData);
-            CharacterModelUMA characterModelUMA = SelectedModel as CharacterModelUMA;
+            ICharacterModelUma characterModelUMA = SelectedModel as ICharacterModelUma;
             if (umaPanelRoot != null)
                 umaPanelRoot.SetActive(characterModelUMA != null);
             UmaModel = characterModelUMA;
@@ -43,8 +43,8 @@ namespace MultiplayerARPG
                 UmaModel.InitializeUMA();
                 if (!UmaModel.IsUmaCharacterCreated)
                 {
-                    UmaModel.onUmaCharacterCreated -= OnUmaCharacterCreated;
-                    UmaModel.onUmaCharacterCreated += OnUmaCharacterCreated;
+                    UmaModel.OnUmaCharacterCreated -= OnUmaCharacterCreated;
+                    UmaModel.OnUmaCharacterCreated += OnUmaCharacterCreated;
                     return;
                 }
 

@@ -6,7 +6,7 @@ namespace MultiplayerARPG
 {
     public class UICharacterListUMA : UICharacterList
     {
-        public CharacterModelUMA UmaModel { get; private set; }
+        public ICharacterModelUma UmaModel { get; private set; }
         
         protected override void OnSelectCharacter(IPlayerCharacterData playerCharacterData)
         {
@@ -14,7 +14,7 @@ namespace MultiplayerARPG
             if (SelectedModel != null)
             {
                 // Setup Uma model and customize options
-                CharacterModelUMA characterModelUMA = SelectedModel as CharacterModelUMA;
+                ICharacterModelUma characterModelUMA = SelectedModel as ICharacterModelUma;
                 UmaModel = characterModelUMA;
                 ShowUmaCharacter();
             }
