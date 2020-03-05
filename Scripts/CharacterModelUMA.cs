@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UMA;
 using UMA.CharacterSystem;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace MultiplayerARPG
 {
@@ -324,5 +327,52 @@ namespace MultiplayerARPG
                 applyingAvatarData = null;
             }
         }
+
+#if UNITY_EDITOR
+        public override void ConvertToNewerCharacterModel()
+        {
+            if (animatorType != AnimatorType.Animator)
+            {
+                Debug.LogError("[Character Model UMA] only animator can be converted");
+                return;
+            }
+            AnimatorCharacterModelUMA model = gameObject.GetComponent<AnimatorCharacterModelUMA>();
+            if (!model)
+                model = gameObject.AddComponent<AnimatorCharacterModelUMA>();
+            model.skinnedMeshRenderer = skinnedMeshRenderer;
+            model.weaponAnimations = weaponAnimations;
+            model.skillAnimations = skillAnimations;
+            model.defaultAnimations = new DefaultAnimations()
+            {
+                idleClip = defaultAnimatorData.idleClip,
+                moveClip = defaultAnimatorData.moveClip,
+                moveBackwardClip = defaultAnimatorData.moveBackwardClip,
+                moveLeftClip = defaultAnimatorData.moveLeftClip,
+                moveRightClip = defaultAnimatorData.moveRightClip,
+                moveForwardLeftClip = defaultAnimatorData.moveForwardLeftClip,
+                moveForwardRightClip = defaultAnimatorData.moveForwardRightClip,
+                moveBackwardLeftClip = defaultAnimatorData.moveBackwardLeftClip,
+                moveBackwardRightClip = defaultAnimatorData.moveBackwardRightClip,
+                jumpClip = defaultAnimatorData.jumpClip,
+                fallClip = defaultAnimatorData.fallClip,
+                hurtClip = defaultAnimatorData.hurtClip,
+                deadClip = defaultAnimatorData.deadClip,
+                rightHandAttackAnimations = defaultAttackAnimations,
+                leftHandAttackAnimations = defaultAttackAnimations,
+                rightHandReloadAnimation = defaultReloadAnimation,
+                leftHandReloadAnimation = defaultReloadAnimation,
+                skillCastClip = defaultSkillCastClip,
+                skillActivateAnimation = defaultSkillActivateAnimation,
+            };
+            model.hiddingObjects = hiddingObjects;
+            model.hiddingRenderers = hiddingRenderers;
+            model.fpsHiddingObjects = fpsHiddingObjects;
+            model.fpsHiddingRenderers = fpsHiddingRenderers;
+            model.effectContainers = effectContainers;
+            model.equipmentContainers = equipmentContainers;
+            EditorUtility.SetDirty(model);
+            Debug.Log("[Character Model UMA] Converted, you can remove this component.");
+        }
+#endif
     }
 }
