@@ -371,7 +371,7 @@ namespace MultiplayerARPG
             model.effectContainers = effectContainers;
             model.equipmentContainers = equipmentContainers;
             EditorUtility.SetDirty(model);
-            Debug.Log("[Character Model UMA] Converted, you can remove this component.");
+            EditorUtility.DisplayDialog("Character Model Conversion", "New Character Model component has been added.\n\nThe old component doesn't removed yet to let you check values.\n\nThen, you have to remove the old one.", "OK");
         }
 #endif
     }
