@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UMA;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MultiplayerARPG
 {
     public partial class BaseEquipmentItem
     {
         [Header("UMA Configs")]
-        // TODO: I know `Receipe` should be `Recipe` but I don't want to break other developer projects
-        // May fix this later
-        public UmaRaceRecipeSlots[] umaRaceReceipeSlots;
+        [FormerlySerializedAs("umaRaceReceipeSlots")]
+        public UmaRaceRecipeSlots[] umaRaceRecipeSlots;
 
         private Dictionary<string, UMATextRecipe[]> cacheUmaRecipeSlot;
         public Dictionary<string, UMATextRecipe[]> UmaRecipeSlot
@@ -20,7 +20,7 @@ namespace MultiplayerARPG
                 if (cacheUmaRecipeSlot == null)
                 {
                     cacheUmaRecipeSlot = new Dictionary<string, UMATextRecipe[]>();
-                    foreach (UmaRaceRecipeSlots umaRaceRecipeSlot in umaRaceReceipeSlots)
+                    foreach (UmaRaceRecipeSlots umaRaceRecipeSlot in umaRaceRecipeSlots)
                     {
                         if (umaRaceRecipeSlot.raceData == null || string.IsNullOrEmpty(umaRaceRecipeSlot.raceData.raceName))
                             continue;
