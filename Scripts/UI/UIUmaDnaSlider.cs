@@ -51,7 +51,11 @@ namespace MultiplayerARPG
         private void OnSliderValueChanged(float value)
         {
             ui.SetDna(slotIndex, value);
-            ui.UmaModel.CacheUmaAvatar.GetDNA()[dnaName].Set(value);
+            Dictionary<string, DnaSetter> DNA = ui.UmaModel.CacheUmaAvatar.GetDNA();
+            if (DNA.ContainsKey(dnaName))
+            {
+                DNA[dnaName].Set(value);
+            }
             ui.UmaModel.CacheUmaAvatar.ForceUpdate(true, false, false);
         }
     }
