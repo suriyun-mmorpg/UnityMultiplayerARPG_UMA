@@ -89,7 +89,7 @@ namespace MultiplayerARPG.MMO
             }
         }
 
-        protected override void OnClickStart()
+        public override void OnClickStart()
         {
             UICharacter selectedUI = CacheCharacterSelectionManager.SelectedUI;
             if (selectedUI == null)
@@ -138,7 +138,7 @@ namespace MultiplayerARPG.MMO
             }
         }
 
-        protected override void OnClickDelete()
+        public override void OnClickDelete()
         {
             UICharacter selectedUI = CacheCharacterSelectionManager.SelectedUI;
             if (selectedUI == null)
