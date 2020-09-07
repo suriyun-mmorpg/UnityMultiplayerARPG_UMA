@@ -49,21 +49,23 @@ namespace MultiplayerARPG.MMO
             bool withQuests)
         {
             // Read uma data
-            SQLiteRowsReader reader = ExecuteReader("SELECT data FROM characterumasaves WHERE id=@id",
-                new SqliteParameter("@id", characterData.Id));
-            if (reader.Read())
+            ExecuteReader((reader) =>
             {
-                string data = reader.GetString("data");
-                string[] splitedData = data.Split(',');
-                List<byte> bytes = new List<byte>();
-                foreach (string entry in splitedData)
+                if (reader.Read())
                 {
-                    bytes.Add(byte.Parse(entry));
+                    string data = reader.GetString(0);
+                    string[] splitedData = data.Split(',');
+                    List<byte> bytes = new List<byte>();
+                    foreach (string entry in splitedData)
+                    {
+                        bytes.Add(byte.Parse(entry));
+                    }
+                    UmaAvatarData umaAvatarData = new UmaAvatarData();
+                    umaAvatarData.SetBytes(bytes);
+                    characterData.UmaAvatarData = umaAvatarData;
                 }
-                UmaAvatarData umaAvatarData = new UmaAvatarData();
-                umaAvatarData.SetBytes(bytes);
-                characterData.UmaAvatarData = umaAvatarData;
-            }
+            }, "SELECT data FROM characterumasaves WHERE id=@id",
+                new SqliteParameter("@id", characterData.Id));
         }
 
         [DevExtMethods("UpdateCharacter")]

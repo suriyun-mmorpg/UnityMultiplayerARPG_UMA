@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MySqlConnector;
+using Cysharp.Threading.Tasks;
 
 namespace MultiplayerARPG.MMO
 {
@@ -19,7 +20,7 @@ namespace MultiplayerARPG.MMO
                     saveData += ",";
                 saveData += bytes[i];
             }
-            ExecuteNonQuery("INSERT INTO characterumasaves (id, data) VALUES (@id, @data)",
+            ExecuteNonQuerySync("INSERT INTO characterumasaves (id, data) VALUES (@id, @data)",
                 new MySqlParameter("@id", characterData.Id),
                 new MySqlParameter("@data", saveData));
         }
@@ -39,21 +40,23 @@ namespace MultiplayerARPG.MMO
             bool withQuests)
         {
             // Read uma data
-            MySQLRowsReader reader = ExecuteReader("SELECT data FROM characterumasaves WHERE id=@id",
-                new MySqlParameter("@id", characterData.Id));
-            if (reader.Read())
+            ExecuteReaderSync((reader) =>
             {
-                string data = reader.GetString("data");
-                string[] splitedData = data.Split(',');
-                List<byte> bytes = new List<byte>();
-                foreach (string entry in splitedData)
+                if (reader.Read())
                 {
-                    bytes.Add(byte.Parse(entry));
+                    string data = reader.GetString(0);
+                    string[] splitedData = data.Split(',');
+                    List<byte> bytes = new List<byte>();
+                    foreach (string entry in splitedData)
+                    {
+                        bytes.Add(byte.Parse(entry));
+                    }
+                    UmaAvatarData umaAvatarData = new UmaAvatarData();
+                    umaAvatarData.SetBytes(bytes);
+                    characterData.UmaAvatarData = umaAvatarData;
                 }
-                UmaAvatarData umaAvatarData = new UmaAvatarData();
-                umaAvatarData.SetBytes(bytes);
-                characterData.UmaAvatarData = umaAvatarData;
-            }
+            }, "SELECT data FROM characterumasaves WHERE id=@id",
+                new MySqlParameter("@id", characterData.Id));
         }
 
         [DevExtMethods("UpdateCharacter")]
@@ -68,7 +71,7 @@ namespace MultiplayerARPG.MMO
                     saveData += ",";
                 saveData += bytes[i];
             }
-            ExecuteNonQuery("UPDATE characterumasaves SET data=@data WHERE id=@id",
+            ExecuteNonQuerySync("UPDATE characterumasaves SET data=@data WHERE id=@id",
                 new MySqlParameter("@id", characterData.Id),
                 new MySqlParameter("@data", saveData));
         }
@@ -77,7 +80,7 @@ namespace MultiplayerARPG.MMO
         public void DeleteCharacter_UMA(string userId, string id)
         {
             // Delete uma data
-            ExecuteNonQuery("DELETE FROM characterumasaves WHERE id=@id",
+            ExecuteNonQuerySync("DELETE FROM characterumasaves WHERE id=@id",
                 new MySqlParameter("@id", id));
         }
     }
