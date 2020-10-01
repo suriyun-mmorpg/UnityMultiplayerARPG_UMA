@@ -109,10 +109,10 @@ GameObject:
   - component: {fileID: 114958140904515804}
   - component: {fileID: 114217790240189764}
   - component: {fileID: 95941422500740546}
-  - component: {fileID: 114885565014387228}
   - component: {fileID: 114632547291139262}
   - component: {fileID: 114720005576856802}
   - component: {fileID: -174869050192623659}
+  - component: {fileID: 5306962775774241075}
   m_Layer: 8
   m_Name: UMAPlayerCharacterEntity
   m_TagString: Untagged
@@ -333,7 +333,7 @@ MonoBehaviour:
   equipmentContainers: []
   setEquipmentContainersBySetters: 0
   deactivateInstantiatedObjects: 0
-  activateInstantiateObject: 0
+  activateInstantiatedObject: 0
   animatorType: 0
   animator: {fileID: 95941422500740546}
   animatorController: {fileID: 9100000, guid: c7a97ef1d9e6a654992209d9ceb68a4e, type: 2}
@@ -840,7 +840,7 @@ MonoBehaviour:
   skills:
     behaviour: {fileID: 0}
     elementId: 0
-    forOwnerOnly: 1
+    forOwnerOnly: 0
   skillUsages:
     behaviour: {fileID: 0}
     elementId: 0
@@ -1014,7 +1014,6 @@ MonoBehaviour:
     behaviour: {fileID: 0}
     elementId: 0
     forOwnerOnly: 1
-  writeAddonLog: 0
 --- !u!95 &95941422500740546
 Animator:
   serializedVersion: 3
@@ -1034,27 +1033,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114885565014387228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1531689890171608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01d64c7b615199243b727eaa75d79574, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  behaviourIndex: 0
-  sendOptions: 0
-  sendInterval: 0.1
-  range: 80
-  updateInterval: 1
-  checkMethod: 0
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &114632547291139262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1072,7 +1050,8 @@ MonoBehaviour:
   sendInterval: 0.1
   mainModel: {fileID: 114193115353173860}
   fpsModelPrefab: {fileID: 0}
-  fpsModelOffsets: {x: 0, y: 0, z: 0}
+  fpsModelPositionOffsets: {x: 0, y: 0, z: 0}
+  fpsModelRotationOffsets: {x: 0, y: 0, z: 0}
   vehicleModels: []
 --- !u!114 &114720005576856802
 MonoBehaviour:
@@ -1137,6 +1116,23 @@ MonoBehaviour:
   m_SlideMaxSpeed: 10
   m_SlideGravityScale: 1
   m_SlideStartTime: 0.25
+--- !u!114 &5306962775774241075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531689890171608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16e90d66c02169f4e9d03f0cb903566d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviourIndex: 0
+  sendOptions: 0
+  sendInterval: 0.1
+  range: 80
+  updateInterval: 1
 --- !u!1 &1609299527230936
 GameObject:
   m_ObjectHideFlags: 0
