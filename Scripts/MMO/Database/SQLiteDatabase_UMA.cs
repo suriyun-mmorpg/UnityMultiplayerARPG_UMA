@@ -1,4 +1,5 @@
-﻿using Mono.Data.Sqlite;
+﻿#if UNITY_STANDALONE && !CLIENT_BUILD
+using Mono.Data.Sqlite;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -94,3 +95,4 @@ namespace MultiplayerARPG.MMO
         }
     }
 }
+#endif
