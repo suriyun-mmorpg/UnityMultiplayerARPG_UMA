@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MySqlConnector;
-using Cysharp.Threading.Tasks;
 
 namespace MultiplayerARPG.MMO
 {
