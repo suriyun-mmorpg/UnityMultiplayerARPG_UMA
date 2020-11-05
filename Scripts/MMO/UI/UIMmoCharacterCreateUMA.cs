@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using LiteNetLib.Utils;
 using LiteNetLibManager;
 using UnityEngine;
 
@@ -16,15 +17,20 @@ namespace MultiplayerARPG.MMO
             MMOClientInstance.Singleton.RequestCreateCharacter(characterData, OnRequestedCreateCharacter);
         }
 
-        private void OnRequestedCreateCharacter(AckResponseCode responseCode, BaseAckMessage message)
+        private void OnRequestedCreateCharacter(ResponseHandlerData responseHandler, AckResponseCode responseCode, INetSerializable response)
         {
-            ResponseCreateCharacterMessage castedMessage = (ResponseCreateCharacterMessage)message;
-
+            if (responseCode == AckResponseCode.Timeout)
+            {
+                UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), LanguageManager.GetText(UITextKeys.UI_ERROR_CONNECTION_TIMEOUT.ToString()));
+                return;
+            }
+            // Proceed response
+            ResponseCreateCharacterMessage castedResponse = response as ResponseCreateCharacterMessage;
             switch (responseCode)
             {
                 case AckResponseCode.Error:
                     string errorMessage = string.Empty;
-                    switch (castedMessage.error)
+                    switch (castedResponse.error)
                     {
                         case ResponseCreateCharacterMessage.Error.NotLoggedin:
                             errorMessage = LanguageManager.GetText(UITextKeys.UI_ERROR_NOT_LOGGED_IN.ToString());
@@ -43,9 +49,6 @@ namespace MultiplayerARPG.MMO
                             break;
                     }
                     UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), errorMessage);
-                    break;
-                case AckResponseCode.Timeout:
-                    UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), LanguageManager.GetText(UITextKeys.UI_ERROR_CONNECTION_TIMEOUT.ToString()));
                     break;
                 default:
                     if (eventOnCreateCharacter != null)

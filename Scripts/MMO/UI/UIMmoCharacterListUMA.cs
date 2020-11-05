@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using LiteNetLibManager;
+using LiteNetLib.Utils;
 
 namespace MultiplayerARPG.MMO
 {
@@ -12,7 +13,7 @@ namespace MultiplayerARPG.MMO
             MMOClientInstance.Singleton.RequestCharacters(OnRequestedCharacters);
         }
 
-        private void OnRequestedCharacters(AckResponseCode responseCode, BaseAckMessage message)
+        private void OnRequestedCharacters(ResponseHandlerData responseHandler, AckResponseCode responseCode, INetSerializable response)
         {
             // Clear character list
             CacheCharacterSelectionManager.Clear();
@@ -31,15 +32,14 @@ namespace MultiplayerARPG.MMO
                 UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), LanguageManager.GetText(UITextKeys.UI_ERROR_CONNECTION_TIMEOUT.ToString()));
                 return;
             }
-            // Prepare character list
+            // Proceed response
+            ResponseCharactersMessage castedResponse = response as ResponseCharactersMessage;
             List<PlayerCharacterData> selectableCharacters = new List<PlayerCharacterData>();
-            // Read response message
-            ResponseCharactersMessage castedMessage = message as ResponseCharactersMessage;
             switch (responseCode)
             {
                 case AckResponseCode.Error:
                     string errorMessage = string.Empty;
-                    switch (castedMessage.error)
+                    switch (castedResponse.error)
                     {
                         case ResponseCharactersMessage.Error.NotLoggedin:
                             errorMessage = LanguageManager.GetText(UITextKeys.UI_ERROR_NOT_LOGGED_IN.ToString());
@@ -48,7 +48,7 @@ namespace MultiplayerARPG.MMO
                     UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), errorMessage);
                     break;
                 default:
-                    selectableCharacters = castedMessage.characters;
+                    selectableCharacters = castedResponse.characters;
                     break;
             }
 
@@ -140,19 +140,20 @@ namespace MultiplayerARPG.MMO
             MMOClientInstance.Singleton.RequestSelectCharacter(playerCharacter.Id, OnRequestedSelectCharacter);
         }
 
-        private void OnRequestedSelectCharacter(AckResponseCode responseCode, BaseAckMessage message)
+        private void OnRequestedSelectCharacter(ResponseHandlerData responseHandler, AckResponseCode responseCode, INetSerializable response)
         {
             if (responseCode == AckResponseCode.Timeout)
             {
                 UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), LanguageManager.GetText(UITextKeys.UI_ERROR_CONNECTION_TIMEOUT.ToString()));
                 return;
             }
-            ResponseSelectCharacterMessage castedMessage = message as ResponseSelectCharacterMessage;
+            // Proceed response
+            ResponseSelectCharacterMessage castedResponse = response as ResponseSelectCharacterMessage;
             switch (responseCode)
             {
                 case AckResponseCode.Error:
                     string errorMessage = string.Empty;
-                    switch (castedMessage.error)
+                    switch (castedResponse.error)
                     {
                         case ResponseSelectCharacterMessage.Error.NotLoggedin:
                             errorMessage = LanguageManager.GetText(UITextKeys.UI_ERROR_NOT_LOGGED_IN.ToString());
@@ -170,7 +171,7 @@ namespace MultiplayerARPG.MMO
                     UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), errorMessage);
                     break;
                 default:
-                    MMOClientInstance.Singleton.StartMapClient(castedMessage.sceneName, castedMessage.networkAddress, castedMessage.networkPort);
+                    MMOClientInstance.Singleton.StartMapClient(castedResponse.sceneName, castedResponse.networkAddress, castedResponse.networkPort);
                     break;
             }
         }
@@ -189,19 +190,20 @@ namespace MultiplayerARPG.MMO
             MMOClientInstance.Singleton.RequestDeleteCharacter(playerCharacter.Id, OnRequestedDeleteCharacter);
         }
 
-        private void OnRequestedDeleteCharacter(AckResponseCode responseCode, BaseAckMessage message)
+        private void OnRequestedDeleteCharacter(ResponseHandlerData responseHandler, AckResponseCode responseCode, INetSerializable response)
         {
             if (responseCode == AckResponseCode.Timeout)
             {
                 UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), LanguageManager.GetText(UITextKeys.UI_ERROR_CONNECTION_TIMEOUT.ToString()));
                 return;
             }
-            ResponseDeleteCharacterMessage castedMessage = message as ResponseDeleteCharacterMessage;
+            // Proceed response
+            ResponseDeleteCharacterMessage message = response as ResponseDeleteCharacterMessage;
             switch (responseCode)
             {
                 case AckResponseCode.Error:
                     string errorMessage = string.Empty;
-                    switch (castedMessage.error)
+                    switch (message.error)
                     {
                         case ResponseDeleteCharacterMessage.Error.NotLoggedin:
                             errorMessage = LanguageManager.GetText(UITextKeys.UI_ERROR_NOT_LOGGED_IN.ToString());
