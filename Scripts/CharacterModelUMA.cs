@@ -364,12 +364,12 @@ namespace MultiplayerARPG
                 skillCastClip = defaultSkillCastClip,
                 skillActivateAnimation = defaultSkillActivateAnimation,
             };
-            model.hiddingObjects = hiddingObjects;
-            model.hiddingRenderers = hiddingRenderers;
-            model.fpsHiddingObjects = fpsHiddingObjects;
-            model.fpsHiddingRenderers = fpsHiddingRenderers;
-            model.effectContainers = effectContainers;
-            model.equipmentContainers = equipmentContainers;
+            model.HiddingObjects = hiddingObjects;
+            model.HiddingRenderers = hiddingRenderers;
+            model.FpsHiddingObjects = fpsHiddingObjects;
+            model.FpsHiddingRenderers = fpsHiddingRenderers;
+            model.EffectContainers = effectContainers;
+            model.EquipmentContainers = equipmentContainers;
             EditorUtility.SetDirty(model);
             EditorUtility.DisplayDialog("Character Model Conversion", "New Character Model component has been added.\n\nThe old component doesn't removed yet to let you check values.\n\nThen, you have to remove the old one.", "OK");
         }

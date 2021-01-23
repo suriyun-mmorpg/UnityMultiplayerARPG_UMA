@@ -1,7 +1,8 @@
-﻿using MultiplayerARPG;
-
-public partial class PlayerCharacterData
+﻿namespace MultiplayerARPG
 {
-    private UmaAvatarData umaAvatarData;
-    public UmaAvatarData UmaAvatarData { get { return umaAvatarData; } set { umaAvatarData = value; } }
+    public partial class PlayerCharacterData
+    {
+        private UmaAvatarData umaAvatarData;
+        public UmaAvatarData UmaAvatarData { get { return umaAvatarData; } set { umaAvatarData = value; } }
+    }
 }

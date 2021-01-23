@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using MultiplayerARPG;
-
-public partial interface IPlayerCharacterData
+﻿namespace MultiplayerARPG
 {
-    UmaAvatarData UmaAvatarData { get; set; }
+    public partial interface IPlayerCharacterData
+    {
+        UmaAvatarData UmaAvatarData { get; set; }
+    }
 }
