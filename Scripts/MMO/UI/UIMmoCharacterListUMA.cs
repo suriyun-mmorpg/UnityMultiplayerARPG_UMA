@@ -14,9 +14,8 @@ namespace MultiplayerARPG.MMO
             MMOClientInstance.Singleton.RequestCharacters(OnRequestedCharacters);
         }
 
-        private async UniTaskVoid OnRequestedCharacters(ResponseHandlerData responseHandler, AckResponseCode responseCode, ResponseCharactersMessage response)
+        private void OnRequestedCharacters(ResponseHandlerData responseHandler, AckResponseCode responseCode, ResponseCharactersMessage response)
         {
-            await UniTask.Yield();
             // Clear character list
             CacheCharacterSelectionManager.Clear();
             CacheCharacterList.HideAll();
@@ -122,9 +121,8 @@ namespace MultiplayerARPG.MMO
             MMOClientInstance.Singleton.RequestSelectCharacter(playerCharacter.Id, OnRequestedSelectCharacter);
         }
 
-        private async UniTaskVoid OnRequestedSelectCharacter(ResponseHandlerData responseHandler, AckResponseCode responseCode, ResponseSelectCharacterMessage response)
+        private void OnRequestedSelectCharacter(ResponseHandlerData responseHandler, AckResponseCode responseCode, ResponseSelectCharacterMessage response)
         {
-            await UniTask.Yield();
             if (responseCode.ShowUnhandledResponseMessageDialog(response.message)) return;
             MMOClientInstance.Singleton.StartMapClient(response.sceneName, response.networkAddress, response.networkPort);
         }
@@ -143,9 +141,8 @@ namespace MultiplayerARPG.MMO
             MMOClientInstance.Singleton.RequestDeleteCharacter(playerCharacter.Id, OnRequestedDeleteCharacter);
         }
 
-        private async UniTaskVoid OnRequestedDeleteCharacter(ResponseHandlerData responseHandler, AckResponseCode responseCode, ResponseDeleteCharacterMessage response)
+        private void OnRequestedDeleteCharacter(ResponseHandlerData responseHandler, AckResponseCode responseCode, ResponseDeleteCharacterMessage response)
         {
-            await UniTask.Yield();
             if (responseCode.ShowUnhandledResponseMessageDialog(response.message)) return;
             // Reload characters
             LoadCharacters();
