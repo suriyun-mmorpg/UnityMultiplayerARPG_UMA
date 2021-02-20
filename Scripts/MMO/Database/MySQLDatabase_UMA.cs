@@ -35,7 +35,8 @@ namespace MultiplayerARPG.MMO
             bool withNonEquipItems,
             bool withSummons,
             bool withHotkeys,
-            bool withQuests)
+            bool withQuests,
+            bool withCurrencies)
         {
             // Read uma data
             ExecuteReaderSync((reader) =>

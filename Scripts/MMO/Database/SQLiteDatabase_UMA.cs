@@ -47,9 +47,9 @@ namespace MultiplayerARPG.MMO
             bool withNonEquipItems,
             bool withSummons,
             bool withHotkeys,
-            bool withQuests)
+            bool withQuests,
+            bool withCurrencies)
         {
-            // Read uma data
             ExecuteReader((reader) =>
             {
                 if (reader.Read())
