@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using LiteNetLibManager;
+﻿using LiteNetLibManager;
 
 namespace MultiplayerARPG.MMO
 {
