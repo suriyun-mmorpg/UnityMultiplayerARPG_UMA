@@ -331,16 +331,14 @@ namespace MultiplayerARPG
         }
 
 #if UNITY_EDITOR
-        public override void ConvertToNewerCharacterModel()
+        protected override void ConvertToNewerCharacterModelImplement()
         {
             if (animatorType != AnimatorType.Animator)
             {
                 Debug.LogError("[Character Model UMA] only animator can be converted");
                 return;
             }
-            AnimatorCharacterModelUMA model = gameObject.GetComponent<AnimatorCharacterModelUMA>();
-            if (!model)
-                model = gameObject.AddComponent<AnimatorCharacterModelUMA>();
+            AnimatorCharacterModelUMA model = gameObject.GetOrAddComponent<AnimatorCharacterModelUMA>();
             model.skinnedMeshRenderer = skinnedMeshRenderer;
             model.weaponAnimations = weaponAnimations;
             model.skillAnimations = skillAnimations;
@@ -373,7 +371,7 @@ namespace MultiplayerARPG
             model.EffectContainers = effectContainers;
             model.EquipmentContainers = equipmentContainers;
             EditorUtility.SetDirty(model);
-            EditorUtility.DisplayDialog("Character Model Conversion", "New Character Model component has been added.\n\nThe old component doesn't removed yet to let you check values.\n\nThen, you have to remove the old one.", "OK");
+            EditorUtility.DisplayDialog("Character Model UMA Conversion", "New Character Model component has been added.\n\nThe old component doesn't removed yet to let you check values.\n\nThen, you have to remove the old one.", "OK");
         }
 #endif
     }
