@@ -161,6 +161,8 @@ namespace MultiplayerARPG
                 return;
 
             GameObject boneObj;
+            GameObject tempEquipmentObject;
+            BaseEquipmentEntity tempEquipmentEntity;
             foreach (EquipmentModel equipmentModel in equipmentModels)
             {
                 if (string.IsNullOrEmpty(equipmentModel.equipSocket) ||
@@ -218,7 +220,6 @@ namespace MultiplayerARPG
             if (IsInitializedUMA)
                 return;
             IsInitializedUMA = true;
-            CacheUmaAvatar.raceAnimationControllers.defaultAnimationController = CacheAnimatorController;
             CacheUmaAvatar.CharacterCreated.RemoveListener(OnUmaCharacterCreatedCallback);
             CacheUmaAvatar.CharacterCreated.AddListener(OnUmaCharacterCreatedCallback);
         }

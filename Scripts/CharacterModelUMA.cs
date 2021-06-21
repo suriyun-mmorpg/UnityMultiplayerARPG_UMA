@@ -165,6 +165,8 @@ namespace MultiplayerARPG
                 return;
 
             GameObject boneObj;
+            GameObject tempEquipmentObject;
+            BaseEquipmentEntity tempEquipmentEntity;
             foreach (EquipmentModel equipmentModel in equipmentModels)
             {
                 if (string.IsNullOrEmpty(equipmentModel.equipSocket) ||
