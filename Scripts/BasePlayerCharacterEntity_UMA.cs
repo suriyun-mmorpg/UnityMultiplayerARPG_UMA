@@ -46,13 +46,6 @@ namespace MultiplayerARPG
                     return;
                 animatorCharacterModelUma.ApplyUmaAvatar(avatarData);
             }
-            else
-            {
-                CharacterModelUMA characterModelUma = CharacterModel as CharacterModelUMA;
-                if (characterModelUma == null)
-                    return;
-                characterModelUma.ApplyUmaAvatar(avatarData);
-            }
         }
     }
 }
