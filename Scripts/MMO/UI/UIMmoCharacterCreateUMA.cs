@@ -8,7 +8,7 @@ namespace MultiplayerARPG.MMO
         {
             PlayerCharacterData characterData = new PlayerCharacterData();
             characterData.Id = GenericUtils.GetUniqueId();
-            characterData.SetNewPlayerCharacterData(inputCharacterName.text.Trim(), SelectedDataId, SelectedEntityId);
+            characterData.SetNewPlayerCharacterData(uiInputCharacterName.text.Trim(), SelectedDataId, SelectedEntityId);
             characterData.FactionId = SelectedFactionId;
             characterData.UmaAvatarData = GetAvatarData();
             MMOClientInstance.Singleton.RequestCreateCharacter(characterData, OnRequestedCreateCharacter);
