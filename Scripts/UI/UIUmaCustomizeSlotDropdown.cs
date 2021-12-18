@@ -11,7 +11,7 @@ namespace MultiplayerARPG
         public DropdownWrapper dropdown;
         private UICharacterCreateUMA ui;
         private byte slotIndex;
-        public void Setup(UICharacterCreateUMA ui, byte slotIndex)
+        public virtual void Setup(UICharacterCreateUMA ui, byte slotIndex)
         {
             this.ui = ui;
             this.slotIndex = slotIndex;
