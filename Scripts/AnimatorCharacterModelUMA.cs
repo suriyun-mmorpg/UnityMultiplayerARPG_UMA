@@ -65,6 +65,7 @@ namespace MultiplayerARPG
                 return;
 
             string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
+            BaseEquipmentEntity baseEquipmentEntity;
             IEquipmentItem tempEquipmentItem;
             UMATextRecipe[] receipes;
             // Setup right hand weapon
@@ -73,7 +74,8 @@ namespace MultiplayerARPG
                 tempEquipmentItem = equipWeapons.rightHand.GetWeaponItem();
                 if (tempEquipmentItem != null)
                 {
-                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, equipWeapons.rightHand.level, out rightHandEquipmentEntity);
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, equipWeapons.rightHand.level, out baseEquipmentEntity);
+                    CacheRightHandEquipmentEntity = baseEquipmentEntity;
                     if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
                         SetSlot(equipWeaponUsedSlots, receipes);
                 }
@@ -85,7 +87,8 @@ namespace MultiplayerARPG
                 tempEquipmentItem = equipWeapons.leftHand.GetWeaponItem();
                 if (tempEquipmentItem != null)
                 {
-                    SetEquipmentObject(equipWeaponObjects, (tempEquipmentItem as IWeaponItem).OffHandEquipmentModels, equipWeapons.leftHand.level, out leftHandEquipmentEntity);
+                    SetEquipmentObject(equipWeaponObjects, (tempEquipmentItem as IWeaponItem).OffHandEquipmentModels, equipWeapons.leftHand.level, out baseEquipmentEntity);
+                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
                     if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
                         SetSlot(equipWeaponUsedSlots, receipes);
                 }
@@ -93,7 +96,8 @@ namespace MultiplayerARPG
                 tempEquipmentItem = equipWeapons.leftHand.GetShieldItem();
                 if (tempEquipmentItem != null)
                 {
-                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, equipWeapons.leftHand.level, out leftHandEquipmentEntity);
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, equipWeapons.leftHand.level, out baseEquipmentEntity);
+                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
                     if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
                         SetSlot(equipWeaponUsedSlots, receipes);
                 }
@@ -182,7 +186,7 @@ namespace MultiplayerARPG
                 tempEquipmentObject.transform.localEulerAngles = Vector3.zero;
                 tempEquipmentObject.transform.localScale = Vector3.one;
                 tempEquipmentObject.gameObject.SetActive(true);
-                tempEquipmentObject.gameObject.SetLayerRecursively(CurrentGameInstance.characterLayer.LayerIndex, true);
+                tempEquipmentObject.gameObject.SetLayerRecursively(EquipmentLayer, true);
                 tempEquipmentObject.RemoveComponentsInChildren<Collider>(false);
                 tempEquipmentEntity = tempEquipmentObject.GetComponent<BaseEquipmentEntity>();
                 if (tempEquipmentEntity != null)
