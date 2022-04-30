@@ -2,7 +2,7 @@
 
 namespace MultiplayerARPG
 {
-    public partial class PlayerCharacterDataExtension
+    public partial class PlayerCharacterDataExtensions
     {
         [DevExtMethods("CloneTo")]
         public static void CloneTo_UMA(IPlayerCharacterData from, IPlayerCharacterData to)
