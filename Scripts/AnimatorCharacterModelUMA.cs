@@ -330,9 +330,11 @@ namespace MultiplayerARPG
             }
         }
 
+#if UNITY_EDITOR
         public override void ConvertToPlayableCharacterModelImplement()
         {
             ConvertToPlayableCharacterModelGeneric<Playables.PlayableCharacterModelUMA>();
         }
+#endif
     }
 }
