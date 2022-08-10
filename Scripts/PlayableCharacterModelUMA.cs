@@ -44,6 +44,13 @@ namespace MultiplayerARPG.GameData.Model.Playables
         private readonly List<GameObject> equipWeaponObjects = new List<GameObject>();
         private readonly List<GameObject> equipItemObjects = new List<GameObject>();
 
+        protected override void Awake()
+        {
+            base.Awake();
+            if (animator != null && animator.runtimeAnimatorController == null)
+                animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("__EmptyAnimatorControllerForUMAIntegration");
+        }
+
         protected override void Start()
         {
             base.Start();
