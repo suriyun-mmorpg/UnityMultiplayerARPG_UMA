@@ -44,8 +44,9 @@ namespace MultiplayerARPG.GameData.Model.Playables
         private readonly List<GameObject> equipWeaponObjects = new List<GameObject>();
         private readonly List<GameObject> equipItemObjects = new List<GameObject>();
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             InitializeUMA();
         }
 
@@ -332,7 +333,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
 
         public void ApplyPendingAvatarData()
         {
-            if (applyingAvatarData != null)
+            if (applyingAvatarData.HasValue)
             {
                 ApplyUmaAvatar(applyingAvatarData.Value);
                 applyingAvatarData = null;
