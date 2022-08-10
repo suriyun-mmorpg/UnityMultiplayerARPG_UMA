@@ -39,13 +39,8 @@ namespace MultiplayerARPG
 
         protected void OnUmaAvatarDataChange(bool isInit, UmaAvatarData avatarData)
         {
-            if (CharacterModel is AnimatorCharacterModelUMA)
-            {
-                AnimatorCharacterModelUMA animatorCharacterModelUma = CharacterModel as AnimatorCharacterModelUMA;
-                if (animatorCharacterModelUma == null)
-                    return;
-                animatorCharacterModelUma.ApplyUmaAvatar(avatarData);
-            }
+            if (CharacterModel is ICharacterModelUma)
+                (CharacterModel as ICharacterModelUma).ApplyUmaAvatar(avatarData);
         }
     }
 }
