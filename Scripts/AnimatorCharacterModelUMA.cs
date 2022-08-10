@@ -4,9 +4,6 @@ using UnityEngine;
 using Playables = MultiplayerARPG.GameData.Model.Playables;
 using UMA;
 using UMA.CharacterSystem;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace MultiplayerARPG
 {
@@ -326,7 +323,7 @@ namespace MultiplayerARPG
 
         public void ApplyPendingAvatarData()
         {
-            if (applyingAvatarData != null)
+            if (applyingAvatarData.HasValue)
             {
                 ApplyUmaAvatar(applyingAvatarData.Value);
                 applyingAvatarData = null;
