@@ -1,17 +1,13 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Playables = MultiplayerARPG.GameData.Model.Playables;
 using UMA;
 using UMA.CharacterSystem;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
-namespace MultiplayerARPG
+namespace MultiplayerARPG.GameData.Model.Playables
 {
     [RequireComponent(typeof(DynamicCharacterAvatar))]
-    public class AnimatorCharacterModelUMA : AnimatorCharacterModel, ICharacterModelUma
+    public class PlayableCharacterModelUMA : PlayableCharacterModel, ICharacterModelUma
     {
         private DynamicCharacterAvatar cacheUmaAvatar;
         public DynamicCharacterAvatar CacheUmaAvatar
@@ -56,7 +52,17 @@ namespace MultiplayerARPG
         public override void SetEquipWeapons(EquipWeapons equipWeapons)
         {
             tempEquipWeapons = equipWeapons;
-            SetClipBasedOnWeapon(equipWeapons);
+            // Get one equipped weapon from right-hand or left-hand
+            IWeaponItem rightWeaponItem = equipWeapons.GetRightHandWeaponItem();
+            IWeaponItem leftWeaponItem = equipWeapons.GetLeftHandWeaponItem();
+            if (rightWeaponItem == null)
+                rightWeaponItem = leftWeaponItem;
+            // Set equipped weapon type, it will be used to get animations by id
+            equippedWeaponType = null;
+            if (rightWeaponItem != null)
+                equippedWeaponType = rightWeaponItem.WeaponType;
+            if (Behaviour != null)
+                Behaviour.SetPlayingWeaponTypeId(rightWeaponItem, leftWeaponItem);
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -331,11 +337,6 @@ namespace MultiplayerARPG
                 ApplyUmaAvatar(applyingAvatarData.Value);
                 applyingAvatarData = null;
             }
-        }
-
-        public override void ConvertToPlayableCharacterModelImplement()
-        {
-            ConvertToPlayableCharacterModelGeneric<Playables.PlayableCharacterModelUMA>();
         }
     }
 }
