@@ -4,18 +4,28 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 446bd54be72e9c14a9d92aae35e50af7, type: 3}
   m_Name: GameDatabase_UMA
   m_EditorClassIdentifier: 
+  playerCharacterEntities:
+  - {fileID: 114217790240189764, guid: 3db54f95f11a20a4081f602d37c75782, type: 3}
+  - {fileID: 114217790240189764, guid: e10fc226d7c62c140ab7ed9fcdfaad34, type: 3}
+  monsterCharacterEntities:
+  - {fileID: 114107677553822186, guid: 2124e2e5e8dd2794ea8c8aff808d0096, type: 3}
+  - {fileID: 114313543944479198, guid: c26675f5ea04ade429c509dd5998a3a3, type: 3}
+  vehicleEntities: []
+  otherNetworkObjects: []
   attributes:
   - {fileID: 11400000, guid: 0e223af20738b88419c22a1a0401a21b, type: 2}
   - {fileID: 11400000, guid: cf50e3647cfae0e44b683163d2171277, type: 2}
   - {fileID: 11400000, guid: c7e3824f99bb4bc43b9566210f8d02f5, type: 2}
   - {fileID: 11400000, guid: cd3d2fb4f3c67fd4dbba3bd0ccd0095e, type: 2}
+  currencies: []
   damageElements:
   - {fileID: 11400000, guid: 3afa55aee773f47438e6f7f3a03cd0b9, type: 2}
   - {fileID: 11400000, guid: 02b1c5248ea9f3242aa338970d626d27, type: 2}
@@ -48,6 +58,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 87b4c98d2d09c4a44a53c633310c8b96, type: 2}
   - {fileID: 11400000, guid: 691223c0d0d1c9342aa0df9855949779, type: 2}
   - {fileID: 11400000, guid: 91eec32179dd9e84bad4b728ddde1e02, type: 2}
+  itemCraftFormulas: []
+  armorTypes: []
+  weaponTypes: []
+  ammoTypes: []
   skills:
   - {fileID: 11400000, guid: e51e32bb6c31b564a9e211e7b65c82ec, type: 2}
   - {fileID: 11400000, guid: 2da121bb20bbc844bafd830dcb439578, type: 2}
@@ -66,42 +80,39 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa319f1dfe3afb449b69aa255c39a69b, type: 2}
   - {fileID: 11400000, guid: 401cce43094968c4bbca0024b52a4644, type: 2}
   - {fileID: 11400000, guid: 494792636296b624fbf4ff17294217c5, type: 2}
-  npcDialogs:
-  - {fileID: 11400000, guid: f936eadaf84b7c64f9b0015e52dd609b, type: 2}
-  - {fileID: 11400000, guid: a4b24ff6113420e44997e1e258b2e03a, type: 2}
-  - {fileID: 11400000, guid: 101bdba2836a8704d8993bb439c96d9d, type: 2}
-  - {fileID: 11400000, guid: e3235e181e88b534fac66e7cd7764d16, type: 2}
-  - {fileID: 11400000, guid: 331f137ce2b944d4c8e29f0cfc067d39, type: 2}
-  - {fileID: 11400000, guid: 1d117e00b9fd1b541a186b0745a60165, type: 2}
-  - {fileID: 11400000, guid: 67ffed796ac984b4588fff9b6ae747da, type: 2}
-  - {fileID: 11400000, guid: a789f187bcc9903418934a6631022451, type: 2}
-  - {fileID: 11400000, guid: f691fd013be809e4e83e80258bec78f8, type: 2}
-  - {fileID: 11400000, guid: 5d1bca971e95f7849a8e74bcb551391e, type: 2}
-  - {fileID: 11400000, guid: ea8478f076a3c7645a77e9efd3c4b368, type: 2}
-  - {fileID: 11400000, guid: df8c86b0cb4b8e746ab065cf3cef86ff, type: 2}
-  - {fileID: 11400000, guid: 2e1622574915294469f568134ebe2c42, type: 2}
-  - {fileID: 11400000, guid: a6a3052e6c4f9a24e81299df42cc2ab6, type: 2}
-  - {fileID: 11400000, guid: 8b467587e6de8ef498fd5420052587aa, type: 2}
-  - {fileID: 11400000, guid: 95b04b39b981ab14083477106e4be308, type: 2}
-  quests:
-  - {fileID: 11400000, guid: 35af53733329bea43ba4a13eab140778, type: 2}
-  - {fileID: 11400000, guid: b07c2f59514e7aa45a8005d227e79954, type: 2}
-  - {fileID: 11400000, guid: 4000f50ad41cb17419c5de53509949d8, type: 2}
   guildSkills:
   - {fileID: 11400000, guid: d3875bef37ed4aa4dba86b08069b5a8f, type: 2}
   - {fileID: 11400000, guid: 56999d63a8734bd4f8b19e254ecfbeae, type: 2}
   - {fileID: 11400000, guid: d4a2fc417a247c74f9db5f31ab7d2b75, type: 2}
   - {fileID: 11400000, guid: fe3307ecb7dbe3142a73616746b84e59, type: 2}
+  guildIcons: []
+  statusEffects: []
   playerCharacters:
   - {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
   monsterCharacters:
   - {fileID: 11400000, guid: 23e69da72a14d644eb8c0128af2ee872, type: 2}
   - {fileID: 11400000, guid: 04cf3a67b05487e4a84f0da538307cb3, type: 2}
-  playerCharacterEntities:
-  - {fileID: 114217790240189764, guid: e10fc226d7c62c140ab7ed9fcdfaad34, type: 2}
-  monsterCharacterEntities:
-  - {fileID: 114107677553822186, guid: 2124e2e5e8dd2794ea8c8aff808d0096, type: 2}
-  - {fileID: 114313543944479198, guid: c26675f5ea04ade429c509dd5998a3a3, type: 2}
+  harvestables: []
   mapInfos:
   - {fileID: 11400000, guid: de8b0e4099f8d444692e88f92309e90d, type: 2}
   - {fileID: 11400000, guid: fbe2a93dfafee544cbeaf175d3491e33, type: 2}
+  quests:
+  - {fileID: 11400000, guid: 35af53733329bea43ba4a13eab140778, type: 2}
+  - {fileID: 11400000, guid: b07c2f59514e7aa45a8005d227e79954, type: 2}
+  - {fileID: 11400000, guid: 4000f50ad41cb17419c5de53509949d8, type: 2}
+  factions: []
+  gachas: []
+  attributeBundleName: attribute
+  currencyBundleName: currency
+  damageElementBundleName: damageElement
+  characterBundleName: character
+  itemBundleName: item
+  mapInfoBundleName: map
+  sceneBundleName: scene
+  skillBundleName: skill
+  guildSkillBundleName: guildSkill
+  guildIconBundleName: guildIcon
+  questBundleName: quest
+  factionBundleName: faction
+  gachaBundleName: gacha
+  setNameForUnnamedAssetsOnly: 1
