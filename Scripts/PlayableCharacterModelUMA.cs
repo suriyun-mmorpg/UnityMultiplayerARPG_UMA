@@ -70,7 +70,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
             if (rightWeaponItem != null)
                 equippedWeaponType = rightWeaponItem.WeaponType;
             if (Behaviour != null)
-                Behaviour.SetPlayingWeaponTypeId(rightWeaponItem, leftWeaponItem, equipWeapons.GetLeftHandShieldItem());
+                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, equipWeapons.GetLeftHandShieldItem());
 
             if (!IsUmaCharacterCreated)
                 return;
