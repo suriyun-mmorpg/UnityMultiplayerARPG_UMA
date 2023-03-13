@@ -61,22 +61,21 @@ namespace MultiplayerARPG.GameData.Model.Playables
             this.equipWeaponSet = equipWeaponSet;
             this.isWeaponsSheathed = isWeaponsSheathed;
 
-            EquipWeapons equipWeapons;
+            EquipWeapons newEquipWeapons;
             if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
             {
-                equipWeapons = new EquipWeapons();
+                newEquipWeapons = new EquipWeapons();
             }
             else
             {
                 if (equipWeaponSet >= selectableWeaponSets.Count)
                     equipWeaponSet = (byte)(selectableWeaponSets.Count - 1);
-                equipWeapons = selectableWeaponSets[equipWeaponSet];
+                newEquipWeapons = selectableWeaponSets[equipWeaponSet];
             }
 
             // Get one equipped weapon from right-hand or left-hand
-            IWeaponItem rightWeaponItem = equipWeapons.GetRightHandWeaponItem();
-            IWeaponItem leftWeaponItem = equipWeapons.GetLeftHandWeaponItem();
-            IShieldItem leftShieldItem = equipWeapons.GetLeftHandShieldItem();
+            IWeaponItem rightWeaponItem = newEquipWeapons.GetRightHandWeaponItem();
+            IWeaponItem leftWeaponItem = newEquipWeapons.GetLeftHandWeaponItem();
             if (rightWeaponItem == null)
                 rightWeaponItem = leftWeaponItem;
             // Set equipped weapon type, it will be used to get animations by id
@@ -84,59 +83,116 @@ namespace MultiplayerARPG.GameData.Model.Playables
             if (rightWeaponItem != null)
                 equippedWeaponType = rightWeaponItem.WeaponType;
             if (Behaviour != null)
-                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, leftShieldItem);
-
-            if (!IsUmaCharacterCreated)
-                return;
-
-            ClearObjectsAndSlots(equipWeaponUsedSlots, equipWeaponObjects);
-
-            if (CacheUmaAvatar.activeRace == null ||
-                CacheUmaAvatar.activeRace.racedata == null ||
-                equipWeapons == null)
-                return;
-
-            string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
-            BaseEquipmentEntity baseEquipmentEntity;
-            IEquipmentItem tempEquipmentItem;
-            UMATextRecipe[] receipes;
-            // Setup right hand weapon
-            if (equipWeapons.rightHand != null)
+                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, newEquipWeapons.GetLeftHandShieldItem());
+            // Player draw/holster animation
+            if (oldEquipWeapons == null)
+                oldEquipWeapons = newEquipWeapons;
+            if (Time.unscaledTime - AwakenTime < 1f || !newEquipWeapons.IsDiffer(oldEquipWeapons, out bool rightIsDiffer, out bool leftIsDiffer))
             {
-                tempEquipmentItem = equipWeapons.rightHand.GetWeaponItem();
-                if (tempEquipmentItem != null)
+                SetEquipWeaponObjects();
+                return;
+            }
+            StartActionCoroutine(PlayEquipWeaponsAnimationRoutine(newEquipWeapons, rightIsDiffer, leftIsDiffer, selectableWeaponSets, equipWeaponSet, isWeaponsSheathed), SetEquipWeaponObjects);
+        }
+
+        private IEnumerator PlayEquipWeaponsAnimationRoutine(EquipWeapons newEquipWeapons, bool rightIsDiffer, bool leftIsDiffer, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
+        {
+            isDoingAction = true;
+
+            IWeaponItem tempWeaponItem;
+            float triggeredDurationRate = 0f;
+            ActionState actionState = new ActionState();
+            if (isWeaponsSheathed)
+            {
+                if (oldEquipWeapons != null)
                 {
-                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, equipWeapons.rightHand.level, out baseEquipmentEntity);
-                    CacheRightHandEquipmentEntity = baseEquipmentEntity;
-                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                        SetSlot(equipWeaponUsedSlots, receipes);
+                    if (rightIsDiffer)
+                    {
+                        tempWeaponItem = oldEquipWeapons.GetRightHandWeaponItem();
+                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.rightHandHolsterAnimation.holsterState.clip != null)
+                        {
+                            actionState = anims.rightHandHolsterAnimation.holsterState;
+                            triggeredDurationRate = anims.rightHandHolsterAnimation.holsteredDurationRate;
+                        }
+                        else
+                        {
+                            actionState = defaultAnimations.rightHandHolsterAnimation.holsterState;
+                            triggeredDurationRate = defaultAnimations.rightHandHolsterAnimation.holsteredDurationRate;
+                        }
+                    }
+                    else if (leftIsDiffer)
+                    {
+                        tempWeaponItem = oldEquipWeapons.GetLeftHandWeaponItem();
+                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.leftHandHolsterAnimation.holsterState.clip != null)
+                        {
+                            actionState = anims.leftHandHolsterAnimation.holsterState;
+                            triggeredDurationRate = anims.leftHandHolsterAnimation.holsteredDurationRate;
+                        }
+                        else
+                        {
+                            actionState = defaultAnimations.leftHandHolsterAnimation.holsterState;
+                            triggeredDurationRate = defaultAnimations.leftHandHolsterAnimation.holsteredDurationRate;
+                        }
+                    }
                 }
             }
-            // Setup left hand weapon
-            if (equipWeapons.leftHand != null)
+            else
             {
-                // Weapon
-                tempEquipmentItem = equipWeapons.leftHand.GetWeaponItem();
-                if (tempEquipmentItem != null)
+                if (newEquipWeapons != null)
                 {
-                    SetEquipmentObject(equipWeaponObjects, (tempEquipmentItem as IWeaponItem).OffHandEquipmentModels, equipWeapons.leftHand.level, out baseEquipmentEntity);
-                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
-                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                        SetSlot(equipWeaponUsedSlots, receipes);
-                }
-                // Shield
-                tempEquipmentItem = equipWeapons.leftHand.GetShieldItem();
-                if (tempEquipmentItem != null)
-                {
-                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, equipWeapons.leftHand.level, out baseEquipmentEntity);
-                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
-                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                        SetSlot(equipWeaponUsedSlots, receipes);
+                    if (rightIsDiffer)
+                    {
+                        tempWeaponItem = newEquipWeapons.GetRightHandWeaponItem();
+                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.rightHandHolsterAnimation.drawState.clip != null)
+                        {
+                            actionState = anims.rightHandHolsterAnimation.drawState;
+                            triggeredDurationRate = anims.rightHandHolsterAnimation.drawnDurationRate;
+                        }
+                        else
+                        {
+                            actionState = defaultAnimations.rightHandHolsterAnimation.drawState;
+                            triggeredDurationRate = defaultAnimations.rightHandHolsterAnimation.drawnDurationRate;
+                        }
+                    }
+                    else if (leftIsDiffer)
+                    {
+                        tempWeaponItem = newEquipWeapons.GetLeftHandWeaponItem();
+                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.leftHandHolsterAnimation.drawState.clip != null)
+                        {
+                            actionState = anims.leftHandHolsterAnimation.drawState;
+                            triggeredDurationRate = anims.leftHandHolsterAnimation.drawnDurationRate;
+                        }
+                        else
+                        {
+                            actionState = defaultAnimations.leftHandHolsterAnimation.drawState;
+                            triggeredDurationRate = defaultAnimations.leftHandHolsterAnimation.drawnDurationRate;
+                        }
+                    }
                 }
             }
-            // Update avatar
-            CacheUmaAvatar.BuildCharacter(true);
-            CacheUmaAvatar.ForceUpdate(true, true, true);
+
+            float animationDelay = 0f;
+            float triggeredDelay = 0f;
+            if (actionState.clip != null)
+            {
+                // Setup animation playing duration
+                animationDelay = Behaviour.PlayAction(actionState, 1f);
+                triggeredDelay = animationDelay * triggeredDurationRate;
+            }
+
+            if (triggeredDelay > 0f)
+                yield return new WaitForSecondsRealtime(triggeredDelay);
+
+            SetEquipWeaponObjects();
+            onStopAction = null;
+
+            if (animationDelay - triggeredDelay > 0f)
+            {
+                // Wait by remaining animation playing duration
+                yield return new WaitForSecondsRealtime(animationDelay - triggeredDelay);
+            }
+
+            isDoingAction = false;
         }
 
         public override void SetEquipItems(IList<CharacterItem> equipItems)
@@ -188,6 +244,89 @@ namespace MultiplayerARPG.GameData.Model.Playables
                 Destroy(objectList);
             }
             objectsList.Clear();
+        }
+
+        private void SetEquipWeaponObjects()
+        {
+            EquipWeapons newEquipWeapons;
+            if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
+            {
+                newEquipWeapons = new EquipWeapons();
+            }
+            else
+            {
+                if (equipWeaponSet >= selectableWeaponSets.Count)
+                    equipWeaponSet = (byte)(selectableWeaponSets.Count - 1);
+                newEquipWeapons = selectableWeaponSets[equipWeaponSet];
+            }
+
+            if (newEquipWeapons != null)
+                oldEquipWeapons = newEquipWeapons.Clone();
+
+            // Get one equipped weapon from right-hand or left-hand
+            IWeaponItem rightWeaponItem = newEquipWeapons.GetRightHandWeaponItem();
+            IWeaponItem leftWeaponItem = newEquipWeapons.GetLeftHandWeaponItem();
+            IShieldItem leftShieldItem = newEquipWeapons.GetLeftHandShieldItem();
+            if (rightWeaponItem == null)
+                rightWeaponItem = leftWeaponItem;
+            // Set equipped weapon type, it will be used to get animations by id
+            equippedWeaponType = null;
+            if (rightWeaponItem != null)
+                equippedWeaponType = rightWeaponItem.WeaponType;
+            if (Behaviour != null)
+                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, leftShieldItem);
+
+            if (!IsUmaCharacterCreated)
+                return;
+
+            ClearObjectsAndSlots(equipWeaponUsedSlots, equipWeaponObjects);
+
+            if (CacheUmaAvatar.activeRace == null ||
+                CacheUmaAvatar.activeRace.racedata == null ||
+                newEquipWeapons == null)
+                return;
+
+            string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
+            BaseEquipmentEntity baseEquipmentEntity;
+            IEquipmentItem tempEquipmentItem;
+            UMATextRecipe[] receipes;
+            // Setup right hand weapon
+            if (newEquipWeapons.rightHand != null)
+            {
+                tempEquipmentItem = newEquipWeapons.rightHand.GetWeaponItem();
+                if (tempEquipmentItem != null)
+                {
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, newEquipWeapons.rightHand.level, out baseEquipmentEntity);
+                    CacheRightHandEquipmentEntity = baseEquipmentEntity;
+                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(equipWeaponUsedSlots, receipes);
+                }
+            }
+            // Setup left hand weapon
+            if (newEquipWeapons.leftHand != null)
+            {
+                // Weapon
+                tempEquipmentItem = newEquipWeapons.leftHand.GetWeaponItem();
+                if (tempEquipmentItem != null)
+                {
+                    SetEquipmentObject(equipWeaponObjects, (tempEquipmentItem as IWeaponItem).OffHandEquipmentModels, newEquipWeapons.leftHand.level, out baseEquipmentEntity);
+                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
+                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(equipWeaponUsedSlots, receipes);
+                }
+                // Shield
+                tempEquipmentItem = newEquipWeapons.leftHand.GetShieldItem();
+                if (tempEquipmentItem != null)
+                {
+                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, newEquipWeapons.leftHand.level, out baseEquipmentEntity);
+                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
+                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(equipWeaponUsedSlots, receipes);
+                }
+            }
+            // Update avatar
+            CacheUmaAvatar.BuildCharacter(true);
+            CacheUmaAvatar.ForceUpdate(true, true, true);
         }
 
         private void SetEquipmentObject(List<GameObject> objectsList, EquipmentModel[] equipmentModels, int level, out BaseEquipmentEntity equipmentEntity)
