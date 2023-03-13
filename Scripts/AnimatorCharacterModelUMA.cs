@@ -37,8 +37,6 @@ namespace MultiplayerARPG
         public System.Action OnUmaCharacterCreated { get; set; }
         private UmaAvatarData? applyingAvatarData;
         private Coroutine applyCoroutine;
-        private EquipWeapons tempEquipWeapons;
-        private IList<CharacterItem> tempEquipItems;
 
         private readonly HashSet<string> equipWeaponUsedSlots = new HashSet<string>();
         private readonly HashSet<string> equipItemUsedSlots = new HashSet<string>();
@@ -50,9 +48,24 @@ namespace MultiplayerARPG
             InitializeUMA();
         }
 
-        public override void SetEquipWeapons(EquipWeapons equipWeapons)
+        public override void SetEquipWeapons(IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
-            tempEquipWeapons = equipWeapons;
+            this.selectableWeaponSets = selectableWeaponSets;
+            this.equipWeaponSet = equipWeaponSet;
+            this.isWeaponsSheathed = isWeaponsSheathed;
+
+            EquipWeapons equipWeapons;
+            if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
+            {
+                equipWeapons = new EquipWeapons();
+            }
+            else
+            {
+                if (equipWeaponSet >= selectableWeaponSets.Count)
+                    equipWeaponSet = (byte)(selectableWeaponSets.Count - 1);
+                equipWeapons = selectableWeaponSets[equipWeaponSet];
+            }
+
             SetClipBasedOnWeapon(equipWeapons);
 
             if (!IsUmaCharacterCreated)
@@ -110,7 +123,7 @@ namespace MultiplayerARPG
 
         public override void SetEquipItems(IList<CharacterItem> equipItems)
         {
-            tempEquipItems = equipItems;
+            this.equipItems = equipItems;
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -288,10 +301,8 @@ namespace MultiplayerARPG
                 }
             }
             // Set equip items if it is already set
-            if (tempEquipWeapons != null)
-                SetEquipWeapons(tempEquipWeapons);
-            if (tempEquipItems != null)
-                SetEquipItems(tempEquipItems);
+            SetEquipWeapons(selectableWeaponSets, equipWeaponSet, isWeaponsSheathed);
+            SetEquipItems(equipItems);
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);

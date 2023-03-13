@@ -36,8 +36,6 @@ namespace MultiplayerARPG.GameData.Model.Playables
         public System.Action OnUmaCharacterCreated { get; set; }
         private UmaAvatarData? applyingAvatarData;
         private Coroutine applyCoroutine;
-        private EquipWeapons tempEquipWeapons;
-        private IList<CharacterItem> tempEquipItems;
 
         private readonly HashSet<string> equipWeaponUsedSlots = new HashSet<string>();
         private readonly HashSet<string> equipItemUsedSlots = new HashSet<string>();
@@ -57,12 +55,28 @@ namespace MultiplayerARPG.GameData.Model.Playables
             InitializeUMA();
         }
 
-        public override void SetEquipWeapons(EquipWeapons equipWeapons)
+        public override void SetEquipWeapons(IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
-            tempEquipWeapons = equipWeapons;
+            this.selectableWeaponSets = selectableWeaponSets;
+            this.equipWeaponSet = equipWeaponSet;
+            this.isWeaponsSheathed = isWeaponsSheathed;
+
+            EquipWeapons equipWeapons;
+            if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
+            {
+                equipWeapons = new EquipWeapons();
+            }
+            else
+            {
+                if (equipWeaponSet >= selectableWeaponSets.Count)
+                    equipWeaponSet = (byte)(selectableWeaponSets.Count - 1);
+                equipWeapons = selectableWeaponSets[equipWeaponSet];
+            }
+
             // Get one equipped weapon from right-hand or left-hand
             IWeaponItem rightWeaponItem = equipWeapons.GetRightHandWeaponItem();
             IWeaponItem leftWeaponItem = equipWeapons.GetLeftHandWeaponItem();
+            IShieldItem leftShieldItem = equipWeapons.GetLeftHandShieldItem();
             if (rightWeaponItem == null)
                 rightWeaponItem = leftWeaponItem;
             // Set equipped weapon type, it will be used to get animations by id
@@ -70,7 +84,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
             if (rightWeaponItem != null)
                 equippedWeaponType = rightWeaponItem.WeaponType;
             if (Behaviour != null)
-                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, equipWeapons.GetLeftHandShieldItem());
+                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, leftShieldItem);
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -127,7 +141,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
 
         public override void SetEquipItems(IList<CharacterItem> equipItems)
         {
-            tempEquipItems = equipItems;
+            this.equipItems = equipItems;
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -305,10 +319,8 @@ namespace MultiplayerARPG.GameData.Model.Playables
                 }
             }
             // Set equip items if it is already set
-            if (tempEquipWeapons != null)
-                SetEquipWeapons(tempEquipWeapons);
-            if (tempEquipItems != null)
-                SetEquipItems(tempEquipItems);
+            SetEquipWeapons(selectableWeaponSets, equipWeaponSet, isWeaponsSheathed);
+            SetEquipItems(equipItems);
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
