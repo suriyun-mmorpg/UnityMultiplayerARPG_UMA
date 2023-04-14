@@ -57,9 +57,9 @@ namespace MultiplayerARPG.GameData.Model.Playables
 
         public override void SetEquipWeapons(IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
-            this.selectableWeaponSets = selectableWeaponSets;
-            this.equipWeaponSet = equipWeaponSet;
-            this.isWeaponsSheathed = isWeaponsSheathed;
+            SelectableWeaponSets = selectableWeaponSets;
+            EquipWeaponSet = equipWeaponSet;
+            IsWeaponsSheathed = isWeaponsSheathed;
 
             EquipWeapons newEquipWeapons;
             if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
@@ -87,7 +87,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
             // Player draw/holster animation
             if (oldEquipWeapons == null)
                 oldEquipWeapons = newEquipWeapons;
-            if (Time.unscaledTime - AwakenTime < 1f || !newEquipWeapons.IsDiffer(oldEquipWeapons, out bool rightIsDiffer, out bool leftIsDiffer))
+            if (Time.unscaledTime - SwitchedTime < 1f || !newEquipWeapons.IsDiffer(oldEquipWeapons, out bool rightIsDiffer, out bool leftIsDiffer))
             {
                 SetEquipWeaponObjects();
                 return;
@@ -109,29 +109,29 @@ namespace MultiplayerARPG.GameData.Model.Playables
                     if (rightIsDiffer)
                     {
                         tempWeaponItem = oldEquipWeapons.GetRightHandWeaponItem();
-                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.rightHandHolsterAnimation.holsterState.clip != null)
+                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.rightHandWeaponSheathingAnimation.sheathState.clip != null)
                         {
-                            actionState = anims.rightHandHolsterAnimation.holsterState;
-                            triggeredDurationRate = anims.rightHandHolsterAnimation.holsteredDurationRate;
+                            actionState = anims.rightHandWeaponSheathingAnimation.sheathState;
+                            triggeredDurationRate = anims.rightHandWeaponSheathingAnimation.sheathedDurationRate;
                         }
                         else
                         {
-                            actionState = defaultAnimations.rightHandHolsterAnimation.holsterState;
-                            triggeredDurationRate = defaultAnimations.rightHandHolsterAnimation.holsteredDurationRate;
+                            actionState = defaultAnimations.rightHandWeaponSheathingAnimation.sheathState;
+                            triggeredDurationRate = defaultAnimations.rightHandWeaponSheathingAnimation.sheathedDurationRate;
                         }
                     }
                     else if (leftIsDiffer)
                     {
                         tempWeaponItem = oldEquipWeapons.GetLeftHandWeaponItem();
-                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.leftHandHolsterAnimation.holsterState.clip != null)
+                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.leftHandWeaponSheathingAnimation.sheathState.clip != null)
                         {
-                            actionState = anims.leftHandHolsterAnimation.holsterState;
-                            triggeredDurationRate = anims.leftHandHolsterAnimation.holsteredDurationRate;
+                            actionState = anims.leftHandWeaponSheathingAnimation.sheathState;
+                            triggeredDurationRate = anims.leftHandWeaponSheathingAnimation.sheathedDurationRate;
                         }
                         else
                         {
-                            actionState = defaultAnimations.leftHandHolsterAnimation.holsterState;
-                            triggeredDurationRate = defaultAnimations.leftHandHolsterAnimation.holsteredDurationRate;
+                            actionState = defaultAnimations.leftHandWeaponSheathingAnimation.sheathState;
+                            triggeredDurationRate = defaultAnimations.leftHandWeaponSheathingAnimation.sheathedDurationRate;
                         }
                     }
                 }
@@ -143,29 +143,29 @@ namespace MultiplayerARPG.GameData.Model.Playables
                     if (rightIsDiffer)
                     {
                         tempWeaponItem = newEquipWeapons.GetRightHandWeaponItem();
-                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.rightHandHolsterAnimation.drawState.clip != null)
+                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.rightHandWeaponSheathingAnimation.unsheathState.clip != null)
                         {
-                            actionState = anims.rightHandHolsterAnimation.drawState;
-                            triggeredDurationRate = anims.rightHandHolsterAnimation.drawnDurationRate;
+                            actionState = anims.rightHandWeaponSheathingAnimation.unsheathState;
+                            triggeredDurationRate = anims.rightHandWeaponSheathingAnimation.unsheathedDurationRate;
                         }
                         else
                         {
-                            actionState = defaultAnimations.rightHandHolsterAnimation.drawState;
-                            triggeredDurationRate = defaultAnimations.rightHandHolsterAnimation.drawnDurationRate;
+                            actionState = defaultAnimations.rightHandWeaponSheathingAnimation.unsheathState;
+                            triggeredDurationRate = defaultAnimations.rightHandWeaponSheathingAnimation.unsheathedDurationRate;
                         }
                     }
                     else if (leftIsDiffer)
                     {
                         tempWeaponItem = newEquipWeapons.GetLeftHandWeaponItem();
-                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.leftHandHolsterAnimation.drawState.clip != null)
+                        if (tempWeaponItem != null && TryGetWeaponAnimations(tempWeaponItem.WeaponType.DataId, out WeaponAnimations anims) && anims.leftHandWeaponSheathingAnimation.unsheathState.clip != null)
                         {
-                            actionState = anims.leftHandHolsterAnimation.drawState;
-                            triggeredDurationRate = anims.leftHandHolsterAnimation.drawnDurationRate;
+                            actionState = anims.leftHandWeaponSheathingAnimation.unsheathState;
+                            triggeredDurationRate = anims.leftHandWeaponSheathingAnimation.unsheathedDurationRate;
                         }
                         else
                         {
-                            actionState = defaultAnimations.leftHandHolsterAnimation.drawState;
-                            triggeredDurationRate = defaultAnimations.leftHandHolsterAnimation.drawnDurationRate;
+                            actionState = defaultAnimations.leftHandWeaponSheathingAnimation.unsheathState;
+                            triggeredDurationRate = defaultAnimations.leftHandWeaponSheathingAnimation.unsheathedDurationRate;
                         }
                     }
                 }
@@ -197,7 +197,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
 
         public override void SetEquipItems(IList<CharacterItem> equipItems)
         {
-            this.equipItems = equipItems;
+            EquipItems = equipItems;
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -249,15 +249,15 @@ namespace MultiplayerARPG.GameData.Model.Playables
         private void SetEquipWeaponObjects()
         {
             EquipWeapons newEquipWeapons;
-            if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
+            if (IsWeaponsSheathed || SelectableWeaponSets == null || SelectableWeaponSets.Count == 0)
             {
                 newEquipWeapons = new EquipWeapons();
             }
             else
             {
-                if (equipWeaponSet >= selectableWeaponSets.Count)
-                    equipWeaponSet = (byte)(selectableWeaponSets.Count - 1);
-                newEquipWeapons = selectableWeaponSets[equipWeaponSet];
+                if (EquipWeaponSet >= SelectableWeaponSets.Count)
+                    EquipWeaponSet = (byte)(SelectableWeaponSets.Count - 1);
+                newEquipWeapons = SelectableWeaponSets[EquipWeaponSet];
             }
 
             if (newEquipWeapons != null)
@@ -458,8 +458,8 @@ namespace MultiplayerARPG.GameData.Model.Playables
                 }
             }
             // Set equip items if it is already set
-            SetEquipWeapons(selectableWeaponSets, equipWeaponSet, isWeaponsSheathed);
-            SetEquipItems(equipItems);
+            SetEquipWeapons(SelectableWeaponSets, EquipWeaponSet, IsWeaponsSheathed);
+            SetEquipItems(EquipItems);
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);

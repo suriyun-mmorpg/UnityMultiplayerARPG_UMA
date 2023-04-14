@@ -22,9 +22,7 @@ namespace MultiplayerARPG
             {
                 PlayerCharacter database = SelectedPlayerCharacterData.GetDatabase() as PlayerCharacter;
                 SelectedPlayerCharacterData.CurrentMapName = database.StartMap.Id;
-                SelectedPlayerCharacterData.CurrentPositionX = database.StartPosition.x;
-                SelectedPlayerCharacterData.CurrentPositionY = database.StartPosition.y;
-                SelectedPlayerCharacterData.CurrentPositionZ = database.StartPosition.z;
+                SelectedPlayerCharacterData.CurrentPosition = database.StartPosition;
             }
             // Set selected character to network manager
             (BaseGameNetworkManager.Singleton as LanRpgNetworkManager).selectedCharacter = SelectedPlayerCharacterData;

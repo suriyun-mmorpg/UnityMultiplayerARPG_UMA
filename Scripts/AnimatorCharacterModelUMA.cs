@@ -50,9 +50,9 @@ namespace MultiplayerARPG
 
         public override void SetEquipWeapons(IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
-            this.selectableWeaponSets = selectableWeaponSets;
-            this.equipWeaponSet = equipWeaponSet;
-            this.isWeaponsSheathed = isWeaponsSheathed;
+            SelectableWeaponSets = selectableWeaponSets;
+            EquipWeaponSet = equipWeaponSet;
+            IsWeaponsSheathed = isWeaponsSheathed;
 
             EquipWeapons equipWeapons;
             if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
@@ -123,7 +123,7 @@ namespace MultiplayerARPG
 
         public override void SetEquipItems(IList<CharacterItem> equipItems)
         {
-            this.equipItems = equipItems;
+            EquipItems = equipItems;
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -301,8 +301,8 @@ namespace MultiplayerARPG
                 }
             }
             // Set equip items if it is already set
-            SetEquipWeapons(selectableWeaponSets, equipWeaponSet, isWeaponsSheathed);
-            SetEquipItems(equipItems);
+            SetEquipWeapons(SelectableWeaponSets, EquipWeaponSet, IsWeaponsSheathed);
+            SetEquipItems(EquipItems);
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
