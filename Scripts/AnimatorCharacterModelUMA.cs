@@ -50,7 +50,7 @@ namespace MultiplayerARPG
             InitializeUMA();
         }
 
-        public override void SetEquipWeapons(EquipWeapons equipWeapons)
+        public void SetEquipWeapons(EquipWeapons equipWeapons)
         {
             tempEquipWeapons = equipWeapons;
             SetClipBasedOnWeapon(equipWeapons);
@@ -108,7 +108,7 @@ namespace MultiplayerARPG
             CacheUmaAvatar.ForceUpdate(true, true, true);
         }
 
-        public override void SetEquipItems(IList<CharacterItem> equipItems)
+        public override void SetEquipItems(IList<CharacterItem> equipItems, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
             tempEquipItems = equipItems;
 
@@ -142,6 +142,8 @@ namespace MultiplayerARPG
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
+
+            base.SetEquipItems(equipItems, selectableWeaponSets, equipWeaponSet, isWeaponsSheathed);
         }
 
         private void ClearObjectsAndSlots(HashSet<string> usedSlotsSet, List<GameObject> objectsList)
@@ -171,7 +173,7 @@ namespace MultiplayerARPG
             foreach (EquipmentModel equipmentModel in equipmentModels)
             {
                 if (string.IsNullOrEmpty(equipmentModel.equipSocket) ||
-                    equipmentModel.model == null)
+                    equipmentModel.meshPrefab == null)
                 {
                     // If data is empty, skip it
                     continue;
@@ -181,7 +183,7 @@ namespace MultiplayerARPG
                 if (boneObj == null)
                     continue;
 
-                tempEquipmentObject = Instantiate(equipmentModel.model);
+                tempEquipmentObject = Instantiate(equipmentModel.meshPrefab);
                 tempEquipmentObject.transform.SetParent(boneObj.transform, false);
                 tempEquipmentObject.transform.localPosition = equipmentModel.localPosition;
                 tempEquipmentObject.transform.localEulerAngles = equipmentModel.localEulerAngles;
@@ -291,7 +293,7 @@ namespace MultiplayerARPG
             if (tempEquipWeapons != null)
                 SetEquipWeapons(tempEquipWeapons);
             if (tempEquipItems != null)
-                SetEquipItems(tempEquipItems);
+                SetEquipItems(tempEquipItems, SelectableWeaponSets, EquipWeaponSet, IsWeaponsSheathed);
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);

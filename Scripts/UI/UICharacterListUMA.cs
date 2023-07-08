@@ -16,7 +16,7 @@ namespace MultiplayerARPG
                 buttonDelete.gameObject.SetActive(true);
             characterModelContainer.SetChildrenActive(false);
             // Load selected character, set selected player character data and also validate its data
-            PlayerCharacterDataById.TryGetValue(playerCharacterData.Id, out selectedPlayerCharacterData);
+            _playerCharacterDataById.TryGetValue(playerCharacterData.Id, out _selectedPlayerCharacterData);
             // Validate map data
             if (!GameInstance.Singleton.GetGameMapIds().Contains(SelectedPlayerCharacterData.CurrentMapName))
             {
@@ -27,7 +27,7 @@ namespace MultiplayerARPG
             // Set selected character to network manager
             (BaseGameNetworkManager.Singleton as LanRpgNetworkManager).selectedCharacter = SelectedPlayerCharacterData;
             // Show selected character model
-            CharacterModelById.TryGetValue(playerCharacterData.Id, out selectedModel);
+            _characterModelById.TryGetValue(playerCharacterData.Id, out _selectedModel);
             if (SelectedModel != null && SelectedModel is ICharacterModelUma)
             {
                 // Setup Uma model and applies options

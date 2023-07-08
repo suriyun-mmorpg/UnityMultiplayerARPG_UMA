@@ -57,8 +57,9 @@ namespace MultiplayerARPG.GameData.Model.Playables
             InitializeUMA();
         }
 
-        public override void SetEquipWeapons(EquipWeapons equipWeapons)
+        public void SetEquipWeapons(EquipWeapons equipWeapons)
         {
+
             tempEquipWeapons = equipWeapons;
             // Get one equipped weapon from right-hand or left-hand
             IWeaponItem rightWeaponItem = equipWeapons.GetRightHandWeaponItem();
@@ -70,7 +71,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
             if (rightWeaponItem != null)
                 equippedWeaponType = rightWeaponItem.WeaponType;
             if (Behaviour != null)
-                Behaviour.SetPlayingWeaponTypeId(rightWeaponItem, leftWeaponItem, equipWeapons.GetLeftHandShieldItem());
+                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, equipWeapons.GetLeftHandShieldItem());
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -125,8 +126,9 @@ namespace MultiplayerARPG.GameData.Model.Playables
             CacheUmaAvatar.ForceUpdate(true, true, true);
         }
 
-        public override void SetEquipItems(IList<CharacterItem> equipItems)
+        public override void SetEquipItems(IList<CharacterItem> equipItems, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
+
             tempEquipItems = equipItems;
 
             if (!IsUmaCharacterCreated)
@@ -159,6 +161,8 @@ namespace MultiplayerARPG.GameData.Model.Playables
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
+
+            base.SetEquipItems(equipItems, selectableWeaponSets, equipWeaponSet, isWeaponsSheathed);
         }
 
         private void ClearObjectsAndSlots(HashSet<string> usedSlotsSet, List<GameObject> objectsList)
@@ -188,7 +192,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
             foreach (EquipmentModel equipmentModel in equipmentModels)
             {
                 if (string.IsNullOrEmpty(equipmentModel.equipSocket) ||
-                    equipmentModel.model == null)
+                    equipmentModel.meshPrefab == null)
                 {
                     // If data is empty, skip it
                     continue;
@@ -198,7 +202,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
                 if (boneObj == null)
                     continue;
 
-                tempEquipmentObject = Instantiate(equipmentModel.model);
+                tempEquipmentObject = Instantiate(equipmentModel.meshPrefab);
                 tempEquipmentObject.transform.SetParent(boneObj.transform, false);
                 tempEquipmentObject.transform.localPosition = equipmentModel.localPosition;
                 tempEquipmentObject.transform.localEulerAngles = equipmentModel.localEulerAngles;
@@ -308,7 +312,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
             if (tempEquipWeapons != null)
                 SetEquipWeapons(tempEquipWeapons);
             if (tempEquipItems != null)
-                SetEquipItems(tempEquipItems);
+                SetEquipItems(tempEquipItems, SelectableWeaponSets,EquipWeaponSet, IsWeaponsSheathed);
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
