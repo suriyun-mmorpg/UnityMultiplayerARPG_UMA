@@ -67,9 +67,9 @@ namespace MultiplayerARPG.GameData.Model.Playables
             if (rightWeaponItem == null)
                 rightWeaponItem = leftWeaponItem;
             // Set equipped weapon type, it will be used to get animations by id
-            equippedWeaponType = null;
+            _equippedWeaponType = null;
             if (rightWeaponItem != null)
-                equippedWeaponType = rightWeaponItem.WeaponType;
+                _equippedWeaponType = rightWeaponItem.WeaponType;
             if (Behaviour != null)
                 Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, equipWeapons.GetLeftHandShieldItem());
 
@@ -312,7 +312,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
             if (tempEquipWeapons != null)
                 SetEquipWeapons(tempEquipWeapons);
             if (tempEquipItems != null)
-                SetEquipItems(tempEquipItems, SelectableWeaponSets,EquipWeaponSet, IsWeaponsSheathed);
+                SetEquipItems(tempEquipItems, SelectableWeaponSets, EquipWeaponSet, IsWeaponsSheathed);
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
