@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using LiteNetLibManager;
+using MultiplayerARPG.GameData.Model.Playables;
 
 namespace MultiplayerARPG.MMO
 {
@@ -15,16 +16,16 @@ namespace MultiplayerARPG.MMO
         private void OnRequestedCharacters(ResponseHandlerData responseHandler, AckResponseCode responseCode, ResponseCharactersMessage response)
         {
             // Clear character list
-            CacheCharacterSelectionManager.Clear();
-            CacheCharacterList.HideAll();
+            CharacterSelectionManager.Clear();
+            CharacterList.HideAll();
             // Unable buttons
             buttonStart.gameObject.SetActive(false);
             buttonDelete.gameObject.SetActive(false);
             // Remove all models
             characterModelContainer.RemoveChildren();
-            CharacterModelById.Clear();
+            _characterModelById.Clear();
             // Remove all cached data
-            PlayerCharacterDataById.Clear();
+            _playerCharacterDataById.Clear();
             // Proceed response
             List<PlayerCharacterData> selectableCharacters = new List<PlayerCharacterData>();
             if (!responseCode.ShowUnhandledResponseMessageDialog(response.message))
@@ -52,28 +53,28 @@ namespace MultiplayerARPG.MMO
                 eventOnAbleToCreateCharacter.Invoke();
 
             // Clear selected character data, will select first in list if available
-            selectedPlayerCharacterData = null;
+            _selectedPlayerCharacterData = null;
 
             // Generate list entry by saved characters
             if (selectableCharacters.Count > 0)
             {
                 selectableCharacters.Sort(new PlayerCharacterDataLastUpdateComparer().Desc());
-                CacheCharacterList.Generate(selectableCharacters, (index, characterData, ui) =>
+                CharacterList.Generate(selectableCharacters, (index, characterData, ui) =>
                 {
                     // Cache player character to dictionary, we will use it later
-                    PlayerCharacterDataById[characterData.Id] = characterData;
+                    _playerCharacterDataById[characterData.Id] = characterData;
                     // Setup UIs
                     UICharacter uiCharacter = ui.GetComponent<UICharacter>();
                     uiCharacter.Data = characterData;
-                    // Select trigger when add first entry so deactivate all models is okay beacause first model will active
-                    BaseCharacterModel characterModel = characterData.InstantiateModel(characterModelContainer);
+                    // Select trigger when add first entry so deactivate all models is okay because first model will active
+                    PlayableCharacterModelUMA characterModel = (PlayableCharacterModelUMA)characterData.InstantiateModel(characterModelContainer);
                     if (characterModel != null)
                     {
-                        CharacterModelById[characterData.Id] = characterModel;
-                        characterModel.SetEquipWeapons(characterData.SelectableWeaponSets, characterData.EquipWeaponSet, false);
-                        characterModel.SetEquipItems(characterData.EquipItems);
+                        _characterModelById[characterData.Id] = characterModel;
+                        characterModel.SetEquipWeapons(characterData.EquipWeapons);
+                        characterModel.SetEquipItems(characterData.EquipItems,characterModel.SelectableWeaponSets, characterData.EquipWeaponSet, characterModel.IsWeaponsSheathed);
                         characterModel.gameObject.SetActive(false);
-                        CacheCharacterSelectionManager.Add(uiCharacter);
+                        CharacterSelectionManager.Add(uiCharacter);
                     }
                 });
             }
@@ -91,9 +92,9 @@ namespace MultiplayerARPG.MMO
                 buttonDelete.gameObject.SetActive(true);
             characterModelContainer.SetChildrenActive(false);
             // Load selected character and also set selected player character data
-            PlayerCharacterDataById.TryGetValue(playerCharacterData.Id, out selectedPlayerCharacterData);
+            _playerCharacterDataById.TryGetValue(playerCharacterData.Id, out _selectedPlayerCharacterData);
             // Show selected character model
-            CharacterModelById.TryGetValue(playerCharacterData.Id, out selectedModel);
+            _characterModelById.TryGetValue(playerCharacterData.Id, out _selectedModel);
             if (SelectedModel != null && SelectedModel is ICharacterModelUma)
             {
                 // Setup Uma model and applies options
@@ -106,7 +107,7 @@ namespace MultiplayerARPG.MMO
 
         public override void OnClickStart()
         {
-            UICharacter selectedUI = CacheCharacterSelectionManager.SelectedUI;
+            UICharacter selectedUI = CharacterSelectionManager.SelectedUI;
             if (selectedUI == null)
             {
                 UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), LanguageManager.GetText(UITextKeys.UI_ERROR_NO_CHOSEN_CHARACTER_TO_START.ToString()));
@@ -127,7 +128,7 @@ namespace MultiplayerARPG.MMO
 
         public override void OnClickDelete()
         {
-            UICharacter selectedUI = CacheCharacterSelectionManager.SelectedUI;
+            UICharacter selectedUI = CharacterSelectionManager.SelectedUI;
             if (selectedUI == null)
             {
                 UISceneGlobal.Singleton.ShowMessageDialog(LanguageManager.GetText(UITextKeys.UI_LABEL_ERROR.ToString()), LanguageManager.GetText(UITextKeys.UI_ERROR_NO_CHOSEN_CHARACTER_TO_DELETE.ToString()));

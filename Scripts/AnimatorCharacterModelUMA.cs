@@ -37,6 +37,8 @@ namespace MultiplayerARPG
         public System.Action OnUmaCharacterCreated { get; set; }
         private UmaAvatarData? applyingAvatarData;
         private Coroutine applyCoroutine;
+        private EquipWeapons tempEquipWeapons;
+        private IList<CharacterItem> tempEquipItems;
 
         private readonly HashSet<string> equipWeaponUsedSlots = new HashSet<string>();
         private readonly HashSet<string> equipItemUsedSlots = new HashSet<string>();
@@ -48,24 +50,9 @@ namespace MultiplayerARPG
             InitializeUMA();
         }
 
-        public override void SetEquipWeapons(IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
+        public void SetEquipWeapons(EquipWeapons equipWeapons)
         {
-            SelectableWeaponSets = selectableWeaponSets;
-            EquipWeaponSet = equipWeaponSet;
-            IsWeaponsSheathed = isWeaponsSheathed;
-
-            EquipWeapons equipWeapons;
-            if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
-            {
-                equipWeapons = new EquipWeapons();
-            }
-            else
-            {
-                if (equipWeaponSet >= selectableWeaponSets.Count)
-                    equipWeaponSet = (byte)(selectableWeaponSets.Count - 1);
-                equipWeapons = selectableWeaponSets[equipWeaponSet];
-            }
-
+            tempEquipWeapons = equipWeapons;
             SetClipBasedOnWeapon(equipWeapons);
 
             if (!IsUmaCharacterCreated)
@@ -121,9 +108,9 @@ namespace MultiplayerARPG
             CacheUmaAvatar.ForceUpdate(true, true, true);
         }
 
-        public override void SetEquipItems(IList<CharacterItem> equipItems)
+        public override void SetEquipItems(IList<CharacterItem> equipItems, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
-            EquipItems = equipItems;
+            tempEquipItems = equipItems;
 
             if (!IsUmaCharacterCreated)
                 return;
@@ -155,6 +142,8 @@ namespace MultiplayerARPG
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
+
+            base.SetEquipItems(equipItems, selectableWeaponSets, equipWeaponSet, isWeaponsSheathed);
         }
 
         private void ClearObjectsAndSlots(HashSet<string> usedSlotsSet, List<GameObject> objectsList)
@@ -184,7 +173,7 @@ namespace MultiplayerARPG
             foreach (EquipmentModel equipmentModel in equipmentModels)
             {
                 if (string.IsNullOrEmpty(equipmentModel.equipSocket) ||
-                    equipmentModel.model == null)
+                    equipmentModel.meshPrefab == null)
                 {
                     // If data is empty, skip it
                     continue;
@@ -194,7 +183,7 @@ namespace MultiplayerARPG
                 if (boneObj == null)
                     continue;
 
-                tempEquipmentObject = Instantiate(equipmentModel.model);
+                tempEquipmentObject = Instantiate(equipmentModel.meshPrefab);
                 tempEquipmentObject.transform.SetParent(boneObj.transform, false);
                 tempEquipmentObject.transform.localPosition = equipmentModel.localPosition;
                 tempEquipmentObject.transform.localEulerAngles = equipmentModel.localEulerAngles;
@@ -301,8 +290,10 @@ namespace MultiplayerARPG
                 }
             }
             // Set equip items if it is already set
-            SetEquipWeapons(SelectableWeaponSets, EquipWeaponSet, IsWeaponsSheathed);
-            SetEquipItems(EquipItems);
+            if (tempEquipWeapons != null)
+                SetEquipWeapons(tempEquipWeapons);
+            if (tempEquipItems != null)
+                SetEquipItems(tempEquipItems, SelectableWeaponSets, EquipWeaponSet, IsWeaponsSheathed);
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);

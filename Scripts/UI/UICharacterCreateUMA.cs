@@ -29,10 +29,29 @@ namespace MultiplayerARPG
         protected override void OnSelectCharacter(IPlayerCharacterData playerCharacterData)
         {
             base.OnSelectCharacter(playerCharacterData);
+
+
+
+            _characterModelByEntityId.TryGetValue(playerCharacterData.EntityId, out _selectedModel);
+            SelectedDataId = playerCharacterData.DataId;
+            SelectedEntityId = playerCharacterData.EntityId;
+
             ICharacterModelUma characterModelUMA = SelectedModel as ICharacterModelUma;
+
+           // ICharacterModelUma characterModelUMA = playerCharacterData.InstantiateModel(characterModelContainer) as ICharacterModelUma;
+            //_characterModelByEntityId[playerCharacterData.EntityId] = characterModelUMA as BaseCharacterModel;
+
             if (umaPanelRoot != null)
                 umaPanelRoot.SetActive(characterModelUMA != null);
             UmaModel = characterModelUMA;
+            
+
+
+             if(SelectedModel != null)
+            {
+                SelectedModel.gameObject.SetActive(true);
+
+            }
             ShowUmaCharacter();
         }
 
@@ -202,7 +221,7 @@ namespace MultiplayerARPG
         {
             PlayerCharacterData characterData = new PlayerCharacterData();
             characterData.Id = GenericUtils.GetUniqueId();
-            characterData.SetNewPlayerCharacterData(characterName, SelectedDataId, SelectedEntityId, SelectedFactionId);
+            characterData.SetNewPlayerCharacterData(characterName, SelectedDataId, SelectedEntityId, SelectedFactionId);         
             characterData.UmaAvatarData = GetAvatarData();
             GameInstance.Singleton.SaveSystem.SaveCharacter(characterData);
         }
