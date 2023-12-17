@@ -48,7 +48,10 @@ namespace MultiplayerARPG.MMO
             bool withSummons,
             bool withHotkeys,
             bool withQuests,
-            bool withCurrencies)
+            bool withCurrencies,
+            bool withServerCustomData,
+            bool withPrivateCustomData,
+            bool withPublicCustomData)
         {
             ExecuteReader((reader) =>
             {

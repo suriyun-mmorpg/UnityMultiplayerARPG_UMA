@@ -7,7 +7,7 @@ namespace MultiplayerARPG.MMO
     public partial class MySQLDatabase
     {
         [DevExtMethods("CreateCharacter")]
-        public void CreateCharacter_UMA(string userId, IPlayerCharacterData characterData)
+        public async void CreateCharacter_UMA(string userId, IPlayerCharacterData characterData)
         {
             // Save uma data
             IList<byte> bytes = characterData.UmaAvatarData.GetBytes();
@@ -18,13 +18,13 @@ namespace MultiplayerARPG.MMO
                     saveData += ",";
                 saveData += bytes[i];
             }
-            ExecuteNonQuerySync("INSERT INTO characterumasaves (id, data) VALUES (@id, @data)",
+            await ExecuteNonQuery("INSERT INTO characterumasaves (id, data) VALUES (@id, @data)",
                 new MySqlParameter("@id", characterData.Id),
                 new MySqlParameter("@data", saveData));
         }
 
         [DevExtMethods("ReadCharacter")]
-        public void ReadCharacter_UMA(
+        public async void ReadCharacter_UMA(
             PlayerCharacterData characterData,
             bool withEquipWeapons,
             bool withAttributes,
@@ -36,10 +36,13 @@ namespace MultiplayerARPG.MMO
             bool withSummons,
             bool withHotkeys,
             bool withQuests,
-            bool withCurrencies)
+            bool withCurrencies,
+            bool withServerCustomData,
+            bool withPrivateCustomData,
+            bool withPublicCustomData)
         {
             // Read uma data
-            ExecuteReaderSync((reader) =>
+            await ExecuteReader((reader) =>
             {
                 if (reader.Read())
                 {
@@ -59,7 +62,7 @@ namespace MultiplayerARPG.MMO
         }
 
         [DevExtMethods("UpdateCharacter")]
-        public void UpdateCharacter_UMA(IPlayerCharacterData characterData)
+        public async void UpdateCharacter_UMA(IPlayerCharacterData characterData)
         {
             // Save uma data
             IList<byte> bytes = characterData.UmaAvatarData.GetBytes();
@@ -70,16 +73,16 @@ namespace MultiplayerARPG.MMO
                     saveData += ",";
                 saveData += bytes[i];
             }
-            ExecuteNonQuerySync("UPDATE characterumasaves SET data=@data WHERE id=@id",
+            await ExecuteNonQuery("UPDATE characterumasaves SET data=@data WHERE id=@id",
                 new MySqlParameter("@id", characterData.Id),
                 new MySqlParameter("@data", saveData));
         }
 
         [DevExtMethods("DeleteCharacter")]
-        public void DeleteCharacter_UMA(string userId, string id)
+        public async void DeleteCharacter_UMA(string userId, string id)
         {
             // Delete uma data
-            ExecuteNonQuerySync("DELETE FROM characterumasaves WHERE id=@id",
+            await ExecuteNonQuery("DELETE FROM characterumasaves WHERE id=@id",
                 new MySqlParameter("@id", id));
         }
     }
