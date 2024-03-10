@@ -1,8 +1,6 @@
-﻿#if UNITY_STANDALONE && !CLIENT_BUILD
+﻿#if (UNITY_EDITOR || UNITY_SERVER) && UNITY_STANDALONE
 using Mono.Data.Sqlite;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace MultiplayerARPG.MMO
 {

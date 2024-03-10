@@ -1,4 +1,4 @@
-﻿#if UNITY_STANDALONE && !CLIENT_BUILD
+﻿#if (UNITY_EDITOR || UNITY_SERVER) && UNITY_STANDALONE
 using System.Collections.Generic;
 using MySqlConnector;
 
