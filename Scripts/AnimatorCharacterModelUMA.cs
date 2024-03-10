@@ -111,6 +111,9 @@ namespace MultiplayerARPG
         public override void SetEquipItems(IList<CharacterItem> equipItems, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
             tempEquipItems = equipItems;
+            tempEquipWeapons = null;
+            if (selectableWeaponSets != null && selectableWeaponSets.Count > equipWeaponSet)
+                tempEquipWeapons = selectableWeaponSets[equipWeaponSet];
 
             if (!IsUmaCharacterCreated)
                 return;
