@@ -9,38 +9,41 @@ namespace MultiplayerARPG.GameData.Model.Playables
     [RequireComponent(typeof(DynamicCharacterAvatar))]
     public class PlayableCharacterModelUMA : PlayableCharacterModel, ICharacterModelUma
     {
-        private DynamicCharacterAvatar cacheUmaAvatar;
+        private DynamicCharacterAvatar _cacheUmaAvatar;
         public DynamicCharacterAvatar CacheUmaAvatar
         {
             get
             {
-                if (cacheUmaAvatar == null)
-                    cacheUmaAvatar = GetComponent<DynamicCharacterAvatar>();
-                return cacheUmaAvatar;
+                if (_cacheUmaAvatar == null)
+                    _cacheUmaAvatar = GetComponent<DynamicCharacterAvatar>();
+                return _cacheUmaAvatar;
             }
         }
 
-        private UMAData cacheUmaData;
+        private UMAData _cacheUmaData;
         public UMAData CacheUmaData
         {
             get
             {
-                if (cacheUmaData == null)
-                    cacheUmaData = GetComponent<UMAData>();
-                return cacheUmaData;
+                if (_cacheUmaData == null)
+                    _cacheUmaData = GetComponent<UMAData>();
+                return _cacheUmaData;
             }
         }
 
         public bool IsUmaCharacterCreated { get; private set; }
         public bool IsInitializedUMA { get; private set; }
         public System.Action OnUmaCharacterCreated { get; set; }
-        private UmaAvatarData? applyingAvatarData;
-        private Coroutine applyCoroutine;
 
-        private readonly HashSet<string> equipWeaponUsedSlots = new HashSet<string>();
-        private readonly HashSet<string> equipItemUsedSlots = new HashSet<string>();
-        private readonly List<GameObject> equipWeaponObjects = new List<GameObject>();
-        private readonly List<GameObject> equipItemObjects = new List<GameObject>();
+        private UmaAvatarData? _applyingAvatarData;
+        private Coroutine _applyCoroutine;
+
+        private readonly HashSet<string> _equipWeaponUsedSlots = new HashSet<string>();
+        private readonly HashSet<string> _equipItemUsedSlots = new HashSet<string>();
+        private readonly List<GameObject> _equipRightWeaponObjects = new List<GameObject>();
+        private readonly List<GameObject> _equipLeftWeaponObjects = new List<GameObject>();
+        private readonly List<GameObject> _equipItemObjects = new List<GameObject>();
+        private EquipWeapons _prevEquipWeapons;
 
         protected override void Awake()
         {
@@ -57,38 +60,6 @@ namespace MultiplayerARPG.GameData.Model.Playables
 
         public override void SetEquipItems(IList<CharacterItem> equipItems, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
-            EquipWeapons equipWeapons;
-            if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
-            {
-                equipWeapons = new EquipWeapons();
-            }
-            else
-            {
-                if (equipWeaponSet >= selectableWeaponSets.Count)
-                {
-                    // Issues occuring, so try to simulate data
-                    // Create a new list to make sure that changes won't be applied to the source list (the source list must be readonly)
-                    selectableWeaponSets = new List<EquipWeapons>(selectableWeaponSets);
-                    while (equipWeaponSet >= selectableWeaponSets.Count)
-                    {
-                        selectableWeaponSets.Add(new EquipWeapons());
-                    }
-                }
-                equipWeapons = selectableWeaponSets[equipWeaponSet];
-            }
-
-            // Get one equipped weapon from right-hand or left-hand
-            IWeaponItem rightWeaponItem = equipWeapons.GetRightHandWeaponItem();
-            IWeaponItem leftWeaponItem = equipWeapons.GetLeftHandWeaponItem();
-            if (rightWeaponItem == null)
-                rightWeaponItem = leftWeaponItem;
-            // Set equipped weapon type, it will be used to get animations by id
-            _equippedWeaponType = null;
-            if (rightWeaponItem != null)
-                _equippedWeaponType = rightWeaponItem.WeaponType;
-            if (Behaviour != null)
-                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, equipWeapons.GetLeftHandShieldItem());
-
             if (!IsUmaCharacterCreated)
             {
                 // Store data to re-setup later
@@ -99,11 +70,10 @@ namespace MultiplayerARPG.GameData.Model.Playables
                 return;
             }
 
-            ClearObjectsAndSlots(equipItemUsedSlots, equipItemObjects);
+            ClearObjectsAndSlots(_equipItemUsedSlots, _equipItemObjects);
 
             if (CacheUmaAvatar.activeRace == null ||
-                CacheUmaAvatar.activeRace.racedata == null ||
-                equipItems == null)
+                CacheUmaAvatar.activeRace.racedata == null)
             {
                 // Store data to re-setup later
                 EquipItems = equipItems;
@@ -123,56 +93,117 @@ namespace MultiplayerARPG.GameData.Model.Playables
                 if (tempEquipmentItem == null)
                     continue;
 
-                SetEquipmentObject(equipItemObjects, tempEquipmentItem.EquipmentModels, equipItem.level, out tempEquipmentEntity);
+                SetEquipmentObject(_equipItemObjects, tempEquipmentItem.EquipmentModels, equipItem.level, out tempEquipmentEntity);
 
                 if (!tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
                     continue;
 
-                SetSlot(equipItemUsedSlots, receipes);
+                SetSlot(_equipItemUsedSlots, receipes);
             }
+
+            // Prepare equip weapons
+            EquipWeapons newEquipWeapons;
+            if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
+            {
+                newEquipWeapons = new EquipWeapons();
+            }
+            else
+            {
+                if (equipWeaponSet >= selectableWeaponSets.Count)
+                {
+                    // Issues occuring, so try to simulate data
+                    // Create a new list to make sure that changes won't be applied to the source list (the source list must be readonly)
+                    selectableWeaponSets = new List<EquipWeapons>(selectableWeaponSets);
+                    while (equipWeaponSet >= selectableWeaponSets.Count)
+                    {
+                        selectableWeaponSets.Add(new EquipWeapons());
+                    }
+                }
+                newEquipWeapons = selectableWeaponSets[equipWeaponSet].Clone();
+            }
+
+            bool rightIsDiffer = true;
+            bool leftIsDiffer = true;
+            if (_prevEquipWeapons != null)
+                _prevEquipWeapons.IsDiffer(newEquipWeapons, out rightIsDiffer, out leftIsDiffer);
+            _prevEquipWeapons = newEquipWeapons;
 
             // Update weapon
             BaseEquipmentEntity baseEquipmentEntity;
             // Setup right hand weapon
-            if (equipWeapons.rightHand != null)
+            if (rightIsDiffer)
             {
-                tempEquipmentItem = equipWeapons.rightHand.GetWeaponItem();
-                if (tempEquipmentItem != null)
+                for (int i = 0; i < _equipRightWeaponObjects.Count; ++i)
                 {
-                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, equipWeapons.rightHand.level, out baseEquipmentEntity);
-                    CacheRightHandEquipmentEntity = baseEquipmentEntity;
-                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                        SetSlot(equipWeaponUsedSlots, receipes);
+                    if (_equipRightWeaponObjects[i] == null) continue;
+                    Destroy(_equipRightWeaponObjects[i].gameObject);
+                }
+                _equipRightWeaponObjects.Clear();
+                if (newEquipWeapons.rightHand != null)
+                {
+                    tempEquipmentItem = newEquipWeapons.rightHand.GetWeaponItem();
+                    if (tempEquipmentItem != null)
+                    {
+                        SetEquipmentObject(_equipRightWeaponObjects, tempEquipmentItem.EquipmentModels, newEquipWeapons.rightHand.level, out baseEquipmentEntity);
+                        CacheRightHandEquipmentEntity = baseEquipmentEntity;
+                        if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                            SetSlot(_equipWeaponUsedSlots, receipes);
+                    }
                 }
             }
+
             // Setup left hand weapon
-            if (equipWeapons.leftHand != null)
+            if (leftIsDiffer)
             {
-                // Weapon
-                tempEquipmentItem = equipWeapons.leftHand.GetWeaponItem();
-                if (tempEquipmentItem != null)
+                for (int i = 0; i < _equipLeftWeaponObjects.Count; ++i)
                 {
-                    SetEquipmentObject(equipWeaponObjects, (tempEquipmentItem as IWeaponItem).OffHandEquipmentModels, equipWeapons.leftHand.level, out baseEquipmentEntity);
-                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
-                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                        SetSlot(equipWeaponUsedSlots, receipes);
+                    if (_equipLeftWeaponObjects[i] == null) continue;
+                    Destroy(_equipLeftWeaponObjects[i].gameObject);
                 }
-                // Shield
-                tempEquipmentItem = equipWeapons.leftHand.GetShieldItem();
-                if (tempEquipmentItem != null)
+                _equipLeftWeaponObjects.Clear();
+                if (newEquipWeapons.leftHand != null)
                 {
-                    SetEquipmentObject(equipWeaponObjects, tempEquipmentItem.EquipmentModels, equipWeapons.leftHand.level, out baseEquipmentEntity);
-                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
-                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                        SetSlot(equipWeaponUsedSlots, receipes);
+                    // Weapon
+                    tempEquipmentItem = newEquipWeapons.leftHand.GetWeaponItem();
+                    if (tempEquipmentItem != null)
+                    {
+                        SetEquipmentObject(_equipLeftWeaponObjects, (tempEquipmentItem as IWeaponItem).OffHandEquipmentModels, newEquipWeapons.leftHand.level, out baseEquipmentEntity);
+                        CacheLeftHandEquipmentEntity = baseEquipmentEntity;
+                        if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                            SetSlot(_equipWeaponUsedSlots, receipes);
+                    }
+                    // Shield
+                    tempEquipmentItem = newEquipWeapons.leftHand.GetShieldItem();
+                    if (tempEquipmentItem != null)
+                    {
+                        SetEquipmentObject(_equipLeftWeaponObjects, tempEquipmentItem.EquipmentModels, newEquipWeapons.leftHand.level, out baseEquipmentEntity);
+                        CacheLeftHandEquipmentEntity = baseEquipmentEntity;
+                        if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                            SetSlot(_equipWeaponUsedSlots, receipes);
+                    }
                 }
             }
+
+            // Get one equipped weapon from right-hand or left-hand
+            IWeaponItem rightWeaponItem = newEquipWeapons.GetRightHandWeaponItem();
+            IWeaponItem leftWeaponItem = newEquipWeapons.GetLeftHandWeaponItem();
+            if (rightWeaponItem == null)
+                rightWeaponItem = leftWeaponItem;
+            // Set equipped weapon type, it will be used to get animations by id
+            _equippedWeaponType = null;
+            if (rightWeaponItem != null)
+                _equippedWeaponType = rightWeaponItem.WeaponType;
+            if (Behaviour != null)
+                Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, newEquipWeapons.GetLeftHandShieldItem());
 
             // Update avatar
             CacheUmaAvatar.BuildCharacter(true);
             CacheUmaAvatar.ForceUpdate(true, true, true);
 
-            base.SetEquipItems(equipItems, selectableWeaponSets, equipWeaponSet, isWeaponsSheathed);
+            EquipItems = equipItems;
+            SelectableWeaponSets = selectableWeaponSets;
+            EquipWeaponSet = equipWeaponSet;
+            IsWeaponsSheathed = isWeaponsSheathed;
         }
 
         private void ClearObjectsAndSlots(HashSet<string> usedSlotsSet, List<GameObject> objectsList)
@@ -278,12 +309,12 @@ namespace MultiplayerARPG.GameData.Model.Playables
             InitializeUMA();
             if (!IsUmaCharacterCreated)
             {
-                applyingAvatarData = avatarData;
+                _applyingAvatarData = avatarData;
                 return;
             }
-            if (applyCoroutine != null)
-                StopCoroutine(applyCoroutine);
-            applyCoroutine = StartCoroutine(ApplyUmaAvatarRoutine(avatarData));
+            if (_applyCoroutine != null)
+                StopCoroutine(_applyCoroutine);
+            _applyCoroutine = StartCoroutine(ApplyUmaAvatarRoutine(avatarData));
         }
 
         IEnumerator ApplyUmaAvatarRoutine(UmaAvatarData avatarData)
@@ -351,10 +382,10 @@ namespace MultiplayerARPG.GameData.Model.Playables
 
         public void ApplyPendingAvatarData()
         {
-            if (applyingAvatarData.HasValue)
+            if (_applyingAvatarData.HasValue)
             {
-                ApplyUmaAvatar(applyingAvatarData.Value);
-                applyingAvatarData = null;
+                ApplyUmaAvatar(_applyingAvatarData.Value);
+                _applyingAvatarData = null;
             }
         }
     }
