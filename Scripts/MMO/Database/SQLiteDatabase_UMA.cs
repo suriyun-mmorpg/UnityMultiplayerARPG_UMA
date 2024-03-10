@@ -88,10 +88,10 @@ namespace MultiplayerARPG.MMO
         }
 
         [DevExtMethods("DeleteCharacter")]
-        public void DeleteCharacter_UMA(string userId, string id)
+        public void DeleteCharacter_UMA(SqliteTransaction transaction, string userId, string id)
         {
             // Delete uma data
-            ExecuteNonQuery("DELETE FROM characterumasaves WHERE id=@id",
+            ExecuteNonQuery(transaction, "DELETE FROM characterumasaves WHERE id=@id",
                 new SqliteParameter("@id", id));
         }
     }

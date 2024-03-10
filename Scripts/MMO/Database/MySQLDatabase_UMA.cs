@@ -79,10 +79,10 @@ namespace MultiplayerARPG.MMO
         }
 
         [DevExtMethods("DeleteCharacter")]
-        public async void DeleteCharacter_UMA(string userId, string id)
+        public async void DeleteCharacter_UMA(MySqlConnection connection, MySqlTransaction transaction, string userId, string id)
         {
             // Delete uma data
-            await ExecuteNonQuery("DELETE FROM characterumasaves WHERE id=@id",
+            await ExecuteNonQuery(connection, transaction, "DELETE FROM characterumasaves WHERE id=@id",
                 new MySqlParameter("@id", id));
         }
     }
