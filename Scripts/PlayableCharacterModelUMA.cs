@@ -57,7 +57,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
 
         public override void SetEquipItems(IList<CharacterItem> equipItems, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
-            EquipWeapons equipWeapons = null;
+            EquipWeapons equipWeapons;
             if (isWeaponsSheathed || selectableWeaponSets == null || selectableWeaponSets.Count == 0)
             {
                 equipWeapons = new EquipWeapons();
@@ -90,14 +90,28 @@ namespace MultiplayerARPG.GameData.Model.Playables
                 Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, equipWeapons.GetLeftHandShieldItem());
 
             if (!IsUmaCharacterCreated)
+            {
+                // Store data to re-setup later
+                EquipItems = equipItems;
+                SelectableWeaponSets = selectableWeaponSets;
+                EquipWeaponSet = equipWeaponSet;
+                IsWeaponsSheathed = isWeaponsSheathed;
                 return;
+            }
 
             ClearObjectsAndSlots(equipItemUsedSlots, equipItemObjects);
 
             if (CacheUmaAvatar.activeRace == null ||
                 CacheUmaAvatar.activeRace.racedata == null ||
                 equipItems == null)
+            {
+                // Store data to re-setup later
+                EquipItems = equipItems;
+                SelectableWeaponSets = selectableWeaponSets;
+                EquipWeaponSet = equipWeaponSet;
+                IsWeaponsSheathed = isWeaponsSheathed;
                 return;
+            }
 
             string raceName = CacheUmaAvatar.activeRace.racedata.raceName;
             IEquipmentItem tempEquipmentItem;
