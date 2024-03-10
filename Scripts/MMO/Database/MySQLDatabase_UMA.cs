@@ -7,7 +7,7 @@ namespace MultiplayerARPG.MMO
     public partial class MySQLDatabase
     {
         [DevExtMethods("CreateCharacter")]
-        public async void CreateCharacter_UMA(string userId, IPlayerCharacterData characterData)
+        public async void CreateCharacter_UMA(MySqlConnection connection, MySqlTransaction transaction, string userId, IPlayerCharacterData characterData)
         {
             // Save uma data
             IList<byte> bytes = characterData.UmaAvatarData.GetBytes();
@@ -18,7 +18,7 @@ namespace MultiplayerARPG.MMO
                     saveData += ",";
                 saveData += bytes[i];
             }
-            await ExecuteNonQuery("INSERT INTO characterumasaves (id, data) VALUES (@id, @data)",
+            await ExecuteNonQuery(connection, transaction, "INSERT INTO characterumasaves (id, data) VALUES (@id, @data)",
                 new MySqlParameter("@id", characterData.Id),
                 new MySqlParameter("@data", saveData));
         }
