@@ -71,7 +71,7 @@ namespace MultiplayerARPG.MMO
         }
 
         [DevExtMethods("UpdateCharacter")]
-        public void UpdateCharacter_UMA(IPlayerCharacterData characterData)
+        public void UpdateCharacter_UMA(SqliteTransaction transaction, IPlayerCharacterData characterData)
         {
             // Save uma data
             IList<byte> bytes = characterData.UmaAvatarData.GetBytes();
@@ -82,7 +82,7 @@ namespace MultiplayerARPG.MMO
                     saveData += ",";
                 saveData += bytes[i];
             }
-            ExecuteNonQuery("UPDATE characterumasaves SET data=@data WHERE id=@id",
+            ExecuteNonQuery(transaction, "UPDATE characterumasaves SET data=@data WHERE id=@id",
                 new SqliteParameter("@id", characterData.Id),
                 new SqliteParameter("@data", saveData));
         }
