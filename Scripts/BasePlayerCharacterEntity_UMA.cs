@@ -31,7 +31,7 @@ namespace MultiplayerARPG
         }
 
         [DevExtMethods("OnDestroy")]
-        public void OnUmaDestroy()
+        public void OnDestroy_UMA()
         {
             umaAvatarData.onChange -= OnUmaAvatarDataChange;
             onSetupNetElements -= OnSetupNetElements_UMA;
@@ -39,8 +39,8 @@ namespace MultiplayerARPG
 
         protected void OnUmaAvatarDataChange(bool isInit, UmaAvatarData avatarData)
         {
-            if (CharacterModel is ICharacterModelUma)
-                (CharacterModel as ICharacterModelUma).ApplyUmaAvatar(avatarData);
+            if (CharacterModel is ICharacterModelUma characterModelUma)
+                characterModelUma.ApplyUmaAvatar(avatarData);
         }
     }
 }
