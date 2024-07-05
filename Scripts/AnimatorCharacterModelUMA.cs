@@ -4,6 +4,7 @@ using UnityEngine;
 using Playables = MultiplayerARPG.GameData.Model.Playables;
 using UMA;
 using UMA.CharacterSystem;
+using Cysharp.Threading.Tasks;
 
 namespace MultiplayerARPG
 {
@@ -51,7 +52,7 @@ namespace MultiplayerARPG
             InitializeUMA();
         }
 
-        public override void SetEquipItems(IList<CharacterItem> equipItems, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
+        public override async void SetEquipItems(IList<CharacterItem> equipItems, IList<EquipWeapons> selectableWeaponSets, byte equipWeaponSet, bool isWeaponsSheathed)
         {
             if (!IsUmaCharacterCreated)
             {
@@ -86,7 +87,7 @@ namespace MultiplayerARPG
                 if (tempEquipmentItem == null)
                     continue;
 
-                SetEquipmentObject(_equipItemObjects, tempEquipmentItem.EquipmentModels, equipItem.level, out tempEquipmentEntity);
+                tempEquipmentEntity = await SetEquipmentObject(_equipItemObjects, tempEquipmentItem.EquipmentModels, equipItem.level);
 
                 if (!tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
                     continue;
@@ -115,10 +116,9 @@ namespace MultiplayerARPG
                 newEquipWeapons = selectableWeaponSets[equipWeaponSet].Clone();
             }
 
-            bool rightIsDiffer = true;
-            bool leftIsDiffer = true;
-            if (_prevEquipWeapons != null)
-                _prevEquipWeapons.IsDiffer(newEquipWeapons, out rightIsDiffer, out leftIsDiffer);
+            bool rightIsDiffer;
+            bool leftIsDiffer;
+            _prevEquipWeapons.IsDiffer(newEquipWeapons, out rightIsDiffer, out leftIsDiffer);
             _prevEquipWeapons = newEquipWeapons;
 
             // Update weapon
@@ -132,16 +132,13 @@ namespace MultiplayerARPG
                     Destroy(_equipRightWeaponObjects[i].gameObject);
                 }
                 _equipRightWeaponObjects.Clear();
-                if (newEquipWeapons.rightHand != null)
+                tempEquipmentItem = newEquipWeapons.rightHand.GetWeaponItem();
+                if (tempEquipmentItem != null)
                 {
-                    tempEquipmentItem = newEquipWeapons.rightHand.GetWeaponItem();
-                    if (tempEquipmentItem != null)
-                    {
-                        SetEquipmentObject(_equipRightWeaponObjects, tempEquipmentItem.EquipmentModels, newEquipWeapons.rightHand.level, out baseEquipmentEntity);
-                        CacheRightHandEquipmentEntity = baseEquipmentEntity;
-                        if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                            SetSlot(_equipWeaponUsedSlots, receipes);
-                    }
+                    baseEquipmentEntity = await SetEquipmentObject(_equipRightWeaponObjects, tempEquipmentItem.EquipmentModels, newEquipWeapons.rightHand.level);
+                    CacheRightHandEquipmentEntity = baseEquipmentEntity;
+                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(_equipWeaponUsedSlots, receipes);
                 }
             }
 
@@ -154,26 +151,23 @@ namespace MultiplayerARPG
                     Destroy(_equipLeftWeaponObjects[i].gameObject);
                 }
                 _equipLeftWeaponObjects.Clear();
-                if (newEquipWeapons.leftHand != null)
+                // Weapon
+                tempEquipmentItem = newEquipWeapons.leftHand.GetWeaponItem();
+                if (tempEquipmentItem != null)
                 {
-                    // Weapon
-                    tempEquipmentItem = newEquipWeapons.leftHand.GetWeaponItem();
-                    if (tempEquipmentItem != null)
-                    {
-                        SetEquipmentObject(_equipLeftWeaponObjects, (tempEquipmentItem as IWeaponItem).OffHandEquipmentModels, newEquipWeapons.leftHand.level, out baseEquipmentEntity);
-                        CacheLeftHandEquipmentEntity = baseEquipmentEntity;
-                        if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                            SetSlot(_equipWeaponUsedSlots, receipes);
-                    }
-                    // Shield
-                    tempEquipmentItem = newEquipWeapons.leftHand.GetShieldItem();
-                    if (tempEquipmentItem != null)
-                    {
-                        SetEquipmentObject(_equipLeftWeaponObjects, tempEquipmentItem.EquipmentModels, newEquipWeapons.leftHand.level, out baseEquipmentEntity);
-                        CacheLeftHandEquipmentEntity = baseEquipmentEntity;
-                        if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
-                            SetSlot(_equipWeaponUsedSlots, receipes);
-                    }
+                    baseEquipmentEntity = await SetEquipmentObject(_equipLeftWeaponObjects, (tempEquipmentItem as IWeaponItem).OffHandEquipmentModels, newEquipWeapons.leftHand.level);
+                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
+                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(_equipWeaponUsedSlots, receipes);
+                }
+                // Shield
+                tempEquipmentItem = newEquipWeapons.leftHand.GetShieldItem();
+                if (tempEquipmentItem != null)
+                {
+                    baseEquipmentEntity = await SetEquipmentObject(_equipLeftWeaponObjects, tempEquipmentItem.EquipmentModels, newEquipWeapons.leftHand.level);
+                    CacheLeftHandEquipmentEntity = baseEquipmentEntity;
+                    if (tempEquipmentItem.UmaRecipeSlot.TryGetValue(raceName, out receipes))
+                        SetSlot(_equipWeaponUsedSlots, receipes);
                 }
             }
 
@@ -204,19 +198,20 @@ namespace MultiplayerARPG
             objectsList.Clear();
         }
 
-        private void SetEquipmentObject(List<GameObject> objectsList, EquipmentModel[] equipmentModels, int level, out BaseEquipmentEntity equipmentEntity)
+        private async UniTask<BaseEquipmentEntity> SetEquipmentObject(List<GameObject> objectsList, EquipmentModel[] equipmentModels, int level)
         {
-            equipmentEntity = null;
+            BaseEquipmentEntity equipmentEntity = null;
             if (objectsList == null || equipmentModels == null || equipmentModels.Length == 0)
-                return;
+                return equipmentEntity;
 
             GameObject boneObj;
             GameObject tempEquipmentObject;
             BaseEquipmentEntity tempEquipmentEntity;
             foreach (EquipmentModel equipmentModel in equipmentModels)
             {
+                GameObject meshPrefab = await equipmentModel.GetMeshPrefab();
                 if (string.IsNullOrEmpty(equipmentModel.equipSocket) ||
-                    equipmentModel.meshPrefab == null)
+                    meshPrefab == null)
                 {
                     // If data is empty, skip it
                     continue;
@@ -226,7 +221,7 @@ namespace MultiplayerARPG
                 if (boneObj == null)
                     continue;
 
-                tempEquipmentObject = Instantiate(equipmentModel.meshPrefab);
+                tempEquipmentObject = Instantiate(meshPrefab);
                 tempEquipmentObject.transform.SetParent(boneObj.transform, false);
                 tempEquipmentObject.transform.localPosition = equipmentModel.localPosition;
                 tempEquipmentObject.transform.localEulerAngles = equipmentModel.localEulerAngles;
@@ -244,6 +239,8 @@ namespace MultiplayerARPG
 
                 objectsList.Add(tempEquipmentObject);
             }
+
+            return equipmentEntity;
         }
 
         private void SetSlot(HashSet<string> usedSlotsSet, UMATextRecipe[] receipes)
