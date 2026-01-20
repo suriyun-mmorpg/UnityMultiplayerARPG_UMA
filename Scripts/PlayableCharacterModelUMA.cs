@@ -49,8 +49,6 @@ namespace MultiplayerARPG.GameData.Model.Playables
         protected override void Awake()
         {
             base.Awake();
-            if (animator != null && animator.runtimeAnimatorController == null)
-                animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("__EmptyAnimatorControllerForUMAIntegration");
         }
 
         protected override void Start()
@@ -187,6 +185,10 @@ namespace MultiplayerARPG.GameData.Model.Playables
             _equippedWeaponType = null;
             if (rightWeaponItem != null)
                 _equippedWeaponType = rightWeaponItem.WeaponType;
+            while (!Graph.IsValid() || !Graph.IsPlaying())
+            {
+                await UniTask.Yield();
+            }
             if (Behaviour != null)
                 Behaviour.SetEquipWeapons(rightWeaponItem, leftWeaponItem, newEquipWeapons.GetLeftHandShieldItem());
 
@@ -292,8 +294,48 @@ namespace MultiplayerARPG.GameData.Model.Playables
         {
             IsUmaCharacterCreated = true;
             ApplyPendingAvatarData();
+            StartCoroutine(UpdateAnimatorAfterUMABuiltRoutine());
             if (OnUmaCharacterCreated != null)
                 OnUmaCharacterCreated.Invoke();
+        }
+
+        private IEnumerator UpdateAnimatorAfterUMABuiltRoutine()
+        {
+            Template?.Desetup(this);
+            DestroyGraph();
+            animator = GetComponentInChildren<Animator>();
+
+            var umaData = CacheUmaData;
+            var umaTransform = umaData.transform;
+            var oldParent = umaTransform.parent;
+            var originalRot = umaTransform.localRotation;
+            var originalPos = umaTransform.localPosition;
+
+            umaTransform.SetParent(null, false);
+            umaTransform.localRotation = Quaternion.identity;
+            umaTransform.localPosition = Vector3.zero;
+
+            if (!umaData.KeepAvatar || animator.avatar == null)
+            {
+                UMAUtils.DestroyAvatar(animator.avatar);
+                UMAGeneratorBase.SetAvatar(umaData, animator);
+            }
+
+            umaTransform.SetParent(oldParent, false);
+            umaTransform.localRotation = originalRot;
+            umaTransform.localPosition = originalPos;
+
+            if (umaData.ForceRebindAnimator)
+            {
+                animator.Rebind();
+            }
+
+            yield return null;
+            Template = new AnimationPlayableBehaviour();
+            Template.Setup(this);
+            CreateGraph();
+            yield return null;
+            Graph.Play();
         }
 
         public void ApplyUmaAvatar(UmaAvatarData avatarData)
