@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCharacterEntities:
   - {fileID: 114217790240189764, guid: 3db54f95f11a20a4081f602d37c75782, type: 3}
-  - {fileID: 114217790240189764, guid: e10fc226d7c62c140ab7ed9fcdfaad34, type: 3}
   monsterCharacterEntities:
   - {fileID: 114107677553822186, guid: 2124e2e5e8dd2794ea8c8aff808d0096, type: 3}
   - {fileID: 114313543944479198, guid: c26675f5ea04ade429c509dd5998a3a3, type: 3}
   vehicleEntities: []
   otherNetworkObjects: []
+  addressablePlayerCharacterEntities: []
+  addressableMonsterCharacterEntities: []
+  addressableVehicleEntities: []
+  addressableOtherNetworkObjects: []
   attributes:
   - {fileID: 11400000, guid: 0e223af20738b88419c22a1a0401a21b, type: 2}
   - {fileID: 11400000, guid: cf50e3647cfae0e44b683163d2171277, type: 2}
@@ -80,6 +83,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa319f1dfe3afb449b69aa255c39a69b, type: 2}
   - {fileID: 11400000, guid: 401cce43094968c4bbca0024b52a4644, type: 2}
   - {fileID: 11400000, guid: 494792636296b624fbf4ff17294217c5, type: 2}
+  playerIcons: []
+  playerFrames: []
+  playerBackgrounds: []
+  playerTitles: []
   guildSkills:
   - {fileID: 11400000, guid: d3875bef37ed4aa4dba86b08069b5a8f, type: 2}
   - {fileID: 11400000, guid: 56999d63a8734bd4f8b19e254ecfbeae, type: 2}
@@ -89,6 +96,7 @@ MonoBehaviour:
   statusEffects: []
   playerCharacters:
   - {fileID: 11400000, guid: dc913e9cf36197c4799489ef0a2315b2, type: 2}
+  playerCharacterEntityMetaDataList: []
   monsterCharacters:
   - {fileID: 11400000, guid: 23e69da72a14d644eb8c0128af2ee872, type: 2}
   - {fileID: 11400000, guid: 04cf3a67b05487e4a84f0da538307cb3, type: 2}
@@ -102,17 +110,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4000f50ad41cb17419c5de53509949d8, type: 2}
   factions: []
   gachas: []
-  attributeBundleName: attribute
-  currencyBundleName: currency
-  damageElementBundleName: damageElement
-  characterBundleName: character
-  itemBundleName: item
-  mapInfoBundleName: map
-  sceneBundleName: scene
-  skillBundleName: skill
-  guildSkillBundleName: guildSkill
-  guildIconBundleName: guildIcon
-  questBundleName: quest
-  factionBundleName: faction
-  gachaBundleName: gacha
-  setNameForUnnamedAssetsOnly: 1
