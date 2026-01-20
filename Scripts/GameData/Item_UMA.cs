@@ -20,11 +20,14 @@ namespace MultiplayerARPG
                 if (cacheUmaRecipeSlot == null)
                 {
                     cacheUmaRecipeSlot = new Dictionary<string, UMATextRecipe[]>();
-                    foreach (UmaRaceRecipeSlots umaRaceRecipeSlot in umaRaceRecipeSlots)
+                    if (umaRaceRecipeSlots != null)
                     {
-                        if (umaRaceRecipeSlot.raceData == null || string.IsNullOrEmpty(umaRaceRecipeSlot.raceData.raceName))
-                            continue;
-                        cacheUmaRecipeSlot[umaRaceRecipeSlot.raceData.raceName] = umaRaceRecipeSlot.recipes;
+                        foreach (UmaRaceRecipeSlots umaRaceRecipeSlot in umaRaceRecipeSlots)
+                        {
+                            if (umaRaceRecipeSlot.raceData == null || string.IsNullOrEmpty(umaRaceRecipeSlot.raceData.raceName))
+                                continue;
+                            cacheUmaRecipeSlot[umaRaceRecipeSlot.raceData.raceName] = umaRaceRecipeSlot.recipes;
+                        }
                     }
                 }
                 return cacheUmaRecipeSlot;
