@@ -1,4 +1,6 @@
 ﻿#if (UNITY_EDITOR || UNITY_SERVER) && UNITY_STANDALONE
+using Cysharp.Threading.Tasks;
+using Insthync.DevExtension;
 using Mono.Data.Sqlite;
 using System.Collections.Generic;
 
@@ -14,13 +16,17 @@ namespace MultiplayerARPG.MMO
               id TEXT NOT NULL PRIMARY KEY,
               data TEXT NOT NULL
             )");
+
+            onCreateCharacter += SQLiteDatabase_onCreateCharacter;
+            onGetCharacter += SQLiteDatabase_onGetCharacter;
+            onUpdateCharacter += SQLiteDatabase_onUpdateCharacter;
+            onDeleteCharacter += SQLiteDatabase_onDeleteCharacter;
         }
 
-        [DevExtMethods("CreateCharacter")]
-        public void CreateCharacter_UMA(SqliteTransaction transaction, string userId, IPlayerCharacterData characterData)
+        private UniTask SQLiteDatabase_onCreateCharacter(SqliteConnection connection, SqliteTransaction transaction, string userId, IPlayerCharacterData createData)
         {
             // Save uma data
-            IList<byte> bytes = characterData.UmaAvatarData.GetBytes();
+            IList<byte> bytes = createData.UmaAvatarData.GetBytes();
             string saveData = string.Empty;
             for (int i = 0; i < bytes.Count; ++i)
             {
@@ -29,27 +35,12 @@ namespace MultiplayerARPG.MMO
                 saveData += bytes[i];
             }
             ExecuteNonQuery(transaction, "INSERT INTO characterumasaves (id, data) VALUES (@id, @data)",
-                new SqliteParameter("@id", characterData.Id),
+                new SqliteParameter("@id", createData.Id),
                 new SqliteParameter("@data", saveData));
+            return default;
         }
 
-        [DevExtMethods("ReadCharacter")]
-        public void ReadCharacter_UMA(
-            PlayerCharacterData characterData,
-            bool withEquipWeapons,
-            bool withAttributes,
-            bool withSkills,
-            bool withSkillUsages,
-            bool withBuffs,
-            bool withEquipItems,
-            bool withNonEquipItems,
-            bool withSummons,
-            bool withHotkeys,
-            bool withQuests,
-            bool withCurrencies,
-            bool withServerCustomData,
-            bool withPrivateCustomData,
-            bool withPublicCustomData)
+        private UniTask<PlayerCharacterData> SQLiteDatabase_onGetCharacter(PlayerCharacterData result, bool withEquipWeapons, bool withAttributes, bool withSkills, bool withSkillUsages, bool withBuffs, bool withEquipItems, bool withNonEquipItems, bool withSummons, bool withHotkeys, bool withQuests, bool withCurrencies, bool withServerCustomData, bool withPrivateCustomData, bool withPublicCustomData)
         {
             ExecuteReader((reader) =>
             {
@@ -64,17 +55,17 @@ namespace MultiplayerARPG.MMO
                     }
                     UmaAvatarData umaAvatarData = new UmaAvatarData();
                     umaAvatarData.SetBytes(bytes);
-                    characterData.UmaAvatarData = umaAvatarData;
+                    result.UmaAvatarData = umaAvatarData;
                 }
             }, "SELECT data FROM characterumasaves WHERE id=@id",
-                new SqliteParameter("@id", characterData.Id));
+                new SqliteParameter("@id", result.Id));
+            return UniTask.FromResult(result);
         }
 
-        [DevExtMethods("UpdateCharacter")]
-        public void UpdateCharacter_UMA(SqliteTransaction transaction, IPlayerCharacterData characterData)
+        private UniTask SQLiteDatabase_onUpdateCharacter(SqliteConnection connection, SqliteTransaction transaction, TransactionUpdateCharacterState state, IPlayerCharacterData updateData)
         {
             // Save uma data
-            IList<byte> bytes = characterData.UmaAvatarData.GetBytes();
+            IList<byte> bytes = updateData.UmaAvatarData.GetBytes();
             string saveData = string.Empty;
             for (int i = 0; i < bytes.Count; ++i)
             {
@@ -83,16 +74,17 @@ namespace MultiplayerARPG.MMO
                 saveData += bytes[i];
             }
             ExecuteNonQuery(transaction, "UPDATE characterumasaves SET data=@data WHERE id=@id",
-                new SqliteParameter("@id", characterData.Id),
+                new SqliteParameter("@id", updateData.Id),
                 new SqliteParameter("@data", saveData));
+            return default;
         }
 
-        [DevExtMethods("DeleteCharacter")]
-        public void DeleteCharacter_UMA(SqliteTransaction transaction, string userId, string id)
+        private UniTask SQLiteDatabase_onDeleteCharacter(SqliteConnection connection, SqliteTransaction transaction, string userId, string characterId)
         {
             // Delete uma data
             ExecuteNonQuery(transaction, "DELETE FROM characterumasaves WHERE id=@id",
-                new SqliteParameter("@id", id));
+                new SqliteParameter("@id", characterId));
+            return default;
         }
     }
 }

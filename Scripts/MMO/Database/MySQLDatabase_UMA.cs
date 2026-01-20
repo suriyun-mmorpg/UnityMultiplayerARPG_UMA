@@ -1,16 +1,26 @@
 ﻿#if (UNITY_EDITOR || UNITY_SERVER) && UNITY_STANDALONE
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Insthync.DevExtension;
 using MySqlConnector;
 
 namespace MultiplayerARPG.MMO
 {
     public partial class MySQLDatabase
     {
-        [DevExtMethods("CreateCharacter")]
-        public async void CreateCharacter_UMA(MySqlConnection connection, MySqlTransaction transaction, string userId, IPlayerCharacterData characterData)
+        [DevExtMethods("Init")]
+        public void Init_UMA()
+        {
+            onCreateCharacter += MySQLDatabase_onCreateCharacter;
+            onGetCharacter += MySQLDatabase_onGetCharacter;
+            onUpdateCharacter += MySQLDatabase_onUpdateCharacter;
+            onDeleteCharacter += MySQLDatabase_onDeleteCharacter;
+        }
+
+        private async UniTask MySQLDatabase_onCreateCharacter(MySqlConnection connection, MySqlTransaction transaction, string userId, IPlayerCharacterData createData)
         {
             // Save uma data
-            IList<byte> bytes = characterData.UmaAvatarData.GetBytes();
+            IList<byte> bytes = createData.UmaAvatarData.GetBytes();
             string saveData = string.Empty;
             for (int i = 0; i < bytes.Count; ++i)
             {
@@ -19,27 +29,11 @@ namespace MultiplayerARPG.MMO
                 saveData += bytes[i];
             }
             await ExecuteNonQuery(connection, transaction, "INSERT INTO characterumasaves (id, data) VALUES (@id, @data)",
-                new MySqlParameter("@id", characterData.Id),
+                new MySqlParameter("@id", createData.Id),
                 new MySqlParameter("@data", saveData));
         }
 
-        [DevExtMethods("ReadCharacter")]
-        public async void ReadCharacter_UMA(
-            PlayerCharacterData characterData,
-            bool withEquipWeapons,
-            bool withAttributes,
-            bool withSkills,
-            bool withSkillUsages,
-            bool withBuffs,
-            bool withEquipItems,
-            bool withNonEquipItems,
-            bool withSummons,
-            bool withHotkeys,
-            bool withQuests,
-            bool withCurrencies,
-            bool withServerCustomData,
-            bool withPrivateCustomData,
-            bool withPublicCustomData)
+        private async UniTask<PlayerCharacterData> MySQLDatabase_onGetCharacter(PlayerCharacterData result, bool withEquipWeapons, bool withAttributes, bool withSkills, bool withSkillUsages, bool withBuffs, bool withEquipItems, bool withNonEquipItems, bool withSummons, bool withHotkeys, bool withQuests, bool withCurrencies, bool withServerCustomData, bool withPrivateCustomData, bool withPublicCustomData)
         {
             // Read uma data
             await ExecuteReader((reader) =>
@@ -55,17 +49,18 @@ namespace MultiplayerARPG.MMO
                     }
                     UmaAvatarData umaAvatarData = new UmaAvatarData();
                     umaAvatarData.SetBytes(bytes);
-                    characterData.UmaAvatarData = umaAvatarData;
+                    result.UmaAvatarData = umaAvatarData;
                 }
             }, "SELECT data FROM characterumasaves WHERE id=@id",
-                new MySqlParameter("@id", characterData.Id));
+                new MySqlParameter("@id", result.Id));
+            return result;
         }
 
-        [DevExtMethods("UpdateCharacter")]
-        public async void UpdateCharacter_UMA(MySqlConnection connection, MySqlTransaction transaction, IPlayerCharacterData characterData)
+
+        private async UniTask MySQLDatabase_onUpdateCharacter(MySqlConnection connection, MySqlTransaction transaction, TransactionUpdateCharacterState state, IPlayerCharacterData updateData)
         {
             // Save uma data
-            IList<byte> bytes = characterData.UmaAvatarData.GetBytes();
+            IList<byte> bytes = updateData.UmaAvatarData.GetBytes();
             string saveData = string.Empty;
             for (int i = 0; i < bytes.Count; ++i)
             {
@@ -74,16 +69,16 @@ namespace MultiplayerARPG.MMO
                 saveData += bytes[i];
             }
             await ExecuteNonQuery(connection, transaction, "UPDATE characterumasaves SET data=@data WHERE id=@id",
-                new MySqlParameter("@id", characterData.Id),
+                new MySqlParameter("@id", updateData.Id),
                 new MySqlParameter("@data", saveData));
         }
 
-        [DevExtMethods("DeleteCharacter")]
-        public async void DeleteCharacter_UMA(MySqlConnection connection, MySqlTransaction transaction, string userId, string id)
+
+        private async UniTask MySQLDatabase_onDeleteCharacter(MySqlConnection connection, MySqlTransaction transaction, string userId, string characterId)
         {
             // Delete uma data
             await ExecuteNonQuery(connection, transaction, "DELETE FROM characterumasaves WHERE id=@id",
-                new MySqlParameter("@id", id));
+                    new MySqlParameter("@id", characterId));
         }
     }
 }

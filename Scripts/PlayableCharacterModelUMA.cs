@@ -249,7 +249,7 @@ namespace MultiplayerARPG.GameData.Model.Playables
                 tempEquipmentEntity = tempEquipmentObject.GetComponent<BaseEquipmentEntity>();
                 if (tempEquipmentEntity != null)
                 {
-                    tempEquipmentEntity.Setup(this, equipmentModel.equipPosition, equipmentModel.item);
+                    tempEquipmentEntity.Setup(this, string.Empty, equipmentModel.equipPosition, equipmentModel.item);
                     if (equipmentEntity == null)
                         equipmentEntity = tempEquipmentEntity;
                 }

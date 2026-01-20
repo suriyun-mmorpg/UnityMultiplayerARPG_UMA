@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Insthync.DevExtension;
 using UnityEngine;
-using LiteNetLib;
-using LiteNetLibManager;
 
 namespace MultiplayerARPG
 {
@@ -25,8 +22,6 @@ namespace MultiplayerARPG
 
         public void OnSetupNetElements_UMA()
         {
-            umaAvatarData.deliveryMethod = DeliveryMethod.ReliableOrdered;
-            umaAvatarData.syncMode = LiteNetLibSyncField.SyncMode.ServerToClients;
             umaAvatarData.onChange += OnUmaAvatarDataChange;
         }
 
@@ -37,7 +32,7 @@ namespace MultiplayerARPG
             onSetupNetElements -= OnSetupNetElements_UMA;
         }
 
-        protected void OnUmaAvatarDataChange(bool isInit, UmaAvatarData avatarData)
+        protected void OnUmaAvatarDataChange(bool isInit, UmaAvatarData oldAvatarData, UmaAvatarData avatarData)
         {
             if (CharacterModel is ICharacterModelUma characterModelUma)
                 characterModelUma.ApplyUmaAvatar(avatarData);

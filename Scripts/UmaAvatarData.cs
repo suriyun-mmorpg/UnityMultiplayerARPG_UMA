@@ -130,7 +130,7 @@ namespace MultiplayerARPG
     [System.Serializable]
     public class SyncFieldUmaAvatarData : LiteNetLibSyncField<UmaAvatarData>
     {
-        protected override bool IsValueChanged(UmaAvatarData newValue)
+        protected override bool IsValueChanged(UmaAvatarData oldValue, UmaAvatarData newValue)
         {
             return true;
         }

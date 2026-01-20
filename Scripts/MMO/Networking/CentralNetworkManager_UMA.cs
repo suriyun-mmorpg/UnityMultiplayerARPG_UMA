@@ -1,4 +1,5 @@
-﻿using LiteNetLib.Utils;
+﻿using Insthync.DevExtension;
+using LiteNetLib.Utils;
 
 namespace MultiplayerARPG.MMO
 {
