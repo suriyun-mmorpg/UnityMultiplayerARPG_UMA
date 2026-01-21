@@ -306,30 +306,32 @@ namespace MultiplayerARPG.GameData.Model.Playables
             animator = GetComponentInChildren<Animator>();
 
             var umaData = CacheUmaData;
-            var umaTransform = umaData.transform;
-            var oldParent = umaTransform.parent;
-            var originalRot = umaTransform.localRotation;
-            var originalPos = umaTransform.localPosition;
-
-            umaTransform.SetParent(null, false);
-            umaTransform.localRotation = Quaternion.identity;
-            umaTransform.localPosition = Vector3.zero;
-
-            if (!umaData.KeepAvatar || animator.avatar == null)
+            if (umaData != null && !umaData.rawAvatar)
             {
-                UMAUtils.DestroyAvatar(animator.avatar);
-                UMAGeneratorBase.SetAvatar(umaData, animator);
+                var umaTransform = umaData.transform;
+                var oldParent = umaTransform.parent;
+                var originalRot = umaTransform.localRotation;
+                var originalPos = umaTransform.localPosition;
+
+                umaTransform.SetParent(null, false);
+                umaTransform.localRotation = Quaternion.identity;
+                umaTransform.localPosition = Vector3.zero;
+
+                if (!umaData.KeepAvatar || animator.avatar == null)
+                {
+                    UMAUtils.DestroyAvatar(animator.avatar);
+                    UMAGeneratorBase.SetAvatar(umaData, animator);
+                }
+
+                umaTransform.SetParent(oldParent, false);
+                umaTransform.localRotation = originalRot;
+                umaTransform.localPosition = originalPos;
+
+                if (umaData.ForceRebindAnimator)
+                {
+                    animator.Rebind();
+                }
             }
-
-            umaTransform.SetParent(oldParent, false);
-            umaTransform.localRotation = originalRot;
-            umaTransform.localPosition = originalPos;
-
-            if (umaData.ForceRebindAnimator)
-            {
-                animator.Rebind();
-            }
-
             yield return null;
             Template = new AnimationPlayableBehaviour();
             Template.Setup(this);
