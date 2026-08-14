@@ -20,7 +20,7 @@ namespace MultiplayerARPG
             onSetupNetElements += OnSetupNetElements_UMA;
         }
 
-        public void OnSetupNetElements_UMA()
+        public void OnSetupNetElements_UMA(BaseGameEntity target)
         {
             umaAvatarData.onChange += OnUmaAvatarDataChange;
         }
